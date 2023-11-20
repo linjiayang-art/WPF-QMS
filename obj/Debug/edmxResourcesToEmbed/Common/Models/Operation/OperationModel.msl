@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SicoreQMSModelStoreContainer" CdmEntityContainer="SicoreQMSEntities1">
+    <EntitySetMapping Name="Prod_ProcessModel">
+      <EntityTypeMapping TypeName="SicoreQMSModel.Prod_ProcessModel">
+        <MappingFragment StoreEntitySet="Prod_ProcessModel">
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="CheckStandard" ColumnName="CheckStandard" />
+          <ScalarProperty Name="ProdStandard" ColumnName="ProdStandard" />
+          <ScalarProperty Name="ProcessType" ColumnName="ProcessType" />
+          <ScalarProperty Name="ProdProcessCard" ColumnName="ProdProcessCard" />
+          <ScalarProperty Name="ModelSort" ColumnName="ModelSort" />
+          <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Prod_ProcessBasic">
+      <EntityTypeMapping TypeName="SicoreQMSModel.Prod_ProcessBasic">
+        <MappingFragment StoreEntitySet="Prod_ProcessBasic">
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="CheckStandard" ColumnName="CheckStandard" />
+          <ScalarProperty Name="ProdStandard" ColumnName="ProdStandard" />
+          <ScalarProperty Name="ProcessType" ColumnName="ProcessType" />
+          <ScalarProperty Name="ProdProcessCard" ColumnName="ProdProcessCard" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Prod_Process">
+      <EntityTypeMapping TypeName="SicoreQMSModel.Prod_Process">
+        <MappingFragment StoreEntitySet="Prod_Process">
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="CheckStandard" ColumnName="CheckStandard" />
+          <ScalarProperty Name="ProdStandard" ColumnName="ProdStandard" />
+          <ScalarProperty Name="ProcessType" ColumnName="ProcessType" />
+          <ScalarProperty Name="ProdProcessCard" ColumnName="ProdProcessCard" />
+          <ScalarProperty Name="ModelSort" ColumnName="ModelSort" />
+          <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+          <ScalarProperty Name="QualityLevel" ColumnName="QualityLevel" />
+          <ScalarProperty Name="Lot" ColumnName="Lot" />
+          <ScalarProperty Name="ProdType" ColumnName="ProdType" />
+          <ScalarProperty Name="ProdName" ColumnName="ProdName" />
+          <ScalarProperty Name="ProdModelId" ColumnName="ProdModelId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

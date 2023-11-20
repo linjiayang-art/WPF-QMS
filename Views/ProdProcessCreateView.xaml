@@ -1,0 +1,115 @@
+﻿<UserControl
+    x:Class="SicoreQMS.Views.ProdProcessCreateView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SicoreQMS.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    FontFamily="微软雅黑"
+    mc:Ignorable="d">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            Margin="25"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnTest"
+                Command="{Binding CommitBtnCommand}"
+                Content="测试" />
+
+            <ComboBox
+                x:Name="comProductName"
+                Width="256"
+                materialDesign:HintAssist.HelperText="产品名称"
+                materialDesign:HintAssist.Hint="产品名称"
+                DisplayMemberPath="Label"
+                ItemsSource="{Binding Path=ProductNameBasic}"
+                SelectedValuePath="Value"
+                Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+            <TextBox
+                MinWidth="100"
+                MaxWidth="5000"
+                Margin="10"
+                HorizontalContentAlignment="Left"
+                materialDesign:HintAssist.HelperText="批次号"
+                materialDesign:HintAssist.Hint="批次号"
+                BorderThickness="1"
+                Style="{StaticResource FieldHeader}"
+                Text="{Binding ProdLot}" />
+            <ComboBox
+                Width="256"
+                materialDesign:HintAssist.HelperText="产品型号"
+                materialDesign:HintAssist.Hint="产品型号"
+                Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                <ComboBoxItem Content="Item 1" />
+                <ComboBoxItem Content="Item 2" />
+                <ComboBoxItem Content="Item 3" />
+            </ComboBox>
+
+            <ComboBox
+                Width="256"
+                materialDesign:HintAssist.HelperText="检验批"
+                materialDesign:HintAssist.Hint="检验批"
+                Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                <ComboBoxItem Content="Item 1" />
+                <ComboBoxItem Content="Item 2" />
+                <ComboBoxItem Content="Item 3" />
+            </ComboBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <DataGrid
+                x:Name="dgvProcessModel"
+                MaxHeight="500"
+                Margin="10,10"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                HeadersVisibility="All"
+                ItemsSource="{Binding ProcessModel}"
+                SelectionUnit="Cell">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Id}"
+                        Header="ID"
+                        Visibility="Hidden" />
+                    <DataGridTextColumn Binding="{Binding ModelSort}" Header="序号">
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock
+                                                Text="{Binding}"
+                                                TextAlignment="Right"
+                                                TextWrapping="Wrap" />
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ProdProcessCard}" Header="生产流程卡" />
+                    <DataGridTextColumn Binding="{Binding ProcessType}" Header="流程类型" />
+                    <DataGridTextColumn Binding="{Binding ProdStandard}" Header="生产依据" />
+                    <DataGridTextColumn Binding="{Binding CheckStandard}" Header="检验/判定标准" />
+
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>

@@ -55,6 +55,15 @@
     <Reference Include="DryIoc, Version=4.7.7.0, Culture=neutral, PublicKeyToken=dfbf2bd50fcf7768, processorArchitecture=MSIL">
       <HintPath>packages\DryIoc.dll.4.7.7\lib\net45\DryIoc.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FormsToolkit, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\FormsToolkit.2.0.1\lib\netstandard1.0\FormsToolkit.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=2.1.4.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>packages\MaterialDesignColors.2.1.4\lib\net462\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -74,8 +83,11 @@
       <HintPath>packages\Prism.Wpf.8.1.97\lib\net47\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -95,9 +107,37 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\Models\Basic\MenuBar.cs" />
+    <Compile Include="Common\Models\Basic\SelectBasci.cs" />
+    <Compile Include="Common\Models\OperationModels\Prod_ProcessModel.cs" />
+    <Compile Include="Common\Models\Operation\OperationModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OperationModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Models\Operation\OperationModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Models\Operation\OperationModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OperationModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Models\Operation\Prod_Process.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Models\Operation\Prod_ProcessBasic.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Models\Operation\Prod_ProcessModel.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\PrismManger.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ProdModelMaintainViewModel.cs" />
+    <Compile Include="ViewModels\ProdProcessCreateViewModel.cs" />
     <Compile Include="ViewModels\ToDoViewModel.cs" />
     <Compile Include="Views\IndexView.xaml.cs">
       <DependentUpon>IndexView.xaml</DependentUpon>
@@ -109,6 +149,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\ProdModelMaintainView.xaml.cs">
+      <DependentUpon>ProdModelMaintainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProdProcessCreateView.xaml.cs">
+      <DependentUpon>ProdProcessCreateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ToDoView.xaml.cs">
       <DependentUpon>ToDoView.xaml</DependentUpon>
     </Compile>
@@ -117,6 +163,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProdModelMaintainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProdProcessCreateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -143,6 +197,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include=".editorconfig" />
+    <EntityDeploy Include="Common\Models\Operation\OperationModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>OperationModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Common\Models\Operation\OperationModel.edmx.diagram">
+      <DependentUpon>OperationModel.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -166,6 +228,22 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\User.jpg" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Common\Models\Operation\OperationModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>OperationModel.edmx</DependentUpon>
+      <LastGenOutput>OperationModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Common\Models\Operation\OperationModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>OperationModel.edmx</DependentUpon>
+      <LastGenOutput>OperationModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" />
