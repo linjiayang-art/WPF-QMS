@@ -1,7 +1,9 @@
 ﻿using Prism.DryIoc;
 using Prism.Ioc;
 using SicoreQMS.ViewModels;
+using SicoreQMS.ViewModels.DialogModels;
 using SicoreQMS.Views;
+using SicoreQMS.Views.Dialogs;
 using System.Windows;
 
 namespace SicoreQMS
@@ -18,7 +20,7 @@ namespace SicoreQMS
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+            containerRegistry.RegisterDialog<ProcessUpdateView,ProcessUpdateViewModel>();
             containerRegistry.RegisterForNavigation<IndexView, IndexViewModel>();
             containerRegistry.RegisterForNavigation<ToDoView, ToDoViewModel>();
             containerRegistry.RegisterForNavigation<ProdProcessCreateView, ProdProcessCreateViewModel>();

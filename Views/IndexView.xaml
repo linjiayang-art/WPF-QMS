@@ -11,6 +11,7 @@
     <Grid>
         <StackPanel>
             <TextBlock Text="hello" FontSize="50"/>
+            <Button Command="{Binding ExcuteCommand}" CommandParameter="生产流程卡进度更新"></Button>
         </StackPanel>
     </Grid>
 </UserControl>

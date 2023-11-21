@@ -69,7 +69,7 @@ namespace SicoreQMS.ViewModels
         public ProdProcessCreateViewModel()
         {
             ProductNameBasic = new ObservableCollection<SelectBasci>();
-            CreateProductSelection(ProductNameBasic);
+            //CreateProductSelection(ProductNameBasic);
             ProcessModel = new ObservableCollection<Prod_ProcessModel>();
 
             HandelSelect = new DelegateCommand<SelectBasci>(GetInfo);
@@ -77,13 +77,13 @@ namespace SicoreQMS.ViewModels
             CommitBtnCommand = new DelegateCommand(CommitBtn);
             QualityLevel = "军品";
 
-            var dbConnt = new SicoreQMSEntities1();
-            var allModel = dbConnt.Prod_ProcessModel.OrderBy(x=>x.ModelSort).ToList();
-            foreach (var item in allModel)
-            {
-                ProcessModel.Add(item);
+            //var dbConnt = new SicoreQMSEntities1();
+            //var allModel = dbConnt.Prod_ProcessModel.OrderBy(x=>x.ModelSort).ToList();
+            //foreach (var item in allModel)
+            //{
+            //    ProcessModel.Add(item);
 
-            }
+            //}
 
         }
 

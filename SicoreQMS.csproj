@@ -143,12 +143,16 @@
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\PrismManger.cs" />
+    <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProdModelMaintainViewModel.cs" />
     <Compile Include="ViewModels\ProdProcessCreateViewModel.cs" />
     <Compile Include="ViewModels\TestRequestViewModel.cs" />
     <Compile Include="ViewModels\ToDoViewModel.cs" />
+    <Compile Include="Views\Dialogs\ProcessUpdateView.xaml.cs">
+      <DependentUpon>ProcessUpdateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\IndexView.xaml.cs">
       <DependentUpon>IndexView.xaml</DependentUpon>
     </Compile>
@@ -171,6 +175,10 @@
     <Compile Include="Views\ToDoView.xaml.cs">
       <DependentUpon>ToDoView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Dialogs\ProcessUpdateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\IndexView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
