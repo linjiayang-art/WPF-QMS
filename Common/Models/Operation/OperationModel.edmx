@@ -10,18 +10,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ProdModelId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdId" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdName" Type="nvarchar" MaxLength="50" />
-          <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
-          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
-          <Property Name="QualityLevel" Type="nvarchar" MaxLength="50" />
-          <Property Name="ModelName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ModelSort" Type="int" />
-          <Property Name="ProdProcessCard" Type="nvarchar" MaxLength="50" />
-          <Property Name="ProcessType" Type="nvarchar" MaxLength="50" />
-          <Property Name="ProdStandard" Type="nvarchar" MaxLength="255" />
-          <Property Name="CheckStandard" Type="nvarchar" MaxLength="255" />
-          <Property Name="Version" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModelName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdStatus" Type="int" />
+          <Property Name="CurrentProcess" Type="int" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
@@ -35,6 +28,34 @@
           <Property Name="ProcessType" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdStandard" Type="nvarchar" MaxLength="255" />
           <Property Name="CheckStandard" Type="nvarchar" MaxLength="255" />
+          <Property Name="Version" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Prod_ProcessItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProdId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdProcessId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
+          <Property Name="QualityLevel" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModelName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ModelSort" Type="int" />
+          <Property Name="ProdProcessCard" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProcessType" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdStandard" Type="nvarchar" MaxLength="255" />
+          <Property Name="CheckStandard" Type="nvarchar" MaxLength="255" />
+          <Property Name="InputQty" Type="int" />
+          <Property Name="OutQty" Type="int" />
+          <Property Name="Operator" Type="nvarchar" MaxLength="50" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="IsComplete" Type="bit" />
           <Property Name="Version" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
@@ -56,10 +77,27 @@
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
+        <EntityType Name="ProdInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProdName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdStatus" Type="int" />
+          <Property Name="ProdLot" Type="nvarchar" MaxLength="50" />
+          <Property Name="CheckLot" Type="nvarchar" MaxLength="50" />
+          <Property Name="QualityLevel" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityContainer Name="SicoreQMSModelStoreContainer">
           <EntitySet Name="Prod_Process" EntityType="Self.Prod_Process" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_ProcessBasic" EntityType="Self.Prod_ProcessBasic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Prod_ProcessItem" EntityType="Self.Prod_ProcessItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_ProcessModel" EntityType="Self.Prod_ProcessModel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProdInfo" EntityType="Self.ProdInfo" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -68,7 +106,9 @@
         <EntityContainer Name="SicoreQMSEntities1" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="Prod_ProcessModel" EntityType="SicoreQMSModel.Prod_ProcessModel" />
           <EntitySet Name="Prod_ProcessBasic" EntityType="SicoreQMSModel.Prod_ProcessBasic" />
+          <EntitySet Name="ProdInfo" EntityType="SicoreQMSModel.ProdInfo" />
           <EntitySet Name="Prod_Process" EntityType="SicoreQMSModel.Prod_Process" />
+          <EntitySet Name="Prod_ProcessItem" EntityType="SicoreQMSModel.Prod_ProcessItem" />
         </EntityContainer>
         <EntityType Name="Prod_ProcessModel">
           <Key>
@@ -100,12 +140,42 @@
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
         </EntityType>
+        <EntityType Name="ProdInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdStatus" Type="Int32" />
+          <Property Name="ProdLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CheckLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QualityLevel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
         <EntityType Name="Prod_Process">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProdModelId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdStatus" Type="Int32" />
+          <Property Name="CurrentProcess" Type="Int32" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Prod_ProcessItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdProcessId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProdType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Lot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -116,6 +186,12 @@
           <Property Name="ProcessType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProdStandard" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CheckStandard" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="InputQty" Type="Int32" />
+          <Property Name="OutQty" Type="Int32" />
+          <Property Name="Operator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="IsComplete" Type="Boolean" />
           <Property Name="Version" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -159,13 +235,50 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ProdInfo">
+            <EntityTypeMapping TypeName="SicoreQMSModel.ProdInfo">
+              <MappingFragment StoreEntitySet="ProdInfo">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="QualityLevel" ColumnName="QualityLevel" />
+                <ScalarProperty Name="CheckLot" ColumnName="CheckLot" />
+                <ScalarProperty Name="ProdLot" ColumnName="ProdLot" />
+                <ScalarProperty Name="ProdStatus" ColumnName="ProdStatus" />
+                <ScalarProperty Name="ProdType" ColumnName="ProdType" />
+                <ScalarProperty Name="ProdName" ColumnName="ProdName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Prod_Process">
             <EntityTypeMapping TypeName="SicoreQMSModel.Prod_Process">
               <MappingFragment StoreEntitySet="Prod_Process">
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CurrentProcess" ColumnName="CurrentProcess" />
+                <ScalarProperty Name="ProdStatus" ColumnName="ProdStatus" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="ProdName" ColumnName="ProdName" />
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prod_ProcessItem">
+            <EntityTypeMapping TypeName="SicoreQMSModel.Prod_ProcessItem">
+              <MappingFragment StoreEntitySet="Prod_ProcessItem">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="IsComplete" ColumnName="IsComplete" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
+                <ScalarProperty Name="OutQty" ColumnName="OutQty" />
+                <ScalarProperty Name="InputQty" ColumnName="InputQty" />
                 <ScalarProperty Name="CheckStandard" ColumnName="CheckStandard" />
                 <ScalarProperty Name="ProdStandard" ColumnName="ProdStandard" />
                 <ScalarProperty Name="ProcessType" ColumnName="ProcessType" />
@@ -176,7 +289,8 @@
                 <ScalarProperty Name="Lot" ColumnName="Lot" />
                 <ScalarProperty Name="ProdType" ColumnName="ProdType" />
                 <ScalarProperty Name="ProdName" ColumnName="ProdName" />
-                <ScalarProperty Name="ProdModelId" ColumnName="ProdModelId" />
+                <ScalarProperty Name="ProdProcessId" ColumnName="ProdProcessId" />
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -33,13 +33,50 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ProdInfo">
+      <EntityTypeMapping TypeName="SicoreQMSModel.ProdInfo">
+        <MappingFragment StoreEntitySet="ProdInfo">
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="QualityLevel" ColumnName="QualityLevel" />
+          <ScalarProperty Name="CheckLot" ColumnName="CheckLot" />
+          <ScalarProperty Name="ProdLot" ColumnName="ProdLot" />
+          <ScalarProperty Name="ProdStatus" ColumnName="ProdStatus" />
+          <ScalarProperty Name="ProdType" ColumnName="ProdType" />
+          <ScalarProperty Name="ProdName" ColumnName="ProdName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Prod_Process">
       <EntityTypeMapping TypeName="SicoreQMSModel.Prod_Process">
         <MappingFragment StoreEntitySet="Prod_Process">
           <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
           <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="CurrentProcess" ColumnName="CurrentProcess" />
+          <ScalarProperty Name="ProdStatus" ColumnName="ProdStatus" />
+          <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+          <ScalarProperty Name="ProdName" ColumnName="ProdName" />
+          <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Prod_ProcessItem">
+      <EntityTypeMapping TypeName="SicoreQMSModel.Prod_ProcessItem">
+        <MappingFragment StoreEntitySet="Prod_ProcessItem">
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
           <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="IsComplete" ColumnName="IsComplete" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="Operator" ColumnName="Operator" />
+          <ScalarProperty Name="OutQty" ColumnName="OutQty" />
+          <ScalarProperty Name="InputQty" ColumnName="InputQty" />
           <ScalarProperty Name="CheckStandard" ColumnName="CheckStandard" />
           <ScalarProperty Name="ProdStandard" ColumnName="ProdStandard" />
           <ScalarProperty Name="ProcessType" ColumnName="ProcessType" />
@@ -50,7 +87,8 @@
           <ScalarProperty Name="Lot" ColumnName="Lot" />
           <ScalarProperty Name="ProdType" ColumnName="ProdType" />
           <ScalarProperty Name="ProdName" ColumnName="ProdName" />
-          <ScalarProperty Name="ProdModelId" ColumnName="ProdModelId" />
+          <ScalarProperty Name="ProdProcessId" ColumnName="ProdProcessId" />
+          <ScalarProperty Name="ProdId" ColumnName="ProdId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

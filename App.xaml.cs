@@ -23,6 +23,7 @@ namespace SicoreQMS
             containerRegistry.RegisterForNavigation<ToDoView, ToDoViewModel>();
             containerRegistry.RegisterForNavigation<ProdProcessCreateView, ProdProcessCreateViewModel>();
             containerRegistry.RegisterForNavigation<ProdModelMaintainView, ProdModelMaintainViewModel>();
+            containerRegistry.RegisterForNavigation<TestRequestView, TestRequestViewModel>();
         }
     }
 }

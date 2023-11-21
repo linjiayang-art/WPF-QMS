@@ -108,6 +108,9 @@
     </ApplicationDefinition>
     <Compile Include="Common\Models\Basic\MenuBar.cs" />
     <Compile Include="Common\Models\Basic\SelectBasci.cs" />
+    <Compile Include="Common\Models\OperationModels\Proc_ProcessItem.cs" />
+    <Compile Include="Common\Models\OperationModels\ProdInfo.cs" />
+    <Compile Include="Common\Models\OperationModels\Prod_Process.cs" />
     <Compile Include="Common\Models\OperationModels\Prod_ProcessModel.cs" />
     <Compile Include="Common\Models\Operation\OperationModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -124,10 +127,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OperationModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Common\Models\Operation\ProdInfo.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Common\Models\Operation\Prod_Process.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Common\Models\Operation\Prod_ProcessBasic.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Models\Operation\Prod_ProcessItem.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Common\Models\Operation\Prod_ProcessModel.cs">
@@ -138,6 +147,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProdModelMaintainViewModel.cs" />
     <Compile Include="ViewModels\ProdProcessCreateViewModel.cs" />
+    <Compile Include="ViewModels\TestRequestViewModel.cs" />
     <Compile Include="ViewModels\ToDoViewModel.cs" />
     <Compile Include="Views\IndexView.xaml.cs">
       <DependentUpon>IndexView.xaml</DependentUpon>
@@ -155,6 +165,9 @@
     <Compile Include="Views\ProdProcessCreateView.xaml.cs">
       <DependentUpon>ProdProcessCreateView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TestRequestView.xaml.cs">
+      <DependentUpon>TestRequestView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ToDoView.xaml.cs">
       <DependentUpon>ToDoView.xaml</DependentUpon>
     </Compile>
@@ -171,6 +184,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProdProcessCreateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TestRequestView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

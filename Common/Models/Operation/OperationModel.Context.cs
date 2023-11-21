@@ -27,6 +27,8 @@ namespace SicoreQMS.Common.Models.Operation
     
         public virtual DbSet<Prod_ProcessModel> Prod_ProcessModel { get; set; }
         public virtual DbSet<Prod_ProcessBasic> Prod_ProcessBasic { get; set; }
+        public virtual DbSet<ProdInfo> ProdInfo { get; set; }
         public virtual DbSet<Prod_Process> Prod_Process { get; set; }
+        public virtual DbSet<Prod_ProcessItem> Prod_ProcessItem { get; set; }
     }
 }

@@ -12,15 +12,16 @@ namespace SicoreQMS.Common.Models.Operation
     using System;
     using System.Collections.Generic;
     
-    public partial class Prod_Process
+    public partial class ProdInfo
     {
         public string Id { get; set; }
-        public string ProdId { get; set; }
         public string ProdName { get; set; }
-        public string ModelName { get; set; }
+        public string ProdType { get; set; }
         public Nullable<int> ProdStatus { get; set; }
-        public Nullable<int> CurrentProcess { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public string ProdLot { get; set; }
+        public string CheckLot { get; set; }
+        public string QualityLevel { get; set; }
+        public string CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
     }

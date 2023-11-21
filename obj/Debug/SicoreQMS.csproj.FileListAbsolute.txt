@@ -92,3 +92,5 @@ D:\A-QMS\SicoreQMS\obj\Debug\SicoreQMS.csproj.CoreCompileInputs.cache
 D:\A-QMS\SicoreQMS\obj\Debug\SicoreQMS.csproj.CopyComplete
 D:\A-QMS\SicoreQMS\obj\Debug\SicoreQMS.exe
 D:\A-QMS\SicoreQMS\obj\Debug\SicoreQMS.pdb
+D:\A-QMS\SicoreQMS\obj\Debug\Views\TestRequestView.g.cs
+D:\A-QMS\SicoreQMS\obj\Debug\Views\TestRequestView.baml

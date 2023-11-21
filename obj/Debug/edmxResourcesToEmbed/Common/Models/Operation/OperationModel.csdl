@@ -3,7 +3,9 @@
   <EntityContainer Name="SicoreQMSEntities1" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Prod_ProcessModel" EntityType="SicoreQMSModel.Prod_ProcessModel" />
     <EntitySet Name="Prod_ProcessBasic" EntityType="SicoreQMSModel.Prod_ProcessBasic" />
+    <EntitySet Name="ProdInfo" EntityType="SicoreQMSModel.ProdInfo" />
     <EntitySet Name="Prod_Process" EntityType="SicoreQMSModel.Prod_Process" />
+    <EntitySet Name="Prod_ProcessItem" EntityType="SicoreQMSModel.Prod_ProcessItem" />
   </EntityContainer>
   <EntityType Name="Prod_ProcessModel">
     <Key>
@@ -35,12 +37,42 @@
     <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="IsDeleted" Type="Boolean" />
   </EntityType>
+  <EntityType Name="ProdInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProdType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProdStatus" Type="Int32" />
+    <Property Name="ProdLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CheckLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="QualityLevel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsDeleted" Type="Boolean" />
+  </EntityType>
   <EntityType Name="Prod_Process">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ProdModelId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProdStatus" Type="Int32" />
+    <Property Name="CurrentProcess" Type="Int32" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsDeleted" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Prod_ProcessItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProdProcessId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ProdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ProdType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Lot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -51,6 +83,12 @@
     <Property Name="ProcessType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ProdStandard" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="CheckStandard" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="InputQty" Type="Int32" />
+    <Property Name="OutQty" Type="Int32" />
+    <Property Name="Operator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StartDate" Type="DateTime" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Precision="3" />
+    <Property Name="IsComplete" Type="Boolean" />
     <Property Name="Version" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="CreateDate" Type="DateTime" Precision="3" />
     <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />

@@ -12,14 +12,28 @@ namespace SicoreQMS.Common.Models.Operation
     using System;
     using System.Collections.Generic;
     
-    public partial class Prod_Process
+    public partial class Prod_ProcessItem
     {
         public string Id { get; set; }
         public string ProdId { get; set; }
+        public string ProdProcessId { get; set; }
         public string ProdName { get; set; }
+        public string ProdType { get; set; }
+        public string Lot { get; set; }
+        public string QualityLevel { get; set; }
         public string ModelName { get; set; }
-        public Nullable<int> ProdStatus { get; set; }
-        public Nullable<int> CurrentProcess { get; set; }
+        public Nullable<int> ModelSort { get; set; }
+        public string ProdProcessCard { get; set; }
+        public string ProcessType { get; set; }
+        public string ProdStandard { get; set; }
+        public string CheckStandard { get; set; }
+        public Nullable<int> InputQty { get; set; }
+        public Nullable<int> OutQty { get; set; }
+        public string Operator { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
+        public Nullable<bool> IsComplete { get; set; }
+        public string Version { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
