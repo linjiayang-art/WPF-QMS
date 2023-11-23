@@ -11,6 +11,9 @@
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ProdId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdLot" Type="nvarchar" MaxLength="50" />
+          <Property Name="QualityLevel" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdName" Type="nvarchar" MaxLength="50" />
           <Property Name="ModelName" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdStatus" Type="int" />
@@ -44,6 +47,7 @@
           <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
           <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="QualityLevel" Type="nvarchar" MaxLength="50" />
+          <Property Name="ItemStatus" Type="int" />
           <Property Name="ModelName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ModelSort" Type="int" />
           <Property Name="ProdProcessCard" Type="nvarchar" MaxLength="50" />
@@ -168,6 +172,9 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="ProdType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QualityLevel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Prod_ProcessItem">
           <Key>
@@ -196,6 +203,7 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="ItemStatus" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -254,6 +262,9 @@
           <EntitySetMapping Name="Prod_Process">
             <EntityTypeMapping TypeName="SicoreQMSModel.Prod_Process">
               <MappingFragment StoreEntitySet="Prod_Process">
+                <ScalarProperty Name="QualityLevel" ColumnName="QualityLevel" />
+                <ScalarProperty Name="ProdLot" ColumnName="ProdLot" />
+                <ScalarProperty Name="ProdType" ColumnName="ProdType" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -269,6 +280,7 @@
           <EntitySetMapping Name="Prod_ProcessItem">
             <EntityTypeMapping TypeName="SicoreQMSModel.Prod_ProcessItem">
               <MappingFragment StoreEntitySet="Prod_ProcessItem">
+                <ScalarProperty Name="ItemStatus" ColumnName="ItemStatus" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />

@@ -1,0 +1,9 @@
+<FileList>
+
+<File Reference="Syncfusion.Grid.WPF.dll">
+	<ContainsControls>True</ContainsControls>
+	<ToolboxItems UIFramework="WPF" VSCategory="Syncfusion WPF UI Controls (NuGet)" BlendCategory="Syncfusion WPF UI Controls (NuGet)">
+		<Item Type="Syncfusion.Windows.Controls.Grid.GridControl"/>
+	</ToolboxItems>
+</File>
+</FileList>

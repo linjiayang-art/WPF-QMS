@@ -26,7 +26,7 @@ namespace SicoreQMS.ViewModels
 
         void UpdateProcess()
         {
-            dialog.ShowDialog("ProcessUpdateView");
+            dialog.ShowDialog("ProdProcessPrintView");
         }
 
         public DelegateCommand<string> ExcuteCommand { get; set; }

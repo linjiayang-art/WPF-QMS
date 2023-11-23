@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SicoreQMS.Common.Models.Basic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,13 @@ namespace SicoreQMS.Common.Models.Operation
             CreateDate = DateTime.Now;
 
         }
+
+
+        public SelectBasci ProductSelect()
+        {
+            return new SelectBasci { Label = ProdType, Value = Id };
+        }
+
 
     }
 }

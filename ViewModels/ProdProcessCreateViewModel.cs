@@ -20,17 +20,19 @@ namespace SicoreQMS.ViewModels
 {
     public class ProdProcessCreateViewModel : BindableBase
     {
+        #region 属性
         private ObservableCollection<SelectBasci> _productNameBasic;
         private ObservableCollection<Prod_ProcessModel> _processModel;
 
 
         private string _prodLot;
         private string _prodName;
-        private string _qualitylevel;
+        
 
         private string _prodType;
 
-        private string PropId { get;  set; }
+        private string PropId { get; set; }
+        private string _qualitylevel;
         public string QualityLevel
         {
             get { return _qualitylevel; }
@@ -40,7 +42,7 @@ namespace SicoreQMS.ViewModels
 
         public string ProdLot
         {
-            get { return _prodLot ; }
+            get { return _prodLot; }
             set { SetProperty(ref _prodLot, value); }
         }
 
@@ -56,6 +58,9 @@ namespace SicoreQMS.ViewModels
             set { SetProperty(ref _prodName, value); }
         }
 
+        #endregion
+
+
 
         public DelegateCommand CommitBtnCommand { get; private set; }
 
@@ -63,13 +68,13 @@ namespace SicoreQMS.ViewModels
         public DelegateCommand<SelectBasci> HandelSelect
         {
             get;
-           private  set;
+            private set;
         }
 
         public ProdProcessCreateViewModel()
         {
             ProductNameBasic = new ObservableCollection<SelectBasci>();
-            //CreateProductSelection(ProductNameBasic);
+            CreateProductSelection(ProductNameBasic);
             ProcessModel = new ObservableCollection<Prod_ProcessModel>();
 
             HandelSelect = new DelegateCommand<SelectBasci>(GetInfo);
@@ -77,13 +82,13 @@ namespace SicoreQMS.ViewModels
             CommitBtnCommand = new DelegateCommand(CommitBtn);
             QualityLevel = "军品";
 
-            //var dbConnt = new SicoreQMSEntities1();
-            //var allModel = dbConnt.Prod_ProcessModel.OrderBy(x=>x.ModelSort).ToList();
-            //foreach (var item in allModel)
-            //{
-            //    ProcessModel.Add(item);
+            var dbConnt = new SicoreQMSEntities1();
+            var allModel = dbConnt.Prod_ProcessModel.OrderBy(x => x.ModelSort).ToList();
+            foreach (var item in allModel)
+            {
+                ProcessModel.Add(item);
 
-            //}
+            }
 
         }
 
@@ -101,13 +106,14 @@ namespace SicoreQMS.ViewModels
                 {
                     this.ProdName = productInfo.ProdName;
                     this.ProdLot = productInfo.ProdLot;
+                    this.ProdType = productInfo.ProdType;
                     this.QualityLevel = productInfo.QualityLevel;
                 }
                 else
                 {
                     MessageBox.Show("未查询到改产品");
                 }
-             
+
             }
         }
         public void CommitBtn()
@@ -120,7 +126,10 @@ namespace SicoreQMS.ViewModels
                     Id = Guid.NewGuid().ToString(),
                     ProdId = this.PropId,
                     ProdName = this.ProdName,
-                    ModelName="军工",
+                    ProdLot = this.ProdLot,
+                    QualityLevel = this.QualityLevel,
+                    ProdType = this.ProdType,
+                    ModelName = "军工",
                 };
 
                 // 将新的 ProdInfo 对象添加到数据库
@@ -133,9 +142,10 @@ namespace SicoreQMS.ViewModels
                     {
                         Id = Guid.NewGuid().ToString(),
                         ProdId = this.PropId,
-                        ProdProcessId= newProcessInfo.Id,
+                        ProdProcessId = newProcessInfo.Id,
                         ProdName = this.ProdName,
-                        Lot=this.ProdLot,
+                        ProdType = this.ProdType,
+                        Lot = this.ProdLot,
                         QualityLevel = this.QualityLevel,
                         ModelName = "军工",
                     };
@@ -148,7 +158,7 @@ namespace SicoreQMS.ViewModels
 
             }
 
-         
+
 
         }
 
@@ -177,7 +187,7 @@ namespace SicoreQMS.ViewModels
                     selectBascis.Add(item.ProductSelect());
                 }
             }
-                
+
         }
     }
 
