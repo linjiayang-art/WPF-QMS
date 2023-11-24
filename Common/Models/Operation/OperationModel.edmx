@@ -13,6 +13,8 @@
           <Property Name="ProdId" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdLot" Type="nvarchar" MaxLength="50" />
+          <Property Name="OrginQty" Type="int" />
+          <Property Name="Qty" Type="int" />
           <Property Name="QualityLevel" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdName" Type="nvarchar" MaxLength="50" />
           <Property Name="ModelName" Type="nvarchar" MaxLength="50" />
@@ -86,12 +88,15 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParentId" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdName" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdStatus" Type="int" />
           <Property Name="ProdLot" Type="nvarchar" MaxLength="50" />
           <Property Name="CheckLot" Type="nvarchar" MaxLength="50" />
           <Property Name="QualityLevel" Type="nvarchar" MaxLength="50" />
+          <Property Name="OrginQty" Type="int" />
+          <Property Name="Qty" Type="int" />
           <Property Name="CreateDate" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
@@ -158,6 +163,9 @@
           <Property Name="CreateDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="ParentId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrginQty" Type="Int32" />
+          <Property Name="Qty" Type="Int32" />
         </EntityType>
         <EntityType Name="Prod_Process">
           <Key>
@@ -175,6 +183,8 @@
           <Property Name="ProdType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProdLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="QualityLevel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrginQty" Type="Int32" />
+          <Property Name="Qty" Type="Int32" />
         </EntityType>
         <EntityType Name="Prod_ProcessItem">
           <Key>
@@ -246,6 +256,9 @@
           <EntitySetMapping Name="ProdInfo">
             <EntityTypeMapping TypeName="SicoreQMSModel.ProdInfo">
               <MappingFragment StoreEntitySet="ProdInfo">
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="OrginQty" ColumnName="OrginQty" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -262,6 +275,8 @@
           <EntitySetMapping Name="Prod_Process">
             <EntityTypeMapping TypeName="SicoreQMSModel.Prod_Process">
               <MappingFragment StoreEntitySet="Prod_Process">
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="OrginQty" ColumnName="OrginQty" />
                 <ScalarProperty Name="QualityLevel" ColumnName="QualityLevel" />
                 <ScalarProperty Name="ProdLot" ColumnName="ProdLot" />
                 <ScalarProperty Name="ProdType" ColumnName="ProdType" />

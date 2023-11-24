@@ -20,7 +20,10 @@ namespace SicoreQMS.ViewModels
         public ProdProcessUpdateViewModel(IDialogService dialog)
         {
             ProductNameBasic = new ObservableCollection<SelectBasci>();
+
             UpdateProgressCommand=new DelegateCommand<Prod_ProcessItem>(UpdateProgress);
+
+            SplitLotCommand = new DelegateCommand<string>(SpiltLot);
             CreateProductSelection(ProductNameBasic);
 
             ProcessItem = new ObservableCollection<Prod_ProcessItem>();
@@ -30,6 +33,15 @@ namespace SicoreQMS.ViewModels
             this.dialog = dialog;
 
 
+        }
+
+        private void SpiltLot(string obj)
+        {
+            if (string.IsNullOrEmpty(obj))
+            {
+                return;
+            }
+            dialog.ShowDialog("LotSplitView");
         }
 
         private void UpdateProgress(Prod_ProcessItem obj)
@@ -54,7 +66,7 @@ namespace SicoreQMS.ViewModels
         private ObservableCollection<Prod_ProcessItem> _processItem;
 
        public DelegateCommand<Prod_ProcessItem> UpdateProgressCommand { get; set; }
-
+        public DelegateCommand<string> SplitLotCommand { get; set; }
         private string _prodLot;
         private string _prodName;
         private string _qualitylevel;

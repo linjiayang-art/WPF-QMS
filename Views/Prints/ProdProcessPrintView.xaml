@@ -13,15 +13,20 @@
     mc:Ignorable="d">
 
     <Grid>
-
-        <wfi:WindowsFormsHost
-            Name="windowsFormsHost"
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Button x:Name="btnLoadForm" Content="加载窗口" />
+        <WindowsFormsHost
+            x:Name="windowsFormsHost"
+            Grid.Row="1"
             Width="450"
             Height="300"
             Background="Aqua">
             <!--  在这里添加或绑定 Windows Forms 控件  -->
             <rv:ReportViewer x:Name="ReportViewer" />
 
-        </wfi:WindowsFormsHost>
+        </WindowsFormsHost>
     </Grid>
 </UserControl>

@@ -35,6 +35,7 @@ namespace SicoreQMS
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<ProdProcessPrintView, ProdProcessPrintViewModel>();
+            containerRegistry.RegisterDialog<LotSplitView, LotSplitViewModel>();
             containerRegistry.RegisterDialog<ProdProcessPrintView, ProdProcessPrintViewModel>();
             containerRegistry.RegisterDialog<ProcessUpdateView,ProcessUpdateViewModel>();
             containerRegistry.RegisterForNavigation<IndexView, IndexViewModel>();

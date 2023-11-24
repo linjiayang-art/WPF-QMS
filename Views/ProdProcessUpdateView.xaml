@@ -137,6 +137,11 @@
                 IsEnabled="False"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding QualityLevel}" />
+            <Button
+                Margin="10,10"
+                Command="{Binding SplitLotCommand}"
+                CommandParameter="{Binding Text, ElementName=txtProdName}"
+                Content="批次拆分" />
 
         </StackPanel>
 

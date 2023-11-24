@@ -16,6 +16,8 @@ using System.Windows.Forms;
 using SicoreQMS.Common.Models.Operation;
 using System.Data;
 using Microsoft.Reporting.WinForms;
+using MaterialDesignThemes.Wpf;
+using System.Windows.Forms.Integration;
 
 namespace SicoreQMS.Views.Prints
 {
@@ -27,13 +29,25 @@ namespace SicoreQMS.Views.Prints
         public ProdProcessPrintView()
         {
             InitializeComponent();
-            LoadReport();
+
+           
+            btnLoadForm.Click += (s, e) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    LoadReport();
+                });
+
+            };
+           
         }
 
         private void LoadReport()
         {
+            var reportViewer = new Microsoft.Reporting.WinForms.ReportViewer();
+            windowsFormsHost.Child = reportViewer;
             // 创建 ReportViewer 对象
-            var reportViewer = (Microsoft.Reporting.WinForms.ReportViewer)windowsFormsHost.Child;
+            //var reportViewer = (Microsoft.Reporting.WinForms.ReportViewer)windowsFormsHost.Child;
 
             // 设置报表文件路径或数据源等
              reportViewer.LocalReport.ReportPath = "D:\\A-QMS\\SicoreQMS\\Prints\\ProdProcess.rdlc";

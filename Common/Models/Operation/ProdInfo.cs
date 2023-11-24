@@ -24,5 +24,8 @@ namespace SicoreQMS.Common.Models.Operation
         public string CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+        public string ParentId { get; set; }
+        public Nullable<int> OrginQty { get; set; }
+        public Nullable<int> Qty { get; set; }
     }
 }

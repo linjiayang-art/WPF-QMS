@@ -17,6 +17,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -216,6 +217,7 @@
     </Compile>
     <Compile Include="Extensions\PrismManger.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModels\DialogModels\LotSplitViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -225,6 +227,9 @@
     <Compile Include="ViewModels\ProdProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\TestRequestViewModel.cs" />
     <Compile Include="ViewModels\ToDoViewModel.cs" />
+    <Compile Include="Views\Dialogs\LotSplitView.xaml.cs">
+      <DependentUpon>LotSplitView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\ProcessUpdateView.xaml.cs">
       <DependentUpon>ProcessUpdateView.xaml</DependentUpon>
     </Compile>
@@ -256,6 +261,10 @@
     <Compile Include="Views\ToDoView.xaml.cs">
       <DependentUpon>ToDoView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Dialogs\LotSplitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Dialogs\ProcessUpdateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
