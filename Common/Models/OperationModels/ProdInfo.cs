@@ -24,5 +24,17 @@ namespace SicoreQMS.Common.Models.Operation
             return new SelectBasci { Label= ProdType ,Value=Id  };
         }
 
+        public SpiltModel GetSpiltModel()
+        {
+
+
+            return new SpiltModel()
+            {
+                LotNo = ProdLot,
+                Qty = (int)Qty
+                
+            };
+        }
+
     }
 }

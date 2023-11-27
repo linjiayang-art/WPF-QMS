@@ -30,5 +30,6 @@ namespace SicoreQMS.Common.Models.Operation
         public virtual DbSet<ProdInfo> ProdInfo { get; set; }
         public virtual DbSet<Prod_Process> Prod_Process { get; set; }
         public virtual DbSet<Prod_ProcessItem> Prod_ProcessItem { get; set; }
+        public virtual DbSet<LotRelation> LotRelation { get; set; }
     }
 }

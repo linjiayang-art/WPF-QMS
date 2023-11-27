@@ -181,10 +181,15 @@
     <Compile Include="Common\IConfigureService.cs" />
     <Compile Include="Common\Models\Basic\MenuBar.cs" />
     <Compile Include="Common\Models\Basic\SelectBasci.cs" />
+    <Compile Include="Common\Models\Basic\SpiltModel.cs" />
+    <Compile Include="Common\Models\OperationModels\LotRelation.cs" />
     <Compile Include="Common\Models\OperationModels\Proc_ProcessItem.cs" />
     <Compile Include="Common\Models\OperationModels\ProdInfo.cs" />
     <Compile Include="Common\Models\OperationModels\Prod_Process.cs" />
     <Compile Include="Common\Models\OperationModels\Prod_ProcessModel.cs" />
+    <Compile Include="Common\Models\Operation\LotRelation.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Common\Models\Operation\OperationModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -385,7 +390,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Common\Models\Interface\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

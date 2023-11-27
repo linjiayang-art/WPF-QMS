@@ -41,6 +41,9 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         #region  属性
 
+
+
+
         private bool _isStartEnabled;
         public bool IsStartEnabled
         {

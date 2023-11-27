@@ -5,6 +5,19 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="SicoreQMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LotRelation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LotId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ParentId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ChildrenId" Type="nvarchar" MaxLength="50" />
+          <Property Name="RelationType" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Prod_Process">
           <Key>
             <PropertyRef Name="Id" />
@@ -102,6 +115,7 @@
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityContainer Name="SicoreQMSModelStoreContainer">
+          <EntitySet Name="LotRelation" EntityType="Self.LotRelation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_Process" EntityType="Self.Prod_Process" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_ProcessBasic" EntityType="Self.Prod_ProcessBasic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_ProcessItem" EntityType="Self.Prod_ProcessItem" Schema="dbo" store:Type="Tables" />
@@ -118,6 +132,7 @@
           <EntitySet Name="ProdInfo" EntityType="SicoreQMSModel.ProdInfo" />
           <EntitySet Name="Prod_Process" EntityType="SicoreQMSModel.Prod_Process" />
           <EntitySet Name="Prod_ProcessItem" EntityType="SicoreQMSModel.Prod_ProcessItem" />
+          <EntitySet Name="LotRelation" EntityType="SicoreQMSModel.LotRelation" />
         </EntityContainer>
         <EntityType Name="Prod_ProcessModel">
           <Key>
@@ -214,6 +229,19 @@
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="ItemStatus" Type="Int32" />
+        </EntityType>
+        <EntityType Name="LotRelation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ChildrenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RelationType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LotId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -318,6 +346,20 @@
                 <ScalarProperty Name="ProdName" ColumnName="ProdName" />
                 <ScalarProperty Name="ProdProcessId" ColumnName="ProdProcessId" />
                 <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LotRelation">
+            <EntityTypeMapping TypeName="SicoreQMSModel.LotRelation">
+              <MappingFragment StoreEntitySet="LotRelation">
+                <ScalarProperty Name="LotId" ColumnName="LotId" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="RelationType" ColumnName="RelationType" />
+                <ScalarProperty Name="ChildrenId" ColumnName="ChildrenId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
