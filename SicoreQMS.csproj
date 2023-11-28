@@ -220,6 +220,7 @@
     <Compile Include="Common\Models\Operation\Prod_ProcessModel.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\Factory.cs" />
     <Compile Include="Extensions\PrismManger.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewModels\DialogModels\LotSplitViewModel.cs" />

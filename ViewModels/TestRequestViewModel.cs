@@ -52,6 +52,8 @@ namespace SicoreQMS.ViewModels
                     ProdName =this.ProdName,  // 替换成实际的值
                     ProdType = this.ProdType,  // 替换成实际的值
                     ProdStatus = 0,                 // 替换成实际的值
+                    Qty= this.Qty,
+                    OrginQty=this.Qty,
                     ProdLot = this.ProdLot,        // 替换成实际的值
                    // CheckLot = "YourCheckLot",      // 替换成实际的值
                     QualityLevel = this.QualityLevel,  // 替换成实际的值
@@ -76,6 +78,16 @@ namespace SicoreQMS.ViewModels
         
 
         }
+
+
+        private int _qty;
+
+        public int Qty
+        {
+            get { return _qty; }
+            set { SetProperty(ref _qty, value); }
+        }
+
 
         private string _prodLot;
 

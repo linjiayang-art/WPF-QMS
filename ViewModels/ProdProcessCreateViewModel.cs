@@ -18,7 +18,7 @@ using System.Data.Entity;
 namespace SicoreQMS.ViewModels
 
 {
-    public class ProdProcessCreateViewModel : BindableBase
+    public class ProdProcessCreateViewModel : BindableBase, IRegionMemberLifetime
     {
         #region 属性
         private ObservableCollection<SelectBasci> _productNameBasic;
@@ -58,6 +58,7 @@ namespace SicoreQMS.ViewModels
             set { SetProperty(ref _prodName, value); }
         }
 
+        public int Qty { get; set; }
         #endregion
 
 
@@ -81,14 +82,16 @@ namespace SicoreQMS.ViewModels
 
             CommitBtnCommand = new DelegateCommand(CommitBtn);
             QualityLevel = "军品";
-
-            var dbConnt = new SicoreQMSEntities1();
-            var allModel = dbConnt.Prod_ProcessModel.OrderBy(x => x.ModelSort).ToList();
-            foreach (var item in allModel)
+            using (var dbConnt = new SicoreQMSEntities1())
             {
-                ProcessModel.Add(item);
+                var allModel = dbConnt.Prod_ProcessModel.OrderBy(x => x.ModelSort).ToList();
+                foreach (var item in allModel)
+                {
+                    ProcessModel.Add(item);
 
+                }
             }
+
 
         }
 
@@ -108,10 +111,11 @@ namespace SicoreQMS.ViewModels
                     this.ProdLot = productInfo.ProdLot;
                     this.ProdType = productInfo.ProdType;
                     this.QualityLevel = productInfo.QualityLevel;
+                    this.Qty = (int)productInfo.Qty;
                 }
                 else
                 {
-                    MessageBox.Show("未查询到改产品");
+                    MessageBox.Show("未查询到该产品");
                 }
 
             }
@@ -130,6 +134,8 @@ namespace SicoreQMS.ViewModels
                     QualityLevel = this.QualityLevel,
                     ProdType = this.ProdType,
                     ModelName = "军工",
+                    Qty=this.Qty,
+                    OrginQty=this.Qty,
                 };
 
                 // 将新的 ProdInfo 对象添加到数据库
@@ -175,6 +181,8 @@ namespace SicoreQMS.ViewModels
             private set { _processModel = value; RaisePropertyChanged(); }
 
         }
+
+        public bool KeepAlive => false;
 
         void CreateProductSelection(ObservableCollection<SelectBasci> selectBascis)
         {

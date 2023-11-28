@@ -9,9 +9,12 @@ namespace SicoreQMS.Common.Models.Operation
 {
     public partial class LotRelation
     {
+        public LotRelation()
+        {
+            
+        }
 
 
-     
     }
 
 

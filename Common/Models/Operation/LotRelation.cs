@@ -21,6 +21,6 @@ namespace SicoreQMS.Common.Models.Operation
         public Nullable<bool> IsDeleted { get; set; }
         public string CreateUser { get; set; }
         public string CreateDate { get; set; }
-        public string LotId { get; set; }
+        public string ProdId { get; set; }
     }
 }

@@ -9,8 +9,13 @@ namespace SicoreQMS.Common.Models.Operation
 {
     public partial class Prod_ProcessItem : BindableBase
     {
+
+        /// <summary>
+        /// itemStatus 0未开始 1开始 2完成 3跳过 4暂定 5拆分批次无法进行
+        /// </summary>
         public Prod_ProcessItem()
         {
+            
             IsComplete = false;
             ItemStatus = 0;
             IsDeleted = false;
@@ -22,6 +27,11 @@ namespace SicoreQMS.Common.Models.Operation
         {
             get
             {
+                if (ItemStatus==5)
+                {
+                    return false;
+                }
+
                 if (IsComplete == false)
                 {
                     return true;
@@ -36,6 +46,9 @@ namespace SicoreQMS.Common.Models.Operation
         private string _nowStatus;
         public string NowStatus
         {
+            /// <summary>
+            /// itemStatus 0未开始 1开始 2完成 3跳过 4暂定 5拆分批次无法进行
+            /// </summary>
             get
             {
                 if (ItemStatus ==0 )
@@ -49,6 +62,10 @@ namespace SicoreQMS.Common.Models.Operation
                 if (ItemStatus == 2)
                 {
                     return "已完结";
+                }
+                if (ItemStatus == 5)
+                {
+                    return "批次拆分,当前批次已锁定";
                 }
                 return "状态未明确";
                 ;

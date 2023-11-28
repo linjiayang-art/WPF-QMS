@@ -60,7 +60,7 @@
                 Style="{StaticResource MaterialDesignOutlinedComboBox}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <prism:InvokeCommandAction Command="{Binding HandelSelect}" CommandParameter="{Binding SelectedItem, ElementName=comProductName}" />
+                        <prism:InvokeCommandAction Command="{Binding HandelSelect}" CommandParameter="{Binding SelectedValue, ElementName=comProductName}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ComboBox.ItemTemplate>
@@ -71,7 +71,7 @@
                             BorderThickness="0,0,0,1">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Margin="5" Text="{Binding Label}" />
-                                <TextBlock Margin="5" Text="{Binding Value}" />
+                                <!--<TextBlock Margin="5" Text="{Binding Value}" />-->
                             </StackPanel>
                         </Border>
                     </DataTemplate>

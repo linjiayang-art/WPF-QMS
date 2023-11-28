@@ -60,7 +60,7 @@
                         materialDesign:HintAssist.Hint="请输入拆分数量"
                         AcceptsReturn="True"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        Text="{Binding Qty}"
+                        Text="{Binding SplitQty}"
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto" />
 
@@ -75,7 +75,8 @@
                         FontSize="15"
                         FontWeight="Bold"
                         Text="当前已有批次" />
-                    <ListView ItemsSource="{Binding SpiltList}">
+
+                    <ListView MaxHeight="300" ItemsSource="{Binding SpiltList}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn DisplayMemberBinding="{Binding LotNo}" Header="批次号" />
@@ -83,6 +84,8 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
+
+
                 </StackPanel>
             </DockPanel>
         </Grid>

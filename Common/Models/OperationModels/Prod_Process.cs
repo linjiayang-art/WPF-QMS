@@ -13,6 +13,7 @@ namespace SicoreQMS.Common.Models.Operation
 
         {
 
+
             CurrentProcess = 1;
             // 设置默认值
             ProdStatus = 0;
@@ -24,7 +25,8 @@ namespace SicoreQMS.Common.Models.Operation
 
         public SelectBasci ProductSelect()
         {
-            return new SelectBasci { Label = ProdType, Value = Id };
+            string label = $" 产品型号: {ProdType} 批次号: {ProdLot} 数量: {Qty}";
+            return new SelectBasci { Label = label, Value = Id };
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Regions;
 using Prism.Services.Dialogs;
 using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
@@ -11,27 +12,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace SicoreQMS.ViewModels
 {
-    public class ProdProcessUpdateViewModel:BindableBase
+    public class ProdProcessUpdateViewModel:BindableBase, IRegionMemberLifetime
     {
         
         public ProdProcessUpdateViewModel(IDialogService dialog)
         {
             ProductNameBasic = new ObservableCollection<SelectBasci>();
 
-            UpdateProgressCommand=new DelegateCommand<Prod_ProcessItem>(UpdateProgress);
+            UpdateProgressCommand =new DelegateCommand<Prod_ProcessItem>(UpdateProgress);
 
             SplitLotCommand = new DelegateCommand<SelectBasci>(SpiltLot);
-            CreateProductSelection(ProductNameBasic);
+
+            CreateProductSelection();
 
             ProcessItem = new ObservableCollection<Prod_ProcessItem>();
 
-            HandelSelect = new DelegateCommand<SelectBasci>(GetInfo);
+            HandelSelect = new DelegateCommand<string>(GetInfo);
             QualityLevel = "军品";
             this.dialog = dialog;
-
 
         }
 
@@ -47,7 +49,20 @@ namespace SicoreQMS.ViewModels
 
             };
 
-            dialog.ShowDialog("LotSplitView", dialogParameters, result => { });
+            dialog.ShowDialog("LotSplitView", dialogParameters, result => {
+
+              var newid = result.Parameters.GetValue<string>("NewId");
+                if (!string.IsNullOrEmpty(newid))
+                {
+                    using (var context = new SicoreQMSEntities1())
+                    {
+                        var productItem = context.Prod_Process.SingleOrDefault(p => p.Id == newid);
+                        ProductNameBasic.Add(productItem.ProductSelect());
+                    }
+                }
+
+                GetProcessList();
+            });
         }
 
         private void UpdateProgress(Prod_ProcessItem obj)
@@ -58,7 +73,6 @@ namespace SicoreQMS.ViewModels
                 { "Id",obj.Id},
    
             };
-
             dialog.ShowDialog("ProcessUpdateView", dialogParameters, result =>
             {
                 GetProcessList();
@@ -66,6 +80,8 @@ namespace SicoreQMS.ViewModels
             } );
            
         }
+
+        public bool KeepAlive => false;
         #region 属性
         private ObservableCollection<SelectBasci> _productNameBasic;
         private readonly IDialogService dialog;
@@ -114,37 +130,42 @@ namespace SicoreQMS.ViewModels
         #endregion
 
 
-        private void GetInfo(SelectBasci parameter)
+        private void GetInfo(string parameter)
         {
-            if (parameter is null)
+            if (parameter == null)
             {
                 return;
             }
-            ProdProcessId = parameter.Value;
-            using (var context = new SicoreQMSEntities1())
-            {
-                var productInfo = context.Prod_Process.SingleOrDefault(b => b.Id == ProdProcessId);
-                if (productInfo != null)
-                {
-                    this.ProdName = productInfo.ProdName;
-                    this.ProdLot = productInfo.ProdLot;
-                    this.QualityLevel = productInfo.QualityLevel;
-                  
-                }
-                else
-                {
-                    MessageBox.Show("未查询到该产品");
-                }
+         
+                ProdProcessId = parameter;
 
-            }
-            GetProcessList();
+                using (var context = new SicoreQMSEntities1())
+                {
+                    var productInfo = context.Prod_Process.SingleOrDefault(b => b.Id == ProdProcessId);
+                    if (productInfo != null)
+                    {
+                        this.ProdName = productInfo.ProdName;
+                        this.ProdLot = productInfo.ProdLot;
+                        this.QualityLevel = productInfo.QualityLevel;
+                    }
+                    else
+                    {
+                    System.Windows.MessageBox.Show("未查询到该产品");
+                    }
+
+                }
+                GetProcessList();
+            
+          
+
+          
         }
  
 
         public ObservableCollection<SelectBasci> ProductNameBasic
         {
             get { return _productNameBasic; }
-            private set { _productNameBasic = value; RaisePropertyChanged(); }
+           set { _productNameBasic = value; RaisePropertyChanged(); }
         }
 
         public ObservableCollection<Prod_ProcessItem> ProcessItem
@@ -154,25 +175,25 @@ namespace SicoreQMS.ViewModels
 
         }
 
-        void CreateProductSelection(ObservableCollection<SelectBasci> selectBascis)
+        public void CreateProductSelection()
         {
+
+            var newProductNameBasic = new ObservableCollection<SelectBasci>();
+          
             using (var context = new SicoreQMSEntities1())
             {
                 var productItem = context.Prod_Process
-                    .Where(b => b.ProdStatus == 0).ToList().OrderBy(x => x.CreateDate);
+                    .Where(b => b.ProdStatus == 0|| b.ProdStatus==5).ToList().OrderBy(x => x.CreateDate);
                 foreach (var item in productItem)
                 {
-                    selectBascis.Add(item.ProductSelect());
+                    ProductNameBasic.Add(item.ProductSelect());
                 }
             }
-         
-
+            //ProductNameBasic = newProductNameBasic;
         }
-
 
         void GetProcessList()
         {
-            ProcessItem.Clear();
             using (var context = new SicoreQMSEntities1())
             {
                 var allModel = context.Prod_ProcessItem.Where(b => b.ProdProcessId == ProdProcessId).ToList().OrderBy(x => x.ModelSort);
@@ -182,17 +203,17 @@ namespace SicoreQMS.ViewModels
 
                 }
             }
-               
-            
         }
 
         public DelegateCommand CommitBtnCommand { get; private set; }
 
 
-        public DelegateCommand<SelectBasci> HandelSelect
+        public DelegateCommand<string> HandelSelect
         {
             get;
             private set;
         }
+
+      
     }
 }

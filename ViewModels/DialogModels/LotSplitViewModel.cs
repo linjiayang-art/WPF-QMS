@@ -3,9 +3,12 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
+using SicoreQMS.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -20,7 +23,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         #region 属性
 
-  
+        public string NewId { get; set; } 
 
 
         private ObservableCollection<SpiltModel> _spiltList;
@@ -53,13 +56,13 @@ namespace SicoreQMS.ViewModels.DialogModels
 
 
 
-        private int _qty;
+        private int _splitQty;
 
 
-        public int Qty
+        public int SplitQty
         {
-            get { return _qty; }
-            set { SetProperty(ref _qty, value); }
+            get { return _splitQty; }
+            set { SetProperty(ref _splitQty, value); }
         }
 
 
@@ -67,11 +70,11 @@ namespace SicoreQMS.ViewModels.DialogModels
         public LotSplitViewModel()
         {
             Title = "拆批";
-            Qty = 0;
+            SplitQty = 0;
             BtnCommitSpilt = new DelegateCommand(SpiltLot);
-           
+
             SpiltList = new ObservableCollection<SpiltModel>();
-        
+
 
         }
 
@@ -79,25 +82,23 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         private void GetSpiltList()
         {
-            SpiltList.Add(new SpiltModel() { LotNo = "测试1", Qty = 2 });
-            SpiltList.Add(new SpiltModel() { LotNo = "测试2", Qty = 5 });
-            SpiltList.Add(new SpiltModel() { LotNo = "测试3", Qty = 8 });
-           
+            //SpiltList.Add(new SpiltModel() { LotNo = "测试1", Qty = 2 });
+            //SpiltList.Add(new SpiltModel() { LotNo = "测试2", Qty = 5 });
+            //SpiltList.Add(new SpiltModel() { LotNo = "测试3", Qty = 8 });
             using (var context = new SicoreQMSEntities1())
             {
                 var parentLot = context.ProdInfo.Find(Processes.ProdId);
 
                 List<string> targetIds = new List<string>();
 
-                var childernList = context.LotRelation.Where(s => s.ParentId == parentLot.Id).ToList();
-                if (childernList.Count==0 )
+                var childernList = context.LotRelation.Where(s => s.ParentId == parentLot.Id && s.RelationType == "spilt").ToList();
+                if (childernList.Count == 0)
                 {
                     return;
                 }
-
                 foreach (var item in childernList)
                 {
-                    targetIds.Add(item.LotId);
+                    targetIds.Add(item.ProdId);
                 }
                 var products = context.ProdInfo
                 .Where(p => targetIds.Contains(p.Id))
@@ -115,19 +116,157 @@ namespace SicoreQMS.ViewModels.DialogModels
         }
 
 
+
+
         private void SpiltLot()
         {
-            if (Qty > Processes.Qty)
+
+            if (SplitQty > Processes.Qty)
             {
                 MessageBox.Show("拆分数大于已有数量!");
                 return;
             }
-            using (var context=new SicoreQMSEntities1() )
-         
+            using (var context = new SicoreQMSEntities1())
+            {
+                var postCount = context.LotRelation.Where(p => p.ParentId == Processes.ProdId && p.RelationType == "spilt").Count();
+                string childernNumber = Processes.ProdLot;
+                if (postCount == 0)
+                {
+                    childernNumber += ".A";
 
+                }
+                if (postCount > 0)
+                {
+
+                    childernNumber += "." + Factory.ProcessNumberToLetter(postCount);
+                }
+                CreateSpiltInfo(childernNumber, SplitQty);
+            }
+
+            ButtonResult result = ButtonResult.None;
+            var parameters = new DialogParameters
+            {
+                { "NewId", this.NewId }
+            };
+            RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(result, parameters));
 
 
         }
+
+        public virtual void RaiseRequestClose(IDialogResult dialogResult)
+        {
+           
+            RequestClose.Invoke(dialogResult);
+        }
+
+        public List<Prod_ProcessModel> ProcessModels;
+
+
+        public void GetModels()
+        {
+
+            using (var dbConnt = new SicoreQMSEntities1())
+            {
+                var allModel = dbConnt.Prod_ProcessModel.Where(p => p.ModelName == "军品").OrderBy(x => x.ModelSort).ToList();
+                foreach (var item in allModel)
+                {
+                    ProcessModels.Add(item);
+
+                }
+            }
+
+        }
+
+        public void CreateSpiltInfo(string childNumber, int qty)
+        {
+
+            using (var context = new SicoreQMSEntities1())
+            {
+                //插入新批次
+                ProdInfo newProdInfo = new ProdInfo()
+                {
+
+                    Id = Guid.NewGuid().ToString(),
+                    ParentId = Processes.Id,
+                    ProdName = Processes.ProdName,
+                    ProdType = Processes.ProdType,
+                    ProdLot = childNumber,
+                    QualityLevel = Processes.QualityLevel,
+                    OrginQty = qty,
+                    Qty = qty,
+                };
+
+                context.ProdInfo.Add(newProdInfo);
+                context.SaveChanges();
+
+                //更新批次数据
+                ProdInfo parentProd = context.ProdInfo.Find(Processes.ProdId);
+
+                int nowQty = (int)(parentProd.Qty - qty);
+
+                parentProd.Qty = nowQty;
+                parentProd.ProdStatus = 4;
+                context.SaveChanges();
+                context.Database.ExecuteSqlCommand(
+                                                $" update dbo.Prod_ProcessItem set ItemStatus=5 where ProdProcessId='{Processes.Id}' ");
+                context.Database.ExecuteSqlCommand(
+                                                $" update dbo.Prod_Process set ProdStatus=5,Qty={nowQty} where Id='{Processes.Id}' ");
+
+
+
+                LotRelation relation = new LotRelation()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ProdId = newProdInfo.Id,
+                    ParentId = Processes.ProdId,
+                    RelationType = "spilt"
+
+                };
+                context.LotRelation.Add(relation);
+                context.SaveChanges();
+
+                Prod_Process newProcessInfo = new Prod_Process
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ProdId = newProdInfo.Id,
+                    ProdName = newProdInfo.ProdName,
+                    ProdLot = childNumber,
+                    Qty=qty,
+                    OrginQty= qty,
+                    QualityLevel = newProdInfo.QualityLevel,
+                    ProdType = newProdInfo.ProdType,
+                    ModelName = "军工",
+                };
+
+                // 将新的 ProdInfo 对象添加到数据库
+                context.Prod_Process.Add(newProcessInfo);
+                context.SaveChanges();
+                foreach (var item in ProcessModels)
+                {
+
+                    Prod_ProcessItem newProcessItem = new Prod_ProcessItem
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        ProdId = newProdInfo.Id,
+                        ProdProcessId = newProcessInfo.Id,
+                        ProdName = newProdInfo.ProdName,
+                        ProdType = newProdInfo.ProdType,
+                        Lot = childNumber,
+                        QualityLevel = newProdInfo.QualityLevel,
+                        ModelName = "军工",
+                    };
+                    newProcessItem.CopyModelData(item);
+                    context.Prod_ProcessItem.Add(newProcessItem);
+                }
+                context.SaveChanges();
+                MessageBox.Show("拆分成功");
+                NewId = newProcessInfo.Id;
+             
+            }
+
+           
+        }
+
 
         public string Title { get; set; }
 
@@ -158,6 +297,7 @@ namespace SicoreQMS.ViewModels.DialogModels
         public void OnDialogClosed()
         {
 
+
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
@@ -165,6 +305,8 @@ namespace SicoreQMS.ViewModels.DialogModels
             Id = parameters.GetValue<string>("Id");
             GetProdDetail(Id);
             GetSpiltList();
+            ProcessModels = new List<Prod_ProcessModel>();
+            GetModels();
         }
 
     }

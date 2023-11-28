@@ -11,7 +11,7 @@ namespace SicoreQMS.Common.Models.Operation
     {
         public ProdInfo()
         {
-          
+     
            // 设置默认值
            ProdStatus = 0;
            IsDeleted = false;
