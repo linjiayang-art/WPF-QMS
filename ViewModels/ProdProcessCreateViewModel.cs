@@ -122,7 +122,7 @@ namespace SicoreQMS.ViewModels
         }
         public void CommitBtn()
         {
-
+            
             using (var context = new SicoreQMSEntities1())
             {
                 Prod_Process newProcessInfo = new Prod_Process
@@ -133,7 +133,7 @@ namespace SicoreQMS.ViewModels
                     ProdLot = this.ProdLot,
                     QualityLevel = this.QualityLevel,
                     ProdType = this.ProdType,
-                    ModelName = "军工",
+                    ModelName = "军工",/*ad*/
                     Qty=this.Qty,
                     OrginQty=this.Qty,
                 };

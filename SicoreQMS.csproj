@@ -182,11 +182,13 @@
     <Compile Include="Common\Models\Basic\MenuBar.cs" />
     <Compile Include="Common\Models\Basic\SelectBasci.cs" />
     <Compile Include="Common\Models\Basic\SpiltModel.cs" />
+    <Compile Include="Common\Models\Interface\ISelectItem.cs" />
     <Compile Include="Common\Models\OperationModels\LotRelation.cs" />
     <Compile Include="Common\Models\OperationModels\Proc_ProcessItem.cs" />
     <Compile Include="Common\Models\OperationModels\ProdInfo.cs" />
     <Compile Include="Common\Models\OperationModels\Prod_Process.cs" />
     <Compile Include="Common\Models\OperationModels\Prod_ProcessModel.cs" />
+    <Compile Include="Common\Models\OperationModels\TestModelBasic.cs" />
     <Compile Include="Common\Models\Operation\LotRelation.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
@@ -220,6 +222,18 @@
     <Compile Include="Common\Models\Operation\Prod_ProcessModel.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Common\Models\Operation\TestModelBasic.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Models\Operation\TestModelItem.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Models\Operation\TestProcess.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Models\Operation\TestProcessItem.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\Factory.cs" />
     <Compile Include="Extensions\PrismManger.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
@@ -231,6 +245,8 @@
     <Compile Include="ViewModels\ProdModelMaintainViewModel.cs" />
     <Compile Include="ViewModels\ProdProcessCreateViewModel.cs" />
     <Compile Include="ViewModels\ProdProcessUpdateViewModel.cs" />
+    <Compile Include="ViewModels\TestCreateViewModel.cs" />
+    <Compile Include="ViewModels\TestProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\TestRequestViewModel.cs" />
     <Compile Include="ViewModels\ToDoViewModel.cs" />
     <Compile Include="Views\Dialogs\LotSplitView.xaml.cs">
@@ -260,6 +276,12 @@
     </Compile>
     <Compile Include="Views\ProdProcessUpdateView.xaml.cs">
       <DependentUpon>ProdProcessUpdateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TestCreateView.xaml.cs">
+      <DependentUpon>TestCreateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TestProcessUpdateView.xaml.cs">
+      <DependentUpon>TestProcessUpdateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TestRequestView.xaml.cs">
       <DependentUpon>TestRequestView.xaml</DependentUpon>
@@ -296,6 +318,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProdProcessUpdateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TestCreateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TestProcessUpdateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -391,9 +421,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\Models\Interface\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

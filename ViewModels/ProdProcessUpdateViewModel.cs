@@ -155,13 +155,9 @@ namespace SicoreQMS.ViewModels
 
                 }
                 GetProcessList();
-            
-          
-
           
         }
  
-
         public ObservableCollection<SelectBasci> ProductNameBasic
         {
             get { return _productNameBasic; }
@@ -194,6 +190,7 @@ namespace SicoreQMS.ViewModels
 
         void GetProcessList()
         {
+            ProcessItem.Clear();
             using (var context = new SicoreQMSEntities1())
             {
                 var allModel = context.Prod_ProcessItem.Where(b => b.ProdProcessId == ProdProcessId).ToList().OrderBy(x => x.ModelSort);

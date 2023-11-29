@@ -13,4 +13,11 @@ namespace SicoreQMS.Common.Models.Basic
         public string Label { get; set; }
         public string Value { get; set; }
     }
+
+    public class CheckBasic:BindableBase {
+
+        public string Label { get; set; }
+        public bool IsCheck { get; set; }
+    }
+
 }

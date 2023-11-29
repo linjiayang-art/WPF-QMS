@@ -24,6 +24,16 @@ namespace SicoreQMS.ViewModels.DialogModels
             IsEndEnabled = false;
         }
 
+
+
+        public virtual void RaiseRequestClose(IDialogResult dialogResult)
+        {
+
+            RequestClose.Invoke(dialogResult);
+        }
+
+
+
         private bool CanStartExecute()
         {
             return IsStartEnabled;
@@ -124,6 +134,9 @@ namespace SicoreQMS.ViewModels.DialogModels
                 prodProcessItem.IsComplete = true;
                context.SaveChanges();
             }
+            ButtonResult result = ButtonResult.None;
+
+            RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(result));
 
         }
         /// <summary>
@@ -138,6 +151,10 @@ namespace SicoreQMS.ViewModels.DialogModels
                 prodProcessItem.ItemStatus = 1;//状态变更为正在进行
                 context.SaveChanges();
             }
+
+            ButtonResult result = ButtonResult.None;
+
+            RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(result));
 
         }
 

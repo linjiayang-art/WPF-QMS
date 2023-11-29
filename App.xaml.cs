@@ -38,6 +38,10 @@ namespace SicoreQMS
             containerRegistry.RegisterDialog<LotSplitView, LotSplitViewModel>();
             containerRegistry.RegisterDialog<ProdProcessPrintView, ProdProcessPrintViewModel>();
             containerRegistry.RegisterDialog<ProcessUpdateView,ProcessUpdateViewModel>();
+
+            containerRegistry.RegisterForNavigation<TestProcessUpdateView, TestProcessUpdateViewModel>();
+            containerRegistry.RegisterForNavigation<TestCreateView, TestCreateViewModel>();
+
             containerRegistry.RegisterForNavigation<IndexView, IndexViewModel>();
             containerRegistry.RegisterForNavigation<ToDoView, ToDoViewModel>();
             

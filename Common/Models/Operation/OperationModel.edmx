@@ -114,6 +114,85 @@
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
+        <EntityType Name="TestModelBasic">
+          <Key>
+            <PropertyRef Name="ModelId" />
+          </Key>
+          <Property Name="ModelId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ModelName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Versoin" Type="nvarchar" MaxLength="50" />
+          <Property Name="Isdeleted" Type="bit" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TestModelItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ModelId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModelName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExperimentItemNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExperimentItemName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExperimentItemStandard" Type="nvarchar" MaxLength="255" />
+          <Property Name="ExperimentItemConditions" Type="nvarchar(max)" />
+          <Property Name="ExperimentItemWI" Type="nvarchar" MaxLength="255" />
+          <Property Name="ExperimentItemQty" Type="int" />
+          <Property Name="ExperimentItemNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExperimentItemRank" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateUserNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ModifyUserNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifyTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TestProcess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ModelTypeId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdLot" Type="nvarchar" MaxLength="50" />
+          <Property Name="Prodstandard" Type="nvarchar" MaxLength="255" />
+          <Property Name="TestLot" Type="nvarchar" MaxLength="50" />
+          <Property Name="TestType" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="Isdeletd" Type="bit" />
+        </EntityType>
+        <EntityType Name="TestProcessItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TestProcessId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModelId" Type="nvarchar" MaxLength="50" />
+          <Property Name="EquipmentNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="TextNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExperimentItemNo" Type="nchar" MaxLength="10" />
+          <Property Name="ExperimentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExperimentStandard" Type="nvarchar" MaxLength="255" />
+          <Property Name="ExperimentConditions" Type="nvarchar(max)" />
+          <Property Name="ExperimentQty" Type="int" />
+          <Property Name="ExperimentItemPassQty" Type="int" />
+          <Property Name="ExperimentNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExperimentUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExperimentBasis" Type="nvarchar" MaxLength="255" />
+          <Property Name="ExperimentType" Type="nvarchar" MaxLength="50" />
+          <Property Name="EstimatedCompletionTime" Type="datetime" />
+          <Property Name="ExperimentSatrtTime" Type="datetime" />
+          <Property Name="ExperimentEndTime" Type="datetime" />
+          <Property Name="ExperimentStatus" Type="int" />
+          <Property Name="Remark" Type="nvarchar(max)" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ModifyUserNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifyTime" Type="datetime" />
+        </EntityType>
         <EntityContainer Name="SicoreQMSModelStoreContainer">
           <EntitySet Name="LotRelation" EntityType="Self.LotRelation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_Process" EntityType="Self.Prod_Process" Schema="dbo" store:Type="Tables" />
@@ -121,6 +200,10 @@
           <EntitySet Name="Prod_ProcessItem" EntityType="Self.Prod_ProcessItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_ProcessModel" EntityType="Self.Prod_ProcessModel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProdInfo" EntityType="Self.ProdInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestModelBasic" EntityType="Self.TestModelBasic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestModelItem" EntityType="Self.TestModelItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestProcess" EntityType="Self.TestProcess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestProcessItem" EntityType="Self.TestProcessItem" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -133,6 +216,10 @@
           <EntitySet Name="Prod_Process" EntityType="SicoreQMSModel.Prod_Process" />
           <EntitySet Name="Prod_ProcessItem" EntityType="SicoreQMSModel.Prod_ProcessItem" />
           <EntitySet Name="LotRelation" EntityType="SicoreQMSModel.LotRelation" />
+          <EntitySet Name="TestModelBasic" EntityType="SicoreQMSModel.TestModelBasic" />
+          <EntitySet Name="TestModelItem" EntityType="SicoreQMSModel.TestModelItem" />
+          <EntitySet Name="TestProcess" EntityType="SicoreQMSModel.TestProcess" />
+          <EntitySet Name="TestProcessItem" EntityType="SicoreQMSModel.TestProcessItem" />
         </EntityContainer>
         <EntityType Name="Prod_ProcessModel">
           <Key>
@@ -242,6 +329,86 @@
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TestModelBasic">
+          <Key>
+            <PropertyRef Name="ModelId" />
+          </Key>
+          <Property Name="ModelId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Versoin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Isdeleted" Type="Boolean" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TestModelItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemStandard" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemConditions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemWI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemQty" Type="Int32" />
+          <Property Name="ExperimentItemNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemRank" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifyUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="TestProcess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelTypeId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prodstandard" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TestLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Isdeletd" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="TestProcessItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentNoId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EquipmentNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TextNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemNo" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ExperimentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentStandard" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentConditions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentQty" Type="Int32" />
+          <Property Name="ExperimentItemPassQty" Type="Int32" />
+          <Property Name="ExperimentNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentBasis" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EstimatedCompletionTime" Type="DateTime" Precision="3" />
+          <Property Name="ExperimentSatrtTime" Type="DateTime" Precision="3" />
+          <Property Name="ExperimentEndTime" Type="DateTime" Precision="3" />
+          <Property Name="ExperimentStatus" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifyUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="TestProcessId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -360,6 +527,89 @@
                 <ScalarProperty Name="RelationType" ColumnName="RelationType" />
                 <ScalarProperty Name="ChildrenId" ColumnName="ChildrenId" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestModelBasic">
+            <EntityTypeMapping TypeName="SicoreQMSModel.TestModelBasic">
+              <MappingFragment StoreEntitySet="TestModelBasic">
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Isdeleted" ColumnName="Isdeleted" />
+                <ScalarProperty Name="Versoin" ColumnName="Versoin" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestModelItem">
+            <EntityTypeMapping TypeName="SicoreQMSModel.TestModelItem">
+              <MappingFragment StoreEntitySet="TestModelItem">
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyUserNo" ColumnName="ModifyUserNo" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUserNo" ColumnName="CreateUserNo" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ExperimentItemRank" ColumnName="ExperimentItemRank" />
+                <ScalarProperty Name="ExperimentItemNumber" ColumnName="ExperimentItemNumber" />
+                <ScalarProperty Name="ExperimentItemQty" ColumnName="ExperimentItemQty" />
+                <ScalarProperty Name="ExperimentItemWI" ColumnName="ExperimentItemWI" />
+                <ScalarProperty Name="ExperimentItemConditions" ColumnName="ExperimentItemConditions" />
+                <ScalarProperty Name="ExperimentItemStandard" ColumnName="ExperimentItemStandard" />
+                <ScalarProperty Name="ExperimentItemName" ColumnName="ExperimentItemName" />
+                <ScalarProperty Name="ExperimentItemNo" ColumnName="ExperimentItemNo" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestProcess">
+            <EntityTypeMapping TypeName="SicoreQMSModel.TestProcess">
+              <MappingFragment StoreEntitySet="TestProcess">
+                <ScalarProperty Name="Isdeletd" ColumnName="Isdeletd" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ProdNumber" ColumnName="ProdNumber" />
+                <ScalarProperty Name="TestType" ColumnName="TestType" />
+                <ScalarProperty Name="TestLot" ColumnName="TestLot" />
+                <ScalarProperty Name="Prodstandard" ColumnName="Prodstandard" />
+                <ScalarProperty Name="ProdLot" ColumnName="ProdLot" />
+                <ScalarProperty Name="ProdType" ColumnName="ProdType" />
+                <ScalarProperty Name="ProdName" ColumnName="ProdName" />
+                <ScalarProperty Name="ModelTypeId" ColumnName="ModelTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestProcessItem">
+            <EntityTypeMapping TypeName="SicoreQMSModel.TestProcessItem">
+              <MappingFragment StoreEntitySet="TestProcessItem">
+                <ScalarProperty Name="TestProcessId" ColumnName="TestProcessId" />
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyUserNo" ColumnName="ModifyUserNo" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="ExperimentStatus" ColumnName="ExperimentStatus" />
+                <ScalarProperty Name="ExperimentEndTime" ColumnName="ExperimentEndTime" />
+                <ScalarProperty Name="ExperimentSatrtTime" ColumnName="ExperimentSatrtTime" />
+                <ScalarProperty Name="EstimatedCompletionTime" ColumnName="EstimatedCompletionTime" />
+                <ScalarProperty Name="ExperimentType" ColumnName="ExperimentType" />
+                <ScalarProperty Name="ExperimentBasis" ColumnName="ExperimentBasis" />
+                <ScalarProperty Name="ExperimentUser" ColumnName="ExperimentUser" />
+                <ScalarProperty Name="ExperimentNo" ColumnName="ExperimentNo" />
+                <ScalarProperty Name="ExperimentItemPassQty" ColumnName="ExperimentItemPassQty" />
+                <ScalarProperty Name="ExperimentQty" ColumnName="ExperimentQty" />
+                <ScalarProperty Name="ExperimentConditions" ColumnName="ExperimentConditions" />
+                <ScalarProperty Name="ExperimentStandard" ColumnName="ExperimentStandard" />
+                <ScalarProperty Name="ExperimentName" ColumnName="ExperimentName" />
+                <ScalarProperty Name="ExperimentItemNo" ColumnName="ExperimentItemNo" />
+                <ScalarProperty Name="TextNo" ColumnName="TextNo" />
+                <ScalarProperty Name="EquipmentNo" ColumnName="EquipmentNo" />
+                <ScalarProperty Name="ModelId" ColumnName="ModelId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

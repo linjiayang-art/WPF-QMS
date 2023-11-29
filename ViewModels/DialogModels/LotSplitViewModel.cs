@@ -23,7 +23,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         #region 属性
 
-        public string NewId { get; set; } 
+        public string NewId { get; set; }
 
 
         private ObservableCollection<SpiltModel> _spiltList;
@@ -150,12 +150,11 @@ namespace SicoreQMS.ViewModels.DialogModels
             };
             RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(result, parameters));
 
-
         }
 
         public virtual void RaiseRequestClose(IDialogResult dialogResult)
         {
-           
+
             RequestClose.Invoke(dialogResult);
         }
 
@@ -164,7 +163,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         public void GetModels()
         {
-
+            ProcessModels.Clear();
             using (var dbConnt = new SicoreQMSEntities1())
             {
                 var allModel = dbConnt.Prod_ProcessModel.Where(p => p.ModelName == "军品").OrderBy(x => x.ModelSort).ToList();
@@ -212,8 +211,6 @@ namespace SicoreQMS.ViewModels.DialogModels
                 context.Database.ExecuteSqlCommand(
                                                 $" update dbo.Prod_Process set ProdStatus=5,Qty={nowQty} where Id='{Processes.Id}' ");
 
-
-
                 LotRelation relation = new LotRelation()
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -231,8 +228,8 @@ namespace SicoreQMS.ViewModels.DialogModels
                     ProdId = newProdInfo.Id,
                     ProdName = newProdInfo.ProdName,
                     ProdLot = childNumber,
-                    Qty=qty,
-                    OrginQty= qty,
+                    Qty = qty,
+                    OrginQty = qty,
                     QualityLevel = newProdInfo.QualityLevel,
                     ProdType = newProdInfo.ProdType,
                     ModelName = "军工",
@@ -241,6 +238,11 @@ namespace SicoreQMS.ViewModels.DialogModels
                 // 将新的 ProdInfo 对象添加到数据库
                 context.Prod_Process.Add(newProcessInfo);
                 context.SaveChanges();
+
+                var isCompleteCount = context.Prod_ProcessItem.Where(i=>i.IsComplete==true && i.ProdProcessId==Processes.Id).Count();
+
+               
+
                 foreach (var item in ProcessModels)
                 {
 
@@ -254,17 +256,27 @@ namespace SicoreQMS.ViewModels.DialogModels
                         Lot = childNumber,
                         QualityLevel = newProdInfo.QualityLevel,
                         ModelName = "军工",
+                        
+
+
                     };
+                    if (isCompleteCount>0)
+                    {
+                        newProcessItem.IsComplete = true;
+                        newProcessItem.ItemStatus = 2;
+                        isCompleteCount--;
+                    }
+
                     newProcessItem.CopyModelData(item);
                     context.Prod_ProcessItem.Add(newProcessItem);
                 }
                 context.SaveChanges();
                 MessageBox.Show("拆分成功");
                 NewId = newProcessInfo.Id;
-             
+
             }
 
-           
+
         }
 
 
