@@ -1,6 +1,8 @@
 ﻿using Prism.DryIoc;
 using Prism.Ioc;
 using SicoreQMS.Common;
+using SicoreQMS.Common.Models.Interface;
+using SicoreQMS.Common.Server;
 using SicoreQMS.ViewModels;
 using SicoreQMS.ViewModels.DialogModels;
 using SicoreQMS.ViewModels.PrintModels;
@@ -34,13 +36,27 @@ namespace SicoreQMS
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+
+
             containerRegistry.RegisterForNavigation<ProdProcessPrintView, ProdProcessPrintViewModel>();
+
+
+            containerRegistry.RegisterDialog<TestProcessItemUpdateView, TestProcessItemUpdateViewModel>();
+
             containerRegistry.RegisterDialog<LotSplitView, LotSplitViewModel>();
             containerRegistry.RegisterDialog<ProdProcessPrintView, ProdProcessPrintViewModel>();
+
             containerRegistry.RegisterDialog<ProcessUpdateView,ProcessUpdateViewModel>();
+            //containerRegistry.RegisterForNavigation<ProcessUpdateView, ProcessUpdateViewModel>();
+
+            //containerRegistry.Register<IDialogHostService, DialogHostService>();
+            containerRegistry.RegisterForNavigation<TestProcessUpdateView, TestProcessUpdateViewModel>();
+         
 
             containerRegistry.RegisterForNavigation<TestProcessUpdateView, TestProcessUpdateViewModel>();
+
             containerRegistry.RegisterForNavigation<TestCreateView, TestCreateViewModel>();
+
 
             containerRegistry.RegisterForNavigation<IndexView, IndexViewModel>();
             containerRegistry.RegisterForNavigation<ToDoView, ToDoViewModel>();

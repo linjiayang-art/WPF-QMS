@@ -23,10 +23,10 @@ namespace SicoreQMS.Common.Models.Operation
         }
 
 
-        public SelectBasci ProductSelect()
+        public SelectBasic ProductSelect()
         {
             string label = $" 产品型号: {ProdType} 批次号: {ProdLot} 数量: {Qty}";
-            return new SelectBasci { Label = label, Value = Id };
+            return new SelectBasic { Label = label, Value = Id };
         }
 
 

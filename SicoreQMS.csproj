@@ -179,16 +179,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\IConfigureService.cs" />
+    <Compile Include="Common\Interface\IDialogHostAware.cs" />
     <Compile Include="Common\Models\Basic\MenuBar.cs" />
-    <Compile Include="Common\Models\Basic\SelectBasci.cs" />
+    <Compile Include="Common\Models\Basic\SelectBasic.cs" />
     <Compile Include="Common\Models\Basic\SpiltModel.cs" />
-    <Compile Include="Common\Models\Interface\ISelectItem.cs" />
+    <Compile Include="Common\Interface\IDialogHostService.cs" />
+    <Compile Include="Common\Interface\ISelectItem.cs" />
     <Compile Include="Common\Models\OperationModels\LotRelation.cs" />
     <Compile Include="Common\Models\OperationModels\Proc_ProcessItem.cs" />
     <Compile Include="Common\Models\OperationModels\ProdInfo.cs" />
     <Compile Include="Common\Models\OperationModels\Prod_Process.cs" />
     <Compile Include="Common\Models\OperationModels\Prod_ProcessModel.cs" />
     <Compile Include="Common\Models\OperationModels\TestModelBasic.cs" />
+    <Compile Include="Common\Models\OperationModels\TestProcess.cs" />
+    <Compile Include="Common\Models\OperationModels\TestProcessItem.cs" />
     <Compile Include="Common\Models\Operation\LotRelation.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
@@ -234,11 +238,14 @@
     <Compile Include="Common\Models\Operation\TestProcessItem.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Common\Server\DialogHostService.cs" />
     <Compile Include="Extensions\Factory.cs" />
     <Compile Include="Extensions\PrismManger.cs" />
+    <Compile Include="Service\ProdBasicService.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewModels\DialogModels\LotSplitViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />
+    <Compile Include="ViewModels\DialogModels\TestProcessItemUpdateViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PrintModels\ProdProcessPrintViewModel.cs" />
@@ -254,6 +261,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\ProcessUpdateView.xaml.cs">
       <DependentUpon>ProcessUpdateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\TestProcessItemUpdateView.xaml.cs">
+      <DependentUpon>TestProcessItemUpdateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\IndexView.xaml.cs">
       <DependentUpon>IndexView.xaml</DependentUpon>
@@ -294,6 +304,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\ProcessUpdateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\TestProcessItemUpdateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

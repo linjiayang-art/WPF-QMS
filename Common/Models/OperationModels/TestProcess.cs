@@ -8,15 +8,21 @@ using System.Threading.Tasks;
 
 namespace SicoreQMS.Common.Models.Operation
 {
-    public partial class TestModelBasic : ISelectItem
+    public partial class TestProcess: ISelectItem
     {
+        public TestProcess()
+        {
+            CompleteStatus = false;
+        }
+
+     
         public SelectBasic GetSelection()
         {
-            return new SelectBasic()
-            {
-                Label=ModelName,
-                Value=ModelId
-            };
+           return new SelectBasic()
+           {
+               Label=$"{ProdName}|{ProdType}|{ProdLot}|{Prodstandard} ",
+               Value=Id
+           };
         }
     }
 }

@@ -21,11 +21,11 @@ namespace SicoreQMS.ViewModels
         
         public ProdProcessUpdateViewModel(IDialogService dialog)
         {
-            ProductNameBasic = new ObservableCollection<SelectBasci>();
+            ProductNameBasic = new ObservableCollection<SelectBasic>();
 
             UpdateProgressCommand =new DelegateCommand<Prod_ProcessItem>(UpdateProgress);
 
-            SplitLotCommand = new DelegateCommand<SelectBasci>(SpiltLot);
+            SplitLotCommand = new DelegateCommand<SelectBasic>(SpiltLot);
 
             CreateProductSelection();
 
@@ -37,7 +37,7 @@ namespace SicoreQMS.ViewModels
 
         }
 
-        private void SpiltLot(SelectBasci obj)
+        private void SpiltLot(SelectBasic obj)
         {
             if (string.IsNullOrEmpty(obj.Value))
             {
@@ -83,12 +83,12 @@ namespace SicoreQMS.ViewModels
 
         public bool KeepAlive => false;
         #region 属性
-        private ObservableCollection<SelectBasci> _productNameBasic;
+        private ObservableCollection<SelectBasic> _productNameBasic;
         private readonly IDialogService dialog;
         private ObservableCollection<Prod_ProcessItem> _processItem;
 
        public DelegateCommand<Prod_ProcessItem> UpdateProgressCommand { get; set; }
-        public DelegateCommand<SelectBasci> SplitLotCommand { get; set; }
+        public DelegateCommand<SelectBasic> SplitLotCommand { get; set; }
         private string _prodLot;
         private string _prodName;
         private string _qualitylevel;
@@ -158,7 +158,7 @@ namespace SicoreQMS.ViewModels
           
         }
  
-        public ObservableCollection<SelectBasci> ProductNameBasic
+        public ObservableCollection<SelectBasic> ProductNameBasic
         {
             get { return _productNameBasic; }
            set { _productNameBasic = value; RaisePropertyChanged(); }
@@ -174,7 +174,7 @@ namespace SicoreQMS.ViewModels
         public void CreateProductSelection()
         {
 
-            var newProductNameBasic = new ObservableCollection<SelectBasci>();
+            var newProductNameBasic = new ObservableCollection<SelectBasic>();
           
             using (var context = new SicoreQMSEntities1())
             {

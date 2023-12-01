@@ -9,7 +9,7 @@ namespace SicoreQMS.Common.Models.Interface
 {
     public interface ISelectItem
     {
-         SelectBasci GetSelection();
+         SelectBasic GetSelection();
 
     }
 }

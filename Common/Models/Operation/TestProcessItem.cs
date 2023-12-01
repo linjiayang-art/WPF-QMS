@@ -15,7 +15,7 @@ namespace SicoreQMS.Common.Models.Operation
     public partial class TestProcessItem
     {
         public string Id { get; set; }
-
+        public string TestProcessId { get; set; }
         public string ModelId { get; set; }
         public string EquipmentNo { get; set; }
         public string TextNo { get; set; }
@@ -39,6 +39,5 @@ namespace SicoreQMS.Common.Models.Operation
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string ModifyUserNo { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
-        public string TestProcessId { get; set; }
     }
 }

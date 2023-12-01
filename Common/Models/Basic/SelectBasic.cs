@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SicoreQMS.Common.Models.Basic
 {
-    public class SelectBasci:BindableBase
+    public class SelectBasic:BindableBase
     {
 
         public string Label { get; set; }

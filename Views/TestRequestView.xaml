@@ -10,64 +10,103 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    Background="White"
     FontFamily="微软雅黑"
     mc:Ignorable="d">
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
-            <TextBox
-                MinWidth="100"
-                MaxWidth="5000"
-                Margin="10"
-                HorizontalContentAlignment="Left"
-                materialDesign:HintAssist.HelperText="产品名称"
-                materialDesign:HintAssist.Hint="产品名称"
-                materialDesign:TextFieldAssist.HasClearButton="True"
-                BorderThickness="1"
-                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                Text="{Binding ProdName}" />
-            <TextBox
-                MinWidth="100"
-                MaxWidth="5000"
-                Margin="10"
-                HorizontalContentAlignment="Left"
-                materialDesign:HintAssist.HelperText="产品型号"
-                materialDesign:HintAssist.Hint="产品型号"
-                materialDesign:TextFieldAssist.HasClearButton="True"
-                BorderThickness="1"
-                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                Text="{Binding ProdType}" />
-            <TextBox
-                MinWidth="100"
-                MaxWidth="5000"
-                Margin="10"
-                HorizontalContentAlignment="Left"
-                materialDesign:HintAssist.HelperText="生产批次/子批"
-                materialDesign:HintAssist.Hint="生产批次/子批"
-                materialDesign:TextFieldAssist.HasClearButton="True"
-                BorderThickness="1"
-                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                Text="{Binding ProdLot}" />
+        <TextBlock
+            Padding="10,10"
+            FontSize="20"
+            FontWeight="Bold"
+            Text="试验任务需求单" />
 
-            <TextBox
-                MinWidth="100"
-                MaxWidth="5000"
+        <Grid Grid.Row="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
                 Margin="10"
-                HorizontalContentAlignment="Left"
-                materialDesign:HintAssist.HelperText="数量"
-                materialDesign:HintAssist.Hint="数量"
-                materialDesign:TextFieldAssist.HasClearButton="True"
-                BorderThickness="1"
-                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                Text="{Binding Qty}" />
+                materialDesign:HintAssist.HelperText="试验类别"
+                materialDesign:HintAssist.Hint="试验类别">
+                <ItemsControl x:Name="cbt" ItemsSource="{Binding TestTypes}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Command="{Binding DataContext.CheckCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                CommandParameter="{Binding Label}"
+                                Content="{Binding Label}"
+                                IsChecked="{Binding IsCheck}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </TextBlock>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBox
+                    MinWidth="100"
+                    MaxWidth="5000"
+                    Margin="10"
+                    HorizontalContentAlignment="Left"
+                    materialDesign:HintAssist.HelperText="产品名称"
+                    materialDesign:HintAssist.Hint="产品名称"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    BorderThickness="1"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ProdName}" />
+                <TextBox
+                    MinWidth="100"
+                    MaxWidth="5000"
+                    Margin="10"
+                    HorizontalContentAlignment="Left"
+                    materialDesign:HintAssist.HelperText="产品型号"
+                    materialDesign:HintAssist.Hint="产品型号"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    BorderThickness="1"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ProdType}" />
+                <TextBox
+                    MinWidth="100"
+                    MaxWidth="5000"
+                    Margin="10"
+                    HorizontalContentAlignment="Left"
+                    materialDesign:HintAssist.HelperText="生产批次/子批"
+                    materialDesign:HintAssist.Hint="生产批次/子批"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    BorderThickness="1"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ProdLot}" />
 
-            <Button Command="{Binding BtnSumbit}" Content="提交申请" />
+                <TextBox
+                    MinWidth="100"
+                    MaxWidth="5000"
+                    Margin="10"
+                    HorizontalContentAlignment="Left"
+                    materialDesign:HintAssist.HelperText="数量"
+                    materialDesign:HintAssist.Hint="数量"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    BorderThickness="1"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding Qty}" />
+
+                <Button Command="{Binding BtnSumbit}" Content="提交申请" />
 
 
-        </StackPanel>
+            </StackPanel>
+        </Grid>
+
+
 
 
     </Grid>

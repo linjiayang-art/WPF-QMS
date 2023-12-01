@@ -159,6 +159,7 @@
           <Property Name="TestLot" Type="nvarchar" MaxLength="50" />
           <Property Name="TestType" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="CompleteStatus" Type="bit" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
           <Property Name="Isdeletd" Type="bit" />
@@ -217,8 +218,8 @@
           <EntitySet Name="Prod_ProcessItem" EntityType="SicoreQMSModel.Prod_ProcessItem" />
           <EntitySet Name="LotRelation" EntityType="SicoreQMSModel.LotRelation" />
           <EntitySet Name="TestModelBasic" EntityType="SicoreQMSModel.TestModelBasic" />
-          <EntitySet Name="TestModelItem" EntityType="SicoreQMSModel.TestModelItem" />
           <EntitySet Name="TestProcess" EntityType="SicoreQMSModel.TestProcess" />
+          <EntitySet Name="TestModelItem" EntityType="SicoreQMSModel.TestModelItem" />
           <EntitySet Name="TestProcessItem" EntityType="SicoreQMSModel.TestProcessItem" />
         </EntityContainer>
         <EntityType Name="Prod_ProcessModel">
@@ -341,6 +342,24 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="TestProcess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelTypeId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prodstandard" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TestLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Isdeletd" Type="Boolean" />
+          <Property Name="CompleteStatus" Type="Boolean" />
+        </EntityType>
         <EntityType Name="TestModelItem">
           <Key>
             <PropertyRef Name="Id" />
@@ -362,29 +381,12 @@
           <Property Name="ModifyUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="TestProcess">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModelTypeId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProdType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProdLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Prodstandard" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="TestLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProdNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Isdeletd" Type="Boolean" />
-        </EntityType>
         <EntityType Name="TestProcessItem">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ExperimentNoId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TestProcessId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModelId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EquipmentNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TextNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -408,7 +410,6 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="ModifyUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="TestProcessId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -543,6 +544,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="TestProcess">
+            <EntityTypeMapping TypeName="SicoreQMSModel.TestProcess">
+              <MappingFragment StoreEntitySet="TestProcess">
+                <ScalarProperty Name="CompleteStatus" ColumnName="CompleteStatus" />
+                <ScalarProperty Name="Isdeletd" ColumnName="Isdeletd" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ProdNumber" ColumnName="ProdNumber" />
+                <ScalarProperty Name="TestType" ColumnName="TestType" />
+                <ScalarProperty Name="TestLot" ColumnName="TestLot" />
+                <ScalarProperty Name="Prodstandard" ColumnName="Prodstandard" />
+                <ScalarProperty Name="ProdLot" ColumnName="ProdLot" />
+                <ScalarProperty Name="ProdType" ColumnName="ProdType" />
+                <ScalarProperty Name="ProdName" ColumnName="ProdName" />
+                <ScalarProperty Name="ModelTypeId" ColumnName="ModelTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TestModelItem">
             <EntityTypeMapping TypeName="SicoreQMSModel.TestModelItem">
               <MappingFragment StoreEntitySet="TestModelItem">
@@ -565,28 +585,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TestProcess">
-            <EntityTypeMapping TypeName="SicoreQMSModel.TestProcess">
-              <MappingFragment StoreEntitySet="TestProcess">
-                <ScalarProperty Name="Isdeletd" ColumnName="Isdeletd" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="ProdNumber" ColumnName="ProdNumber" />
-                <ScalarProperty Name="TestType" ColumnName="TestType" />
-                <ScalarProperty Name="TestLot" ColumnName="TestLot" />
-                <ScalarProperty Name="Prodstandard" ColumnName="Prodstandard" />
-                <ScalarProperty Name="ProdLot" ColumnName="ProdLot" />
-                <ScalarProperty Name="ProdType" ColumnName="ProdType" />
-                <ScalarProperty Name="ProdName" ColumnName="ProdName" />
-                <ScalarProperty Name="ModelTypeId" ColumnName="ModelTypeId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TestProcessItem">
             <EntityTypeMapping TypeName="SicoreQMSModel.TestProcessItem">
               <MappingFragment StoreEntitySet="TestProcessItem">
-                <ScalarProperty Name="TestProcessId" ColumnName="TestProcessId" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
                 <ScalarProperty Name="ModifyUserNo" ColumnName="ModifyUserNo" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -610,6 +611,7 @@
                 <ScalarProperty Name="TextNo" ColumnName="TextNo" />
                 <ScalarProperty Name="EquipmentNo" ColumnName="EquipmentNo" />
                 <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+                <ScalarProperty Name="TestProcessId" ColumnName="TestProcessId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

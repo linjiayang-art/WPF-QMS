@@ -19,9 +19,9 @@ namespace SicoreQMS.Common.Models.Operation
 
         }
 
-        public SelectBasci ProductSelect()
+        public SelectBasic ProductSelect()
         {
-            return new SelectBasci { Label= ProdType ,Value=Id  };
+            return new SelectBasic { Label= ProdType ,Value=Id  };
         }
 
         public SpiltModel GetSpiltModel()

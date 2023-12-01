@@ -19,12 +19,17 @@ namespace SicoreQMS.ViewModels
         public TestCreateViewModel()
         {
             TestTypes = new ObservableCollection<CheckBasic>();
-            ModelType = new ObservableCollection<SelectBasci>();
+            ModelType = new ObservableCollection<SelectBasic>();
             HandelSelect = new DelegateCommand<string>(GetTemplate);
             CheckCommand = new DelegateCommand<string>(ExcuteCheckCommand);
             TestModelItem = new ObservableCollection<TestModelItem>();
             OnSumbit = new DelegateCommand<string>(CreateTestProcess);
             CreateData();
+
+
+            ProdName = "放大器";
+            ProdLot = "cksfd";
+            ProdType = "siv0056-j";
 
 
 
@@ -67,13 +72,20 @@ namespace SicoreQMS.ViewModels
                 {
                     TestProcessItem testProcessitem = new TestProcessItem()
                     {
+                        Id = Guid.NewGuid().ToString(),
                         TestProcessId = testProcess.Id,
-
+                        ModelId = item.Id,
+                        ExperimentItemNo = item.ExperimentItemNo,
+                        ExperimentName = item.ExperimentItemName,
+                        ExperimentStandard = item.ExperimentItemStandard,
+                        ExperimentConditions = item.ExperimentItemConditions,
+                        ExperimentNo = item.ExperimentItemNumber,
+                        ExperimentQty = item.ExperimentItemQty,
                     };
-
+                    context.TestProcessItem.Add(testProcessitem);
                 }
 
-
+                context.SaveChanges();
 
             }
             return;
@@ -113,7 +125,7 @@ namespace SicoreQMS.ViewModels
 
         public DelegateCommand<string> HandelSelect { get; set; }
 
-        private ObservableCollection<SelectBasci> _modelType;
+        private ObservableCollection<SelectBasic> _modelType;
 
         private ObservableCollection<TestModelItem> _testModelItem;
 
@@ -175,7 +187,7 @@ namespace SicoreQMS.ViewModels
         }
 
 
-        public ObservableCollection<SelectBasci> ModelType
+        public ObservableCollection<SelectBasic> ModelType
         {
             get { return _modelType; }
             set { _modelType = value; }
@@ -201,6 +213,7 @@ namespace SicoreQMS.ViewModels
             using (var context = new SicoreQMSEntities1())
             {
                 var selectItem = context.TestModelBasic.ToList();
+
                 foreach (var item in selectItem)
                 {
                     ModelType.Add(item.GetSelection());

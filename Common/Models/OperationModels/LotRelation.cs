@@ -11,7 +11,7 @@ namespace SicoreQMS.Common.Models.Operation
     {
         public LotRelation()
         {
-            
+          
         }
 
 

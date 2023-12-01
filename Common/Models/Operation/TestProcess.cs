@@ -26,5 +26,6 @@ namespace SicoreQMS.Common.Models.Operation
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<bool> Isdeletd { get; set; }
+        public Nullable<bool> CompleteStatus { get; set; }
     }
 }

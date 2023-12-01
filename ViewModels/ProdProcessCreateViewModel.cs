@@ -21,7 +21,7 @@ namespace SicoreQMS.ViewModels
     public class ProdProcessCreateViewModel : BindableBase, IRegionMemberLifetime
     {
         #region 属性
-        private ObservableCollection<SelectBasci> _productNameBasic;
+        private ObservableCollection<SelectBasic> _productNameBasic;
         private ObservableCollection<Prod_ProcessModel> _processModel;
 
 
@@ -66,7 +66,7 @@ namespace SicoreQMS.ViewModels
         public DelegateCommand CommitBtnCommand { get; private set; }
 
 
-        public DelegateCommand<SelectBasci> HandelSelect
+        public DelegateCommand<SelectBasic> HandelSelect
         {
             get;
             private set;
@@ -74,11 +74,11 @@ namespace SicoreQMS.ViewModels
 
         public ProdProcessCreateViewModel()
         {
-            ProductNameBasic = new ObservableCollection<SelectBasci>();
+            ProductNameBasic = new ObservableCollection<SelectBasic>();
             CreateProductSelection(ProductNameBasic);
             ProcessModel = new ObservableCollection<Prod_ProcessModel>();
 
-            HandelSelect = new DelegateCommand<SelectBasci>(GetInfo);
+            HandelSelect = new DelegateCommand<SelectBasic>(GetInfo);
 
             CommitBtnCommand = new DelegateCommand(CommitBtn);
             QualityLevel = "军品";
@@ -95,7 +95,7 @@ namespace SicoreQMS.ViewModels
 
         }
 
-        private void GetInfo(SelectBasci parameter)
+        private void GetInfo(SelectBasic parameter)
         {
             if (parameter is null)
             {
@@ -169,7 +169,7 @@ namespace SicoreQMS.ViewModels
         }
 
 
-        public ObservableCollection<SelectBasci> ProductNameBasic
+        public ObservableCollection<SelectBasic> ProductNameBasic
         {
             get { return _productNameBasic; }
             private set { _productNameBasic = value; RaisePropertyChanged(); }
@@ -184,7 +184,7 @@ namespace SicoreQMS.ViewModels
 
         public bool KeepAlive => false;
 
-        void CreateProductSelection(ObservableCollection<SelectBasci> selectBascis)
+        void CreateProductSelection(ObservableCollection<SelectBasic> selectBascis)
         {
             using (var context = new SicoreQMSEntities1())
             {

@@ -86,7 +86,7 @@ namespace SicoreQMS.ViewModels
         public void Configure()
         {
             CreateMenuBar();
-            regionManager.Regions[PrismManger.MainViewRegionName].RequestNavigate("TestCreateView");
+            regionManager.Regions[PrismManger.MainViewRegionName].RequestNavigate("TestProcessUpdateView");
         }
     }
 }
