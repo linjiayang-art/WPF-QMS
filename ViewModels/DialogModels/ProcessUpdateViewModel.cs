@@ -1,7 +1,11 @@
-﻿using Prism.Commands;
+﻿using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
+using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using SicoreQMS.Common.Models.Operation;
+using SicoreQMS.Extensions;
+using SicoreQMS.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,13 +19,14 @@ namespace SicoreQMS.ViewModels.DialogModels
 {
     public class ProcessUpdateViewModel : BindableBase, IDialogAware
     {
-        public ProcessUpdateViewModel()
+        public ProcessUpdateViewModel(IEventAggregator aggregator)
         {
             Title = "生产流程卡进度更新";
             BtnStart = new DelegateCommand(ProcessStart, CanStartExecute);
             BtnEnd = new DelegateCommand(ProcessEnd, CanEndExecute);
             IsStartEnabled = false;
             IsEndEnabled = false;
+            this.aggregator = aggregator;
         }
 
 
@@ -52,6 +57,25 @@ namespace SicoreQMS.ViewModels.DialogModels
         #region  属性
 
 
+        private string _beginRemark;
+
+        public string BeginRemark
+        {
+            get { return _beginRemark; }
+            set { SetProperty(ref _beginRemark, value); }
+        }
+
+
+        private string _endRemark;
+
+        public string EndRemark
+        {
+            get { return _endRemark; }
+            set { SetProperty(ref _endRemark, value); }
+        }
+
+
+
 
 
         private bool _isStartEnabled;
@@ -78,6 +102,7 @@ namespace SicoreQMS.ViewModels.DialogModels
             }
         }
 
+        private IEventAggregator aggregator;
         private string _id;
         public string Id
         {
@@ -113,6 +138,7 @@ namespace SicoreQMS.ViewModels.DialogModels
             set { SetProperty(ref _inputQty, value); }
         }
         private string _prodStandard;
+       
 
         public string ProdStandard
         {
@@ -125,18 +151,19 @@ namespace SicoreQMS.ViewModels.DialogModels
         private void ProcessEnd()
         {
 
+            var result = ProdProcessService.EndProcess(id: Id, qty: OutQty,remark:EndRemark);
 
-            using (var context = new SicoreQMSEntities1())
+            if (result.ResultStatus == false)
             {
-                var prodProcessItem = context.Prod_ProcessItem.SingleOrDefault(b => b.Id == Id);
-                prodProcessItem.OutQty = OutQty;
-                prodProcessItem.ItemStatus = 2;//状态变更为已完结
-                prodProcessItem.IsComplete = true;
-               context.SaveChanges();
+                aggregator.SendMessage(result.ResultMessage);
+                return;
             }
-            ButtonResult result = ButtonResult.None;
 
-            RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(result));
+            ButtonResult btnResult = ButtonResult.None;
+
+            RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(btnResult));
+
+            aggregator.SendMessage(result.ResultMessage);
 
         }
         /// <summary>
@@ -144,18 +171,19 @@ namespace SicoreQMS.ViewModels.DialogModels
         /// </summary>
         private void ProcessStart()  
         {
-            using (var context = new SicoreQMSEntities1())
+ 
+            var result=  ProdProcessService.BeginProcess(id: Id, qty: InputQty,remark:BeginRemark);
+            if (result.ResultStatus==false)
             {
-                var prodProcessItem = context.Prod_ProcessItem.SingleOrDefault(b => b.Id == Id);
-                prodProcessItem.InputQty = InputQty;
-                prodProcessItem.ItemStatus = 1;//状态变更为正在进行
-                context.SaveChanges();
+                aggregator.SendMessage(result.ResultMessage);
+                return;
             }
 
-            ButtonResult result = ButtonResult.None;
+            ButtonResult btnResult = ButtonResult.None;
 
-            RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(result));
+            RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(btnResult));
 
+            aggregator.SendMessage(result.ResultMessage);
         }
 
         public string Title { get; set; }

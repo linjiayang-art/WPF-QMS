@@ -18,7 +18,7 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     AllowsTransparency="True"
     Background="{DynamicResource MaterialDesignPaper}"
-    FontFamily="{materialDesign:MaterialDesignFont}"
+    FontFamily="微软雅黑"
     TextElement.FontSize="14"
     TextElement.FontWeight="Regular"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -28,9 +28,7 @@
     <materialDesign:DialogHost
         x:Name="Root"
         DialogTheme="Inherit"
-        Identifier="Root"
-        SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-
+        Identifier="Root">
         <materialDesign:DrawerHost x:Name="drawerHost" IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
             <materialDesign:DrawerHost.LeftDrawerContent>
                 <DockPanel MinWidth="220">
@@ -52,30 +50,40 @@
                             Margin="10,0"
                             HorizontalAlignment="Center"
                             Text="TEST" />
-
-                        <ListBox
-                            x:Name="menuBar"
-                            ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
-                            ItemsSource="{Binding MenuBars}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="{Binding ElementName=menuBar, Path=SelectedItem}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Background="Transparent" Orientation="Horizontal">
-                                        <materialDesign:PackIcon Margin="15,0" Kind="{Binding Icon}" />
-                                        <TextBlock Margin="10,0" Text="{Binding Title}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
                     </StackPanel>
+                    <ListBox
+                        x:Name="menuBar"
+                        ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
+                        ItemsSource="{Binding MenuBars}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="{Binding ElementName=menuBar, Path=SelectedItem}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Background="Transparent" Orientation="Horizontal">
+                                    <materialDesign:PackIcon Margin="15,0" Kind="{Binding Icon}" />
+                                    <TextBlock Margin="10,0" Text="{Binding Title}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
                 </DockPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>
 
-            <DockPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <materialDesign:Snackbar
+                    x:Name="Snackbar"
+                    Panel.ZIndex="1"
+                    MessageQueue="{materialDesign:MessageQueue}" />
+
                 <materialDesign:ColorZone
                     x:Name="colorZone"
                     Padding="16"
@@ -145,9 +153,15 @@
                         </StackPanel>
                     </DockPanel>
                 </materialDesign:ColorZone>
-                <ContentControl prism:RegionManager.RegionName="{x:Static ext:PrismManger.MainViewRegionName}" AllowDrop="False" />
+                <ContentControl
+                    Grid.Row="1"
+                    prism:RegionManager.RegionName="{x:Static ext:PrismManger.MainViewRegionName}"
+                    AllowDrop="False" />
+            </Grid>
 
-            </DockPanel>
+
+
+
         </materialDesign:DrawerHost>
     </materialDesign:DialogHost>
 </Window>

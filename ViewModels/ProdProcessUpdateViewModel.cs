@@ -96,11 +96,16 @@ namespace SicoreQMS.ViewModels
    
 
 
+
+
         private string _prodType;
 
         private string ProdProcessId { get; set; }
 
-        
+
+
+
+
 
         public string QualityLevel
         {
@@ -179,7 +184,7 @@ namespace SicoreQMS.ViewModels
             using (var context = new SicoreQMSEntities1())
             {
                 var productItem = context.Prod_Process
-                    .Where(b => b.ProdStatus == 0|| b.ProdStatus==5).ToList().OrderBy(x => x.CreateDate);
+                    .Where(b => b.ProdStatus == 0|| b.ProdStatus==5 || b.ProdStatus == 1).ToList().OrderBy(x => x.CreateDate);
                 foreach (var item in productItem)
                 {
                     ProductNameBasic.Add(item.ProductSelect());

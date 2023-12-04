@@ -9,74 +9,77 @@ using System.Windows;
 using SicoreQMS.Common.Models.Operation;
 using System.Diagnostics;
 using System.Data.Entity.Validation;
+using System.Collections.ObjectModel;
+using SicoreQMS.Common.Models.Basic;
+using SicoreQMS.Service;
+using Prism.Events;
+using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
+using SicoreQMS.Extensions;
 
 namespace SicoreQMS.ViewModels
 {
-    public class TestRequestViewModel:BindableBase
+    public class TestRequestViewModel : BindableBase
     {
 
-       public DelegateCommand BtnSumbit { get; set; }
+        public DelegateCommand BtnSumbit { get; set; }
 
-  
-        public TestRequestViewModel()
+
+
+
+        public TestRequestViewModel(IEventAggregator aggregator)
         {
             BtnSumbit = new DelegateCommand(OnSumbit);
+            TestTypes = ProdBasicService.GetTestType();
+            CheckCommand = new DelegateCommand(HandelSelect);
+            Aggregator = aggregator;
+        }
+
+        private void HandelSelect()
+        {
+
         }
 
         private void OnSumbit()
         {
-            
-            if (string.IsNullOrEmpty(ProdName)|| string.IsNullOrEmpty(ProdType)|| string.IsNullOrEmpty(ProdLot))
+
+            if (string.IsNullOrEmpty(ProdName) || string.IsNullOrEmpty(ProdType) || string.IsNullOrEmpty(ProdLot))
             {
-                MessageBox.Show("请完善数据后再提交");
+                Aggregator.SendMessage("请完善数据后再提交");
+             //   MessageBox.Show("请完善数据后再提交");
                 return;
             }
-            string lastChar = _prodType.Substring(_prodType.Length - 1, 1).ToUpper();
 
-            if (lastChar == "J")
+            bool result = ProdBasicService.CreateProdBasic(prodName:this.ProdName,prodType:this.ProdType, qty:this.Qty ,prodLot:this.ProdLot);
+
+            if (result)
             {
-                QualityLevel = "军品";
-            }
-            else
-            {
-                QualityLevel = "民品";
-            }
-
-            using (var dbContext = new SicoreQMSEntities1())
-            {
-                // 创建一个新的 ProdInfo 对象
-                ProdInfo newProdInfo = new ProdInfo
-                {
-                    Id = Guid.NewGuid().ToString(),
-
-                    ProdName =this.ProdName,  // 替换成实际的值
-                    ProdType = this.ProdType,  // 替换成实际的值
-                    ProdStatus = 0,                 // 替换成实际的值
-                    Qty= this.Qty,
-                    OrginQty=this.Qty,
-                    ProdLot = this.ProdLot,        // 替换成实际的值
-                   // CheckLot = "YourCheckLot",      // 替换成实际的值
-                    QualityLevel = this.QualityLevel,  // 替换成实际的值
-                   // CreateDate = DateTime.Now.ToString(), // 使用当前时间作为字符串
-                  //  CreateUser = "YourCreateUser",  // 替换成实际的值
-                    //IsDeleted = false               // 替换成实际的值
-                };
-
-                // 将新的 ProdInfo 对象添加到数据库
-                dbContext.ProdInfo.Add(newProdInfo);
-                dbContext.SaveChanges();
-
-                MessageBox.Show("新增成功!");
+                Aggregator.SendMessage("新增成功!");
+               // MessageBox.Show("新增成功!");
 
                 ProdName = "";
                 ProdType = "";
                 ProdLot = "";
-                // 保存更改
 
             }
+            else
+            {
+                Aggregator.SendMessage("新增失败!");
+               // MessageBox.Show("新增失败!");
+            }
+      
+        }
 
-        
 
+        #region 属性
+
+        public DelegateCommand CheckCommand { get; set; }
+
+        private ObservableCollection<CheckBasic> _testTypes;
+
+        public ObservableCollection<CheckBasic> TestTypes
+        {
+            get { return _testTypes; }
+            set { _testTypes = value; RaisePropertyChanged(); }
         }
 
 
@@ -113,17 +116,16 @@ namespace SicoreQMS.ViewModels
             set { SetProperty(ref _prodLot, value); }
         }
 
-
-
-
         public string QualityLevel
         {
             get { return _qualitylevel; }
             set { SetProperty(ref _qualitylevel, value); }
         }
 
+        public IEventAggregator Aggregator { get; }
 
-  
+
+        #endregion
 
 
 

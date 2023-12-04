@@ -38,5 +38,7 @@ namespace SicoreQMS.Common.Models.Operation
         public string CreateUser { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public Nullable<int> ItemStatus { get; set; }
+        public string BeginRemark { get; set; }
+        public string EndRemark { get; set; }
     }
 }

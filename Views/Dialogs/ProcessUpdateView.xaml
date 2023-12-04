@@ -7,7 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Width="450"
-    Height="450"
+    Height="500"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -51,7 +51,7 @@
                     AcceptsReturn="True"
                     IsEnabled="False"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding  ProdStandard}"
+                    Text="{Binding ProdStandard}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
                 <TextBox
@@ -59,17 +59,41 @@
                     materialDesign:HintAssist.Hint="投入数"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     AcceptsReturn="True"
+                    IsEnabled="{Binding IsStartEnabled}"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding InputQty}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
                 <TextBox
                     VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="任务开始备注"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    AcceptsReturn="True"
+                    IsEnabled="{Binding IsStartEnabled}"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding BeginRemark}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto" />
+
+                <TextBox
+                    VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="产出数"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     AcceptsReturn="True"
+                    IsEnabled="{Binding IsEndEnabled}"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding OutQty}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto" />
+
+                <TextBox
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="任务结束备注"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    AcceptsReturn="True"
+                    IsEnabled="{Binding IsEndEnabled}"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding EndRemark}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
             </StackPanel>
@@ -81,8 +105,11 @@
             Margin="10"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
-            <Button Margin="0,0,10,0" Content="任务开始" Command="{Binding BtnStart}" />
-            <Button Content="任务完成" Command="{Binding BtnEnd}" />
+            <Button
+                Margin="0,0,10,0"
+                Command="{Binding BtnStart}"
+                Content="任务开始" />
+            <Button Command="{Binding BtnEnd}" Content="任务完成" />
         </StackPanel>
 
     </Grid>

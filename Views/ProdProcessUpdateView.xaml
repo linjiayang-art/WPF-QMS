@@ -148,13 +148,13 @@
         <StackPanel Grid.Row="2">
             <DataGrid
                 x:Name="dgvProcessModel"
-                Width="auto"
                 Height="auto"
+                MaxWidth="1400"
                 MaxHeight="600"
                 Margin="10,10"
                 materialDesign:DataGridAssist.CellPadding="4 2 2 2"
                 materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
-                AutoGenerateColumns="False"
+                AutoGenerateColumns="True"
                 CanUserAddRows="False"
                 CanUserReorderColumns="True"
                 HeadersVisibility="All"

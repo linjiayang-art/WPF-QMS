@@ -75,6 +75,8 @@
           <Property Name="StartDate" Type="datetime" />
           <Property Name="EndDate" Type="datetime" />
           <Property Name="IsComplete" Type="bit" />
+          <Property Name="BeginRemark" Type="nvarchar(max)" />
+          <Property Name="EndRemark" Type="nvarchar(max)" />
           <Property Name="Version" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
@@ -317,6 +319,8 @@
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="ItemStatus" Type="Int32" />
+          <Property Name="BeginRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EndRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LotRelation">
           <Key>
@@ -491,6 +495,8 @@
           <EntitySetMapping Name="Prod_ProcessItem">
             <EntityTypeMapping TypeName="SicoreQMSModel.Prod_ProcessItem">
               <MappingFragment StoreEntitySet="Prod_ProcessItem">
+                <ScalarProperty Name="EndRemark" ColumnName="EndRemark" />
+                <ScalarProperty Name="BeginRemark" ColumnName="BeginRemark" />
                 <ScalarProperty Name="ItemStatus" ColumnName="ItemStatus" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />

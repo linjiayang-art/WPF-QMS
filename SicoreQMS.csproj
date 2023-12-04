@@ -178,9 +178,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\Events\MessageEvent.cs" />
     <Compile Include="Common\IConfigureService.cs" />
     <Compile Include="Common\Interface\IDialogHostAware.cs" />
     <Compile Include="Common\Models\Basic\MenuBar.cs" />
+    <Compile Include="Common\Models\Basic\ResultInfo.cs" />
     <Compile Include="Common\Models\Basic\SelectBasic.cs" />
     <Compile Include="Common\Models\Basic\SpiltModel.cs" />
     <Compile Include="Common\Interface\IDialogHostService.cs" />
@@ -239,9 +241,11 @@
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Common\Server\DialogHostService.cs" />
+    <Compile Include="Extensions\DialogExtensions.cs" />
     <Compile Include="Extensions\Factory.cs" />
     <Compile Include="Extensions\PrismManger.cs" />
     <Compile Include="Service\ProdBasicService.cs" />
+    <Compile Include="Service\ProdProcessService.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewModels\DialogModels\LotSplitViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />

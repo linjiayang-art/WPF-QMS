@@ -1,5 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using SicoreQMS.Common;
@@ -14,6 +15,9 @@ namespace SicoreQMS.ViewModels
 
         public MainViewModel(IRegionManager regionManager)
         {
+
+
+         
             MenuBars = new ObservableCollection<MenuBar>();
             NavigateCommand = new DelegateCommand<MenuBar>(Navigate);
             GoBackCommand = new DelegateCommand(() =>

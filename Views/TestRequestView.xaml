@@ -31,28 +31,36 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <TextBlock
-                Margin="10"
-                materialDesign:HintAssist.HelperText="试验类别"
-                materialDesign:HintAssist.Hint="试验类别">
-                <ItemsControl x:Name="cbt" ItemsSource="{Binding TestTypes}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox
-                                Margin="0,0,10,0"
-                                Command="{Binding DataContext.CheckCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
-                                CommandParameter="{Binding Label}"
-                                Content="{Binding Label}"
-                                IsChecked="{Binding IsCheck}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </TextBlock>
+            <DockPanel>
+                <TextBlock
+                    Padding="10"
+                    FontSize="20"
+                    Text="试验类别" />
+                <TextBlock
+                    Margin="10"
+                    materialDesign:HintAssist.HelperText="试验类别:"
+                    materialDesign:HintAssist.Hint="试验类别">
+                    <ItemsControl x:Name="cbt" ItemsSource="{Binding TestTypes}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox
+                                    Margin="0,0,10,0"
+                                    Command="{Binding DataContext.CheckCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding Label}"
+                                    Content="{Binding Label}"
+                                    IsChecked="{Binding IsCheck}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TextBlock>
+
+            </DockPanel>
+
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <TextBox
                     MinWidth="100"

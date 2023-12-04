@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Prism.Events;
+using SicoreQMS.Extensions;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SicoreQMS.Views
@@ -8,8 +10,13 @@ namespace SicoreQMS.Views
     /// </summary>
     public partial class MainView : Window
     {
-        public MainView()
+        public MainView(IEventAggregator aggregator)
         {
+            aggregator.ResgiterMessage(arg =>
+            {
+                Snackbar.MessageQueue.Enqueue(arg);
+            });
+
             InitializeComponent();
             menuBar.SelectionChanged += (s, e) =>
             {

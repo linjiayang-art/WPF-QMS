@@ -12,8 +12,6 @@ namespace SicoreQMS.Common.Models.Operation
         public Prod_Process()
 
         {
-
-
             CurrentProcess = 1;
             // 设置默认值
             ProdStatus = 0;
