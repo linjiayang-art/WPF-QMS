@@ -1,5 +1,6 @@
 ﻿using Prism.DryIoc;
 using Prism.Ioc;
+using Prism.Services.Dialogs;
 using SicoreQMS.Common;
 using SicoreQMS.Common.Models.Interface;
 using SicoreQMS.Common.Server;
@@ -26,20 +27,37 @@ namespace SicoreQMS
 
         protected override void OnInitialized()
         {
-            var service= App.Current.MainWindow.DataContext as IConfigureService;
-            if (service !=null)
+
+            var dialog = Container.Resolve<IDialogService>();
+
+            dialog.ShowDialog("LoginView", callback =>
             {
-                service.Configure();
-            }
-            base.OnInitialized();
+                if (callback.Result != ButtonResult.OK)
+                {
+                    Application.Current.Shutdown();
+                    return;
+                }
+
+                var service = App.Current.MainWindow.DataContext as IConfigureService;
+                if (service != null)
+                    service.Configure();
+                base.OnInitialized();
+
+
+            });
+
+            //var service = App.Current.MainWindow.DataContext as IConfigureService;
+            //if (service != null)
+            //{
+            //    service.Configure();
+            //}
+            //base.OnInitialized();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
 
-
-            containerRegistry.RegisterForNavigation<ProdProcessPrintView, ProdProcessPrintViewModel>();
-
+            containerRegistry.RegisterDialog<LoginView, LoginViewModel>();
 
             containerRegistry.RegisterDialog<TestProcessItemUpdateView, TestProcessItemUpdateViewModel>();
 
@@ -50,17 +68,16 @@ namespace SicoreQMS
             //containerRegistry.RegisterForNavigation<ProcessUpdateView, ProcessUpdateViewModel>();
 
             //containerRegistry.Register<IDialogHostService, DialogHostService>();
+
+            containerRegistry.RegisterForNavigation<ProdProcessPrintView, ProdProcessPrintViewModel>();
             containerRegistry.RegisterForNavigation<TestProcessUpdateView, TestProcessUpdateViewModel>();
-         
 
             containerRegistry.RegisterForNavigation<TestProcessUpdateView, TestProcessUpdateViewModel>();
 
             containerRegistry.RegisterForNavigation<TestCreateView, TestCreateViewModel>();
 
-
             containerRegistry.RegisterForNavigation<IndexView, IndexViewModel>();
-            containerRegistry.RegisterForNavigation<ToDoView, ToDoViewModel>();
-            
+
             containerRegistry.RegisterForNavigation<ProdProcessUpdateView, ProdProcessUpdateViewModel>();
             containerRegistry.RegisterForNavigation<ProdProcessCreateView, ProdProcessCreateViewModel>();
             containerRegistry.RegisterForNavigation<ProdModelMaintainView, ProdModelMaintainViewModel>();

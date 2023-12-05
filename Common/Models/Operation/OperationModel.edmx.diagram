@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="cf486ed82fab4d9397fa086bb0b2741d" Name="Diagram1" ZoomLevel="83" >
+      <Diagram DiagramId="cf486ed82fab4d9397fa086bb0b2741d" Name="Diagram1" ZoomLevel="65" >
         <EntityTypeShape EntityType="SicoreQMSModel.Prod_ProcessModel" Width="3" PointX="10" PointY="3.875" />
         <EntityTypeShape EntityType="SicoreQMSModel.Prod_ProcessBasic" Width="3.875" PointX="9.5" PointY="0.875" />
         <EntityTypeShape EntityType="SicoreQMSModel.ProdInfo" Width="2.5" PointX="5.25" PointY="0.875" />
@@ -15,6 +15,7 @@
         <EntityTypeShape EntityType="SicoreQMSModel.TestProcess" Width="1.5" PointX="6.375" PointY="10.75" />
         <EntityTypeShape EntityType="SicoreQMSModel.TestModelItem" Width="4" PointX="1.25" PointY="11.125" />
         <EntityTypeShape EntityType="SicoreQMSModel.TestProcessItem" Width="2.625" PointX="10.375" PointY="7.75" />
+        <EntityTypeShape EntityType="SicoreQMSModel.UserInfo" Width="1.5" PointX="14.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

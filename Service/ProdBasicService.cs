@@ -111,5 +111,11 @@ namespace SicoreQMS.Service
             }
         }
 
+       public static void CreateTestProcess()
+        {
+
+        }
+
+
     }
 }

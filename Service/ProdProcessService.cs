@@ -2,6 +2,7 @@
 using Prism.Services.Dialogs;
 using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
+using SicoreQMS.Common.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,7 @@ namespace SicoreQMS.Service
                 prodprocess.CurrentProcess = prodProcessItem.ModelSort;
 
                 //更新流程卡进程
+                prodProcessItem.Operator=AppSession.UserID; 
                 prodProcessItem.BeginRemark = remark;
                 prodProcessItem.InputQty = qty;
                 prodProcessItem.ItemStatus = 1;//状态变更为正在进行

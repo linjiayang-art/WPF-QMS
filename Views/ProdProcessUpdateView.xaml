@@ -8,7 +8,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    d:DesignHeight="450"
+    d:DesignHeight="600"
     d:DesignWidth="800"
     FontFamily="微软雅黑"
     mc:Ignorable="d">
@@ -145,109 +145,109 @@
 
         </StackPanel>
 
-        <StackPanel Grid.Row="2">
-            <DataGrid
-                x:Name="dgvProcessModel"
-                Height="auto"
-                MaxWidth="1400"
-                MaxHeight="600"
-                Margin="10,10"
-                materialDesign:DataGridAssist.CellPadding="4 2 2 2"
-                materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
-                AutoGenerateColumns="True"
-                CanUserAddRows="False"
-                CanUserReorderColumns="True"
-                HeadersVisibility="All"
-                ItemsSource="{Binding ProcessItem}"
-                SelectionUnit="Cell">
-                <DataGrid.Columns>
 
-                    <DataGridTextColumn
-                        Binding="{Binding Id}"
-                        Header="ID"
-                        Visibility="Hidden" />
-                    <DataGridTextColumn
-                        Width="60"
-                        Binding="{Binding ModelSort}"
-                        Header="序号">
-                        <DataGridTextColumn.HeaderStyle>
-                            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
-                                <Setter Property="ContentTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                Text="{Binding}"
-                                                TextAlignment="Right"
-                                                TextWrapping="Wrap" />
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="HorizontalContentAlignment" Value="Right" />
-                            </Style>
-                        </DataGridTextColumn.HeaderStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn
-                        Binding="{Binding ProdProcessCard}"
-                        Header="生产流程卡"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding ProcessType}"
-                        Header="流程类型"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding ProdStandard}"
-                        Header="生产依据"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding CheckStandard}"
-                        Header="检验/判定标准"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Width="80"
-                        Binding="{Binding InputQty}"
-                        Header="投入数"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Width="80"
-                        Binding="{Binding OutQty}"
-                        Header="产出数"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Operator}"
-                        Header="操作人"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding StartDate}"
-                        Header="开始时间"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding EndDate}"
-                        Header="结束时间"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding NowStatus}"
-                        Header="当前状态"
-                        IsReadOnly="True" />
-                    <DataGridTemplateColumn Width="120" Header="操作">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button
-                                    materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                                    Command="{Binding DataContext.UpdateProgressCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
-                                    CommandParameter="{Binding}"
-                                    Content="进度更新"
-                                    IsEnabled="{Binding IsButtonEnabled, Mode=OneWay}"
-                                    Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
-                                <!--<StackPanel Orientation="Horizontal">
+        <DataGrid
+            x:Name="dgvProcessModel"
+            Grid.Row="2"
+            MaxWidth="1400"
+            Margin="10,10"
+            materialDesign:DataGridAssist.CellPadding="4 2 2 2"
+            materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            CanUserReorderColumns="True"
+            HeadersVisibility="All"
+            ItemsSource="{Binding ProcessItem}"
+            SelectionUnit="Cell"
+            VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+
+                <DataGridTextColumn
+                    Binding="{Binding Id}"
+                    Header="ID"
+                    Visibility="Hidden" />
+                <DataGridTextColumn
+                    Width="60"
+                    Binding="{Binding ModelSort}"
+                    Header="序号">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            Text="{Binding}"
+                                            TextAlignment="Right"
+                                            TextWrapping="Wrap" />
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="HorizontalContentAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn
+                    Binding="{Binding ProdProcessCard}"
+                    Header="生产流程卡"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding ProcessType}"
+                    Header="流程类型"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding ProdStandard}"
+                    Header="生产依据"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding CheckStandard}"
+                    Header="检验/判定标准"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="80"
+                    Binding="{Binding InputQty}"
+                    Header="投入数"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="80"
+                    Binding="{Binding OutQty}"
+                    Header="产出数"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Operator}"
+                    Header="操作人"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding StartDate}"
+                    Header="开始时间"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding EndDate}"
+                    Header="结束时间"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding NowStatus}"
+                    Header="当前状态"
+                    IsReadOnly="True" />
+                <DataGridTemplateColumn Width="120" Header="操作">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                Command="{Binding DataContext.UpdateProgressCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                CommandParameter="{Binding}"
+                                Content="进度更新"
+                                IsEnabled="{Binding IsButtonEnabled, Mode=OneWay}"
+                                Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
+                            <!--<StackPanel Orientation="Horizontal">
                                     <Border Width="10" Height="10" Background="Aqua"/>
                                 </StackPanel>-->
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
-        </StackPanel>
+
 
     </Grid>
 

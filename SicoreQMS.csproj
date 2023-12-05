@@ -52,6 +52,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bold.Licensing, Version=5.3460.11.0, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
       <HintPath>packages\Bold.Licensing.5.3.11\lib\net46\Bold.Licensing.dll</HintPath>
@@ -240,13 +243,22 @@
     <Compile Include="Common\Models\Operation\TestProcessItem.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Common\Models\Operation\UserInfo.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Server\AppSession.cs" />
     <Compile Include="Common\Server\DialogHostService.cs" />
     <Compile Include="Extensions\DialogExtensions.cs" />
     <Compile Include="Extensions\Factory.cs" />
+    <Compile Include="Extensions\PassWordExtensions.cs" />
     <Compile Include="Extensions\PrismManger.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Service\LoginService.cs" />
     <Compile Include="Service\ProdBasicService.cs" />
     <Compile Include="Service\ProdProcessService.cs" />
+    <Compile Include="Service\TestProcessService.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModels\DialogModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\LotSplitViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestProcessItemUpdateViewModel.cs" />
@@ -259,7 +271,6 @@
     <Compile Include="ViewModels\TestCreateViewModel.cs" />
     <Compile Include="ViewModels\TestProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\TestRequestViewModel.cs" />
-    <Compile Include="ViewModels\ToDoViewModel.cs" />
     <Compile Include="Views\Dialogs\LotSplitView.xaml.cs">
       <DependentUpon>LotSplitView.xaml</DependentUpon>
     </Compile>
@@ -271,6 +282,9 @@
     </Compile>
     <Compile Include="Views\IndexView.xaml.cs">
       <DependentUpon>IndexView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -300,9 +314,6 @@
     <Compile Include="Views\TestRequestView.xaml.cs">
       <DependentUpon>TestRequestView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ToDoView.xaml.cs">
-      <DependentUpon>ToDoView.xaml</DependentUpon>
-    </Compile>
     <Page Include="Views\Dialogs\LotSplitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -316,6 +327,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\IndexView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -348,10 +363,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TestRequestView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ToDoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -425,6 +436,8 @@
       <DependentUpon>OperationModel.edmx</DependentUpon>
       <LastGenOutput>OperationModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="Images\login.png" />
+    <Resource Include="favicon.ico" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

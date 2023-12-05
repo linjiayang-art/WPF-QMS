@@ -35,5 +35,6 @@ namespace SicoreQMS.Common.Models.Operation
         public virtual DbSet<TestProcess> TestProcess { get; set; }
         public virtual DbSet<TestModelItem> TestModelItem { get; set; }
         public virtual DbSet<TestProcessItem> TestProcessItem { get; set; }
+        public virtual DbSet<UserInfo> UserInfo { get; set; }
     }
 }

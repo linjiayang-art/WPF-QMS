@@ -196,6 +196,17 @@
           <Property Name="ModifyUserNo" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="PassWord" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+        </EntityType>
         <EntityContainer Name="SicoreQMSModelStoreContainer">
           <EntitySet Name="LotRelation" EntityType="Self.LotRelation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_Process" EntityType="Self.Prod_Process" Schema="dbo" store:Type="Tables" />
@@ -207,6 +218,7 @@
           <EntitySet Name="TestModelItem" EntityType="Self.TestModelItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestProcess" EntityType="Self.TestProcess" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestProcessItem" EntityType="Self.TestProcessItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -223,6 +235,7 @@
           <EntitySet Name="TestProcess" EntityType="SicoreQMSModel.TestProcess" />
           <EntitySet Name="TestModelItem" EntityType="SicoreQMSModel.TestModelItem" />
           <EntitySet Name="TestProcessItem" EntityType="SicoreQMSModel.TestProcessItem" />
+          <EntitySet Name="UserInfo" EntityType="SicoreQMSModel.UserInfo" />
         </EntityContainer>
         <EntityType Name="Prod_ProcessModel">
           <Key>
@@ -414,6 +427,17 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="ModifyUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PassWord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -618,6 +642,18 @@
                 <ScalarProperty Name="EquipmentNo" ColumnName="EquipmentNo" />
                 <ScalarProperty Name="ModelId" ColumnName="ModelId" />
                 <ScalarProperty Name="TestProcessId" ColumnName="TestProcessId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserInfo">
+            <EntityTypeMapping TypeName="SicoreQMSModel.UserInfo">
+              <MappingFragment StoreEntitySet="UserInfo">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
+                <ScalarProperty Name="UserNo" ColumnName="UserNo" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

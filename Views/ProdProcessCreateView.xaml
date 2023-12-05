@@ -139,16 +139,17 @@
                 Content="生成生产流程卡" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1">
+        <DockPanel Grid.Row="1">
             <DataGrid
                 x:Name="dgvProcessModel"
-                MaxHeight="500"
+                MaxHeight="550"
                 Margin="10,10"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 HeadersVisibility="All"
                 ItemsSource="{Binding ProcessModel}"
-                SelectionUnit="Cell">
+                SelectionUnit="Cell"
+                VerticalScrollBarVisibility="Auto">
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Id}"
@@ -179,7 +180,7 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-        </StackPanel>
+        </DockPanel>
 
     </Grid>
 

@@ -49,15 +49,15 @@
                         <TextBlock
                             Margin="10,0"
                             HorizontalAlignment="Center"
-                            Text="TEST" />
+                            Text="Test" />
                     </StackPanel>
                     <ListBox
                         x:Name="menuBar"
                         ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
-                        ItemsSource="{Binding MenuBars}">
+                        ItemsSource="{Binding MenuBars, Mode=TwoWay}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="{Binding ElementName=menuBar, Path=SelectedItem}" />
+                                <i:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ListBox.ItemTemplate>
