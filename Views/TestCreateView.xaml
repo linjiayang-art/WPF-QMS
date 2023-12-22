@@ -11,6 +11,7 @@
     d:DesignHeight="450"
     d:DesignWidth="1200"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    Background="White"
     FontFamily="微软雅黑"
     mc:Ignorable="d">
     <Grid>
@@ -31,18 +32,34 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBox
-                x:Name="txtProdName"
-                Grid.Row="0"
-                Grid.Column="0"
-                MinWidth="150"
-                Margin="10"
-                HorizontalContentAlignment="Left"
-                materialDesign:HintAssist.HelperText="产品名称"
-                materialDesign:HintAssist.Hint="产品名称"
-                BorderThickness="1"
-                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                Text="{Binding ProdName}" />
+            <ComboBox
+                x:Name="comProductName"
+                Width="200"
+                Margin="10,10"
+                materialDesign:HintAssist.HelperText="产品型号"
+                materialDesign:HintAssist.Hint="产品型号"
+                ItemsSource="{Binding Path=ProductNameBasic}"
+                SelectedValuePath="Value"
+                Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <prism:InvokeCommandAction Command="{Binding HandelSelect}" CommandParameter="{Binding SelectedValue, ElementName=comProductName}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Margin="0,0,0,5"
+                            BorderBrush="Black"
+                            BorderThickness="0,0,0,1">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" Text="{Binding Label}" />
+                                <!--<TextBlock Margin="5" Text="{Binding Value}" />-->
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <StackPanel
                 Grid.Row="0"
                 Grid.Column="1"
@@ -85,7 +102,7 @@
                 BorderThickness="1"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding Prodstandard}" />
-            <ComboBox
+            <!--<ComboBox
                 x:Name="comModelType"
                 Grid.Column="3"
                 Width="256"
@@ -100,7 +117,7 @@
                         <prism:InvokeCommandAction Command="{Binding HandelSelect}" CommandParameter="{Binding SelectedValue, ElementName=comModelType}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-            </ComboBox>
+            </ComboBox>-->
 
         </Grid>
 
@@ -167,7 +184,7 @@
                 Grid.Column="3"
                 Command="{Binding OnSumbit}"
                 CommandParameter="{Binding ElementName=comModelType, Path=SelectedValue}"
-                Content="试验流程卡创建"
+                Content="试验流程卡审核"
                 Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
                 ToolTip="MaterialDesignFlatSecondaryDarkBgButton" />
 
@@ -196,11 +213,11 @@
                     <DataGridTextColumn
                         Width="60"
                         MinWidth="50"
-                        Binding="{Binding ExperimentItemNo}"
+                        Binding="{Binding ExperimentNo}"
                         Header="序号" />
                     <DataGridTextColumn
                         MaxWidth="230"
-                        Binding="{Binding ExperimentItemName}"
+                        Binding="{Binding ExperimentName}"
                         CanUserSort="False"
                         Header="试验项目"
                         IsReadOnly="True">
@@ -211,16 +228,15 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn
-                        Binding="{Binding ExperimentItemStandard}"
+                        Binding="{Binding ExperimentStandard}"
                         CanUserSort="False"
                         Header="试验标准/作业指导"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         MaxWidth="260"
-                        Binding="{Binding ExperimentItemConditions}"
+                        Binding="{Binding ExperimentConditions}"
                         CanUserSort="False"
-                        Header="试验条件"
-                        IsReadOnly="True">
+                        Header="试验条件">
                         <DataGridTextColumn.ElementStyle>
                             <Style>
                                 <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
@@ -228,15 +244,13 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn
-                        Binding="{Binding ExperimentItemQty}"
+                        Binding="{Binding ExperimentQty}"
                         CanUserSort="False"
-                        Header="试验数量"
-                        IsReadOnly="True" />
+                        Header="试验数量" />
                     <DataGridTextColumn
-                        Binding="{Binding ExperimentItemNumber}"
+                        Binding="{Binding ExperimentNo}"
                         CanUserSort="False"
-                        Header="试验编号"
-                        IsReadOnly="True" />
+                        Header="试验编号" />
                     <!--<DataGridTemplateColumn Width="120" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

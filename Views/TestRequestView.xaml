@@ -18,6 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="200" />
         </Grid.RowDefinitions>
         <TextBlock
             Padding="10,10"
@@ -108,13 +109,64 @@
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding Qty}" />
 
+
                 <Button Command="{Binding BtnSumbit}" Content="提交申请" />
 
 
             </StackPanel>
         </Grid>
 
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
+            <StackPanel Grid.Column="0">
+
+                <TextBox
+                    x:Name="txtTestLot"
+                    Grid.Column="0"
+                    MinWidth="150"
+                    MaxWidth="5000"
+                    Margin="10"
+                    HorizontalContentAlignment="Left"
+                    materialDesign:HintAssist.HelperText="试验批次"
+                    materialDesign:HintAssist.Hint="试验批次"
+                    BorderThickness="1"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding TestLot}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBox
+                    x:Name="txtTestQty"
+                    Grid.Column="2"
+                    MinWidth="150"
+                    MaxWidth="5000"
+                    Margin="10"
+                    HorizontalContentAlignment="Left"
+                    materialDesign:HintAssist.HelperText="试验数/编号"
+                    materialDesign:HintAssist.Hint="试验数/编号"
+                    BorderThickness="1"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding ProdNumber}" />
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBox
+                    x:Name="txtProdTestSta"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    MinWidth="150"
+                    Margin="10"
+                    HorizontalContentAlignment="Left"
+                    materialDesign:HintAssist.HelperText="试验依据"
+                    materialDesign:HintAssist.Hint="试验依据"
+                    BorderThickness="1"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding Prodstandard}" />
+            </StackPanel>
+        </Grid>
 
 
     </Grid>

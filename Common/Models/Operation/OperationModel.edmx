@@ -108,6 +108,10 @@
           <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdStatus" Type="int" />
           <Property Name="ProdLot" Type="nvarchar" MaxLength="50" />
+          <Property Name="Prodstandard" Type="nvarchar" MaxLength="50" />
+          <Property Name="TestLot" Type="nvarchar" MaxLength="50" />
+          <Property Name="TestType" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="CheckLot" Type="nvarchar" MaxLength="50" />
           <Property Name="QualityLevel" Type="nvarchar" MaxLength="50" />
           <Property Name="OrginQty" Type="int" />
@@ -154,6 +158,7 @@
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ModelTypeId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdId" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdName" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdLot" Type="nvarchar" MaxLength="50" />
@@ -171,6 +176,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProdId" Type="nvarchar" MaxLength="50" />
           <Property Name="TestProcessId" Type="nvarchar" MaxLength="50" />
           <Property Name="ModelId" Type="nvarchar" MaxLength="50" />
           <Property Name="EquipmentNo" Type="nvarchar" MaxLength="50" />
@@ -284,6 +290,10 @@
           <Property Name="ParentId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OrginQty" Type="Int32" />
           <Property Name="Qty" Type="Int32" />
+          <Property Name="Prodstandard" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TestLot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Prod_Process">
           <Key>
@@ -376,6 +386,7 @@
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Isdeletd" Type="Boolean" />
           <Property Name="CompleteStatus" Type="Boolean" />
+          <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TestModelItem">
           <Key>
@@ -427,6 +438,7 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="ModifyUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -480,6 +492,10 @@
           <EntitySetMapping Name="ProdInfo">
             <EntityTypeMapping TypeName="SicoreQMSModel.ProdInfo">
               <MappingFragment StoreEntitySet="ProdInfo">
+                <ScalarProperty Name="ProdNumber" ColumnName="ProdNumber" />
+                <ScalarProperty Name="TestType" ColumnName="TestType" />
+                <ScalarProperty Name="TestLot" ColumnName="TestLot" />
+                <ScalarProperty Name="Prodstandard" ColumnName="Prodstandard" />
                 <ScalarProperty Name="Qty" ColumnName="Qty" />
                 <ScalarProperty Name="OrginQty" ColumnName="OrginQty" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
@@ -577,6 +593,7 @@
           <EntitySetMapping Name="TestProcess">
             <EntityTypeMapping TypeName="SicoreQMSModel.TestProcess">
               <MappingFragment StoreEntitySet="TestProcess">
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
                 <ScalarProperty Name="CompleteStatus" ColumnName="CompleteStatus" />
                 <ScalarProperty Name="Isdeletd" ColumnName="Isdeletd" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
@@ -618,6 +635,7 @@
           <EntitySetMapping Name="TestProcessItem">
             <EntityTypeMapping TypeName="SicoreQMSModel.TestProcessItem">
               <MappingFragment StoreEntitySet="TestProcessItem">
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
                 <ScalarProperty Name="ModifyUserNo" ColumnName="ModifyUserNo" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />

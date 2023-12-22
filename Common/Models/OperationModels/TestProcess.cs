@@ -13,6 +13,7 @@ namespace SicoreQMS.Common.Models.Operation
         public TestProcess()
         {
             CompleteStatus = false;
+            Isdeletd = false;
         }
 
      

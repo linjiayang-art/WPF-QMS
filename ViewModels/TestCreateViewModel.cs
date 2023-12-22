@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using SicoreQMS.Service;
+using System.Windows.Forms.VisualStyles;
 
 namespace SicoreQMS.ViewModels
 {
@@ -18,12 +20,17 @@ namespace SicoreQMS.ViewModels
     {
         public TestCreateViewModel()
         {
+
             TestTypes = new ObservableCollection<CheckBasic>();
             ModelType = new ObservableCollection<SelectBasic>();
-            HandelSelect = new DelegateCommand<string>(GetTemplate);
+
+            HandelSelect = new DelegateCommand<string>(GetInfo);
+
             CheckCommand = new DelegateCommand<string>(ExcuteCheckCommand);
-            TestModelItem = new ObservableCollection<TestModelItem>();
+            TestModelItem = new ObservableCollection<TestProcessItem>();
             OnSumbit = new DelegateCommand<string>(CreateTestProcess);
+
+            ProductNameBasic = ProdBasicService.CreateProductSelection();
             CreateData();
 
 
@@ -32,6 +39,35 @@ namespace SicoreQMS.ViewModels
             ProdType = "siv0056-j";
 
 
+
+        }
+
+        private void GetInfo(string parameter)
+        {
+            if (parameter == null)
+            {
+                return;
+            }
+
+            using (var context = new SicoreQMSEntities1())
+            {
+                var productInfo = context.ProdInfo.SingleOrDefault(b => b.Id == parameter);
+                if (productInfo != null)
+                {
+                    this.ProdName = productInfo.ProdName;
+                    this.ProdLot = productInfo.ProdLot;
+                    this.ProdType = productInfo.ProdType;
+                    this.ProdNumber = productInfo.ProdNumber;
+                    this.Prodstandard = productInfo.Prodstandard;
+                    this.TestLot = productInfo.TestLot;
+                    GetTemplate(parameter);
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("未查询到该产品");
+                }
+
+            }
 
         }
 
@@ -52,38 +88,7 @@ namespace SicoreQMS.ViewModels
 
             using (var context = new SicoreQMSEntities1())
             {
-                TestProcess testProcess = new TestProcess()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    ModelTypeId = modelId,
-                    ProdName = this.ProdName,
-                    ProdType = this.ProdType,
-                    ProdLot = this.ProdLot,
-                    Prodstandard = this.Prodstandard,
-                    TestLot = this.TestLot,
-                    TestType = "",
-                    ProdNumber = this.ProdNumber,
-                };
-
-                context.TestProcess.Add(testProcess);
-                context.SaveChanges();
-
-                foreach (var item in TestModelItem)
-                {
-                    TestProcessItem testProcessitem = new TestProcessItem()
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        TestProcessId = testProcess.Id,
-                        ModelId = item.Id,
-                        ExperimentItemNo = item.ExperimentItemNo,
-                        ExperimentName = item.ExperimentItemName,
-                        ExperimentStandard = item.ExperimentItemStandard,
-                        ExperimentConditions = item.ExperimentItemConditions,
-                        ExperimentNo = item.ExperimentItemNumber,
-                        ExperimentQty = item.ExperimentItemQty,
-                    };
-                    context.TestProcessItem.Add(testProcessitem);
-                }
+              
 
                 context.SaveChanges();
 
@@ -101,7 +106,7 @@ namespace SicoreQMS.ViewModels
             TestModelItem.Clear();
             using (var contxt = new SicoreQMSEntities1())
             {
-                var items = contxt.TestModelItem.Where(p => p.ModelId == obj).OrderByDescending(p => p.ExperimentItemNo).ToList();
+                var items = contxt.TestProcessItem.Where(p => p.ProdId== obj).OrderByDescending(p => p.ExperimentItemNo).ToList();
 
                 if (items.Count == 0)
                 {
@@ -122,12 +127,19 @@ namespace SicoreQMS.ViewModels
 
         public DelegateCommand<string> OnSumbit { get; private set; }
 
+        private ObservableCollection<SelectBasic> _productNameBasic;
+
+        public ObservableCollection<SelectBasic> ProductNameBasic
+        {
+            get { return _productNameBasic; }
+            set { _productNameBasic = value; RaisePropertyChanged(); }
+        }
 
         public DelegateCommand<string> HandelSelect { get; set; }
 
         private ObservableCollection<SelectBasic> _modelType;
 
-        private ObservableCollection<TestModelItem> _testModelItem;
+        private ObservableCollection<TestProcessItem> _testModelItem;
 
         private string _prodName;
 
@@ -180,7 +192,7 @@ namespace SicoreQMS.ViewModels
 
 
 
-        public ObservableCollection<TestModelItem> TestModelItem
+        public ObservableCollection<TestProcessItem> TestModelItem
         {
             get { return _testModelItem; }
             set { _testModelItem = value; RaisePropertyChanged(); }

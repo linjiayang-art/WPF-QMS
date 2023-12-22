@@ -45,16 +45,17 @@ namespace SicoreQMS.ViewModels
             if (string.IsNullOrEmpty(ProdName) || string.IsNullOrEmpty(ProdType) || string.IsNullOrEmpty(ProdLot))
             {
                 Aggregator.SendMessage("请完善数据后再提交");
-             //   MessageBox.Show("请完善数据后再提交");
+                //   MessageBox.Show("请完善数据后再提交");
                 return;
             }
 
-            bool result = ProdBasicService.CreateProdBasic(prodName:this.ProdName,prodType:this.ProdType, qty:this.Qty ,prodLot:this.ProdLot);
+            bool result = ProdBasicService.CreateProdBasic(prodName: this.ProdName, prodType: this.ProdType,
+                        qty: this.Qty, prodLot: this.ProdLot, testLot: this.TestLot, prodNumber: this.ProdNumber,prodstandard:this.Prodstandard);
 
             if (result)
             {
                 Aggregator.SendMessage("新增成功!");
-               // MessageBox.Show("新增成功!");
+                // MessageBox.Show("新增成功!");
 
                 ProdName = "";
                 ProdType = "";
@@ -64,9 +65,9 @@ namespace SicoreQMS.ViewModels
             else
             {
                 Aggregator.SendMessage("新增失败!");
-               // MessageBox.Show("新增失败!");
+                // MessageBox.Show("新增失败!");
             }
-      
+
         }
 
 
@@ -81,6 +82,34 @@ namespace SicoreQMS.ViewModels
             get { return _testTypes; }
             set { _testTypes = value; RaisePropertyChanged(); }
         }
+
+
+        
+
+       private string _prodstandard;
+
+        public string Prodstandard
+        {
+            get { return _prodstandard; }
+            set { SetProperty(ref _prodstandard, value); }
+        }
+
+        private string _prodNumber;
+
+        public string ProdNumber
+        {
+            get { return _prodNumber; }
+            set { SetProperty(ref _prodNumber, value); }
+        }
+
+        private string _testLot;
+
+        public string TestLot
+        {
+            get { return _testLot; }
+            set { SetProperty(ref _testLot, value); }
+        }
+
 
 
         private int _qty;

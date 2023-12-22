@@ -27,5 +27,9 @@ namespace SicoreQMS.Common.Models.Operation
         public string ParentId { get; set; }
         public Nullable<int> OrginQty { get; set; }
         public Nullable<int> Qty { get; set; }
+        public string Prodstandard { get; set; }
+        public string TestLot { get; set; }
+        public string TestType { get; set; }
+        public string ProdNumber { get; set; }
     }
 }

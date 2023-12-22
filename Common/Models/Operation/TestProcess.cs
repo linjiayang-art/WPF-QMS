@@ -27,5 +27,6 @@ namespace SicoreQMS.Common.Models.Operation
         public string CreateUser { get; set; }
         public Nullable<bool> Isdeletd { get; set; }
         public Nullable<bool> CompleteStatus { get; set; }
+        public string ProdId { get; set; }
     }
 }
