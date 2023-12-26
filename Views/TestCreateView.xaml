@@ -14,7 +14,16 @@
     Background="White"
     FontFamily="微软雅黑"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <!--  列标题样式  -->
+
+        <Style x:Key="DataGridColumnHeaderCenterStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+
+    </UserControl.Resources>
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -43,7 +52,7 @@
                 Style="{StaticResource MaterialDesignOutlinedComboBox}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <prism:InvokeCommandAction Command="{Binding HandelSelect}" CommandParameter="{Binding SelectedValue, ElementName=comProductName}" />
+                        <prism:InvokeCommandAction Command="{Binding HandleSelect}" CommandParameter="{Binding SelectedValue, ElementName=comProductName}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ComboBox.ItemTemplate>
@@ -162,7 +171,8 @@
                                     Command="{Binding DataContext.CheckCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
                                     CommandParameter="{Binding Label}"
                                     Content="{Binding Label}"
-                                    IsChecked="{Binding IsCheck}" />
+                                    IsChecked="{Binding IsCheck}"
+                                    IsEnabled="False" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -183,14 +193,15 @@
             <Button
                 Grid.Column="3"
                 Command="{Binding OnSumbit}"
-                CommandParameter="{Binding ElementName=comModelType, Path=SelectedValue}"
                 Content="试验流程卡审核"
+                IsEnabled="{Binding CanAduit}"
                 Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
                 ToolTip="MaterialDesignFlatSecondaryDarkBgButton" />
 
         </Grid>
 
         <Grid Grid.Row="2" Margin="10">
+
             <DataGrid
                 x:Name="dgvProcessModel"
                 Width="auto"
@@ -201,7 +212,6 @@
                 materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
-                CanUserReorderColumns="True"
                 HeadersVisibility="All"
                 ItemsSource="{Binding TestModelItem}"
                 SelectionUnit="Cell">
@@ -210,12 +220,35 @@
                         Binding="{Binding Id}"
                         Header="ID"
                         Visibility="Hidden" />
+                    <DataGridTemplateColumn Width="*" Header="操作">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Command="{Binding DataContext.HandleDel, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding}"
+                                        Content="删除"
+                                        IsEnabled="{Binding IsAuditButtonEnabled, Mode=OneWay}"
+                                        Style="{StaticResource MaterialDesignFlatButton}" />
+                                    <Button
+                                        Command="{Binding DataContext.HandleAdd, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding}"
+                                        Content="插入"
+                                        IsEnabled="{Binding IsAuditButtonEnabled, Mode=OneWay}"
+                                        Style="{StaticResource MaterialDesignFlatButton}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn
-                        Width="60"
                         MinWidth="50"
-                        Binding="{Binding ExperimentNo}"
+                        MaxWidth="120"
+                        Binding="{Binding ExperimentItemNo}"
                         Header="序号" />
                     <DataGridTextColumn
+                        Width="*"
                         MaxWidth="230"
                         Binding="{Binding ExperimentName}"
                         CanUserSort="False"
@@ -228,11 +261,12 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn
+                        Width="*"
                         Binding="{Binding ExperimentStandard}"
                         CanUserSort="False"
-                        Header="试验标准/作业指导"
-                        IsReadOnly="True" />
+                        Header="试验标准/作业指导" />
                     <DataGridTextColumn
+                        Width="*"
                         MaxWidth="260"
                         Binding="{Binding ExperimentConditions}"
                         CanUserSort="False"
@@ -244,13 +278,18 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn
+                        Width="*"
+                        MinWidth="50"
+                        MaxWidth="120"
                         Binding="{Binding ExperimentQty}"
                         CanUserSort="False"
                         Header="试验数量" />
                     <DataGridTextColumn
+                        Width="*"
                         Binding="{Binding ExperimentNo}"
                         CanUserSort="False"
                         Header="试验编号" />
+
                     <!--<DataGridTemplateColumn Width="120" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

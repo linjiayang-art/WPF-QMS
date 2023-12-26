@@ -164,6 +164,7 @@
           <Property Name="ProdLot" Type="nvarchar" MaxLength="50" />
           <Property Name="Prodstandard" Type="nvarchar" MaxLength="255" />
           <Property Name="TestLot" Type="nvarchar" MaxLength="50" />
+          <Property Name="AuditStatus" Type="bit" />
           <Property Name="TestType" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="CompleteStatus" Type="bit" />
@@ -196,7 +197,10 @@
           <Property Name="ExperimentEndTime" Type="datetime" />
           <Property Name="ExperimentStatus" Type="int" />
           <Property Name="Remark" Type="nvarchar(max)" />
+          <Property Name="AuditStatus" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="StartUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="EndUser" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="ModifyUserNo" Type="nvarchar" MaxLength="50" />
@@ -213,6 +217,9 @@
           <Property Name="IsDeleted" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateDate" Type="datetime" />
         </EntityType>
+        <Function Name="proc_QAExperimentReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="lotNo" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="SicoreQMSModelStoreContainer">
           <EntitySet Name="LotRelation" EntityType="Self.LotRelation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_Process" EntityType="Self.Prod_Process" Schema="dbo" store:Type="Tables" />
@@ -242,6 +249,9 @@
           <EntitySet Name="TestModelItem" EntityType="SicoreQMSModel.TestModelItem" />
           <EntitySet Name="TestProcessItem" EntityType="SicoreQMSModel.TestProcessItem" />
           <EntitySet Name="UserInfo" EntityType="SicoreQMSModel.UserInfo" />
+          <FunctionImport Name="proc_QAExperimentReport" ReturnType="Collection(SicoreQMSModel.proc_QAExperimentReport_Result)">
+            <Parameter Name="lotNo" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Prod_ProcessModel">
           <Key>
@@ -387,6 +397,7 @@
           <Property Name="Isdeletd" Type="Boolean" />
           <Property Name="CompleteStatus" Type="Boolean" />
           <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AuditStatus" Type="Boolean" />
         </EntityType>
         <EntityType Name="TestModelItem">
           <Key>
@@ -439,6 +450,9 @@
           <Property Name="ModifyUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AuditStatus" Type="Boolean" />
+          <Property Name="StartUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EndUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -451,6 +465,16 @@
           <Property Name="IsDeleted" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
         </EntityType>
+        <ComplexType Name="proc_QAExperimentReport_Result">
+          <Property Type="String" Name="序号" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="试验依据" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="试验类别" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="产品名称" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="产品型号" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="批次号" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="实验数编号" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="ExperimentType" Nullable="false" MaxLength="1" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -593,6 +617,7 @@
           <EntitySetMapping Name="TestProcess">
             <EntityTypeMapping TypeName="SicoreQMSModel.TestProcess">
               <MappingFragment StoreEntitySet="TestProcess">
+                <ScalarProperty Name="AuditStatus" ColumnName="AuditStatus" />
                 <ScalarProperty Name="ProdId" ColumnName="ProdId" />
                 <ScalarProperty Name="CompleteStatus" ColumnName="CompleteStatus" />
                 <ScalarProperty Name="Isdeletd" ColumnName="Isdeletd" />
@@ -635,6 +660,9 @@
           <EntitySetMapping Name="TestProcessItem">
             <EntityTypeMapping TypeName="SicoreQMSModel.TestProcessItem">
               <MappingFragment StoreEntitySet="TestProcessItem">
+                <ScalarProperty Name="EndUser" ColumnName="EndUser" />
+                <ScalarProperty Name="StartUser" ColumnName="StartUser" />
+                <ScalarProperty Name="AuditStatus" ColumnName="AuditStatus" />
                 <ScalarProperty Name="ProdId" ColumnName="ProdId" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
                 <ScalarProperty Name="ModifyUserNo" ColumnName="ModifyUserNo" />
@@ -676,6 +704,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="proc_QAExperimentReport" FunctionName="SicoreQMSModel.Store.proc_QAExperimentReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SicoreQMSModel.proc_QAExperimentReport_Result">
+                <ScalarProperty Name="序号" ColumnName="序号" />
+                <ScalarProperty Name="试验依据" ColumnName="试验依据" />
+                <ScalarProperty Name="试验类别" ColumnName="试验类别" />
+                <ScalarProperty Name="产品名称" ColumnName="产品名称" />
+                <ScalarProperty Name="产品型号" ColumnName="产品型号" />
+                <ScalarProperty Name="批次号" ColumnName="批次号" />
+                <ScalarProperty Name="实验数编号" ColumnName="实验数编号" />
+                <ScalarProperty Name="ExperimentType" ColumnName="ExperimentType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -186,6 +186,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                 {
 
                     Id = Guid.NewGuid().ToString(),
+                    
                     ParentId = Processes.Id,
                     ProdName = Processes.ProdName,
                     ProdType = Processes.ProdType,
@@ -224,6 +225,8 @@ namespace SicoreQMS.ViewModels.DialogModels
 
                 Prod_Process newProcessInfo = new Prod_Process
                 {
+                    
+
                     Id = Guid.NewGuid().ToString(),
                     ProdId = newProdInfo.Id,
                     ProdName = newProdInfo.ProdName,

@@ -1,5 +1,6 @@
 ﻿using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Interface;
+using Syncfusion.Pdf.Barcode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,20 @@ namespace SicoreQMS.Common.Models.Operation
         {
             CompleteStatus = false;
             Isdeletd = false;
+            AuditStatus = false;
         }
 
      
+        public SelectBasic ProductSelect()
+        {
+            return new SelectBasic()
+            {
+                Label = $" 产品型号: {ProdType} 批次号: {ProdLot}",
+                Value = ProdId
+            };
+          
+        }
+
         public SelectBasic GetSelection()
         {
            return new SelectBasic()

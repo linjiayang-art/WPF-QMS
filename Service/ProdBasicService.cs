@@ -5,6 +5,7 @@ using Syncfusion.Windows.Shared.Resources;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
@@ -19,6 +20,9 @@ namespace SicoreQMS.Service
 
         public static ObservableCollection<CheckBasic> GetTestType()
         {
+
+
+
             var list = new ObservableCollection<CheckBasic>() { };
             list.Add(new CheckBasic() { Label = "筛选", IsCheck = false });
             list.Add(new CheckBasic() { Label = "鉴定", IsCheck = false });
@@ -35,14 +39,41 @@ namespace SicoreQMS.Service
         public static ObservableCollection<SelectBasic> CreateProductSelection()
         {
 
+
+
             ObservableCollection<SelectBasic> values = new ObservableCollection<SelectBasic>();
             var newProductNameBasic = new ObservableCollection<SelectBasic>();
 
             using (var context = new SicoreQMSEntities1())
             {
-                var productItem = context.ProdInfo
+                #region
+                //// 假设 dbContext 是你的 Entity Framework 数据上下文
+                //var joinedData = from testProcess in context.TestProcess
+                //                 join prodInfo in context.ProdInfo
+                //                 on testProcess.ProdId equals prodInfo.Id
+                //                 where testProcess.AuditStatus.HasValue && testProcess.AuditStatus.Value
+                //                 select new
+                //                 {
+                //                     // 从 TestProcess 选择属性
+                //                     testProcess.Id,
+                //                     testProcess.ProdName,
+                //                     testProcess.ProdType,
+                //                     // 从 ProdInfo 选择属性
+                //                     prodInfo.ProdStatus,
+                //                     prodInfo.QualityLevel,
+                //                     // 其他需要的属性
+                //                 };
+
+                //// 执行查询并获取结果
+                //var result = joinedData.ToList();
+
+                #endregion
+                var productItem = context.TestProcess
+                    .Where(B=> B.AuditStatus==false)
                     //.Where(b => b.ProdStatus == 0 || b.ProdStatus == 5 || b.ProdStatus == 1)
                     .ToList().OrderBy(x => x.CreateDate);
+                
+                
                 foreach (var item in productItem)
                 {
                     values.Add(item.ProductSelect());
@@ -52,7 +83,7 @@ namespace SicoreQMS.Service
             //ProductNameBasic = newProductNameBasic;
         }
 
-        public static bool CreateProdBasic(string prodName, string prodType, int qty, string prodLot,string testLot,string prodNumber,string prodstandard)
+        public static bool CreateProdBasic(string prodName, string prodType, int qty, string prodLot,string testLot,string prodNumber,string prodstandard,string testType)
         {
             string lastChar = prodType.Substring(prodType.Length - 1, 1).ToUpper();
             var qualityLevel = "";
@@ -79,7 +110,8 @@ namespace SicoreQMS.Service
                     OrginQty = qty,
                     ProdLot = prodLot,
                     QualityLevel = qualityLevel,
-                    Prodstandard = prodstandard
+                    Prodstandard = prodstandard,
+                    TestType = testType,
                 };
                 // 将新的 ProdInfo 对象添加到数据库
                 dbContext.ProdInfo.Add(newProdInfo);

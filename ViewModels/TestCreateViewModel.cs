@@ -13,34 +13,78 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using SicoreQMS.Service;
 using System.Windows.Forms.VisualStyles;
+using Prism.Events;
+using SicoreQMS.Extensions;
+using Prism.Services.Dialogs;
+using SicoreQMS.Views.Dialogs;
+using Prism.Regions;
 
 namespace SicoreQMS.ViewModels
 {
-    public class TestCreateViewModel : BindableBase
+    public class TestCreateViewModel : BindableBase, IRegionMemberLifetime
     {
-        public TestCreateViewModel()
+        private IEventAggregator aggregator;
+        private IDialogService dialog;
+
+        public TestCreateViewModel(IEventAggregator aggregator, IDialogService dialog)
         {
 
             TestTypes = new ObservableCollection<CheckBasic>();
             ModelType = new ObservableCollection<SelectBasic>();
 
-            HandelSelect = new DelegateCommand<string>(GetInfo);
+            HandleSelect = new DelegateCommand<string>(GetInfo);
+            HandleDel = new DelegateCommand<TestProcessItem>(DelInfo);
+            HandleAdd = new DelegateCommand(AddInfo);
 
             CheckCommand = new DelegateCommand<string>(ExcuteCheckCommand);
             TestModelItem = new ObservableCollection<TestProcessItem>();
-            OnSumbit = new DelegateCommand<string>(CreateTestProcess);
+            OnSumbit = new DelegateCommand(UpdateTestProcess);
 
             ProductNameBasic = ProdBasicService.CreateProductSelection();
             CreateData();
+            this.aggregator = aggregator;
+            this.dialog = dialog;
 
 
-            ProdName = "放大器";
-            ProdLot = "cksfd";
-            ProdType = "siv0056-j";
 
 
 
         }
+
+        private void DelInfo(TestProcessItem parmater)
+        {
+            var id = parmater.Id;
+            var result = TestProcessService.DelItem(id);
+            if (result.ResultStatus)
+            {
+                aggregator.SendMessage(result.ResultMessage);
+                GetInfo(ProdId);
+
+            }
+            else
+            {
+                System.Windows.MessageBox.Show(result.ResultMessage);
+            }
+
+
+        }
+
+        private void AddInfo()
+        {
+            DialogParameters dialogParameters = new DialogParameters
+            {
+                { "ProdId",ProdId},
+                {"TestProcessId" ,TestModelItem[0].TestProcessId}
+
+            };
+            dialog.ShowDialog("TestItemAddView", dialogParameters, result =>
+            {
+                aggregator.SendMessage("新增成功!");
+                GetInfo(ProdId);
+
+            });
+        }
+
 
         private void GetInfo(string parameter)
         {
@@ -48,10 +92,12 @@ namespace SicoreQMS.ViewModels
             {
                 return;
             }
+            ProdId = parameter;
 
             using (var context = new SicoreQMSEntities1())
             {
                 var productInfo = context.ProdInfo.SingleOrDefault(b => b.Id == parameter);
+
                 if (productInfo != null)
                 {
                     this.ProdName = productInfo.ProdName;
@@ -60,12 +106,49 @@ namespace SicoreQMS.ViewModels
                     this.ProdNumber = productInfo.ProdNumber;
                     this.Prodstandard = productInfo.Prodstandard;
                     this.TestLot = productInfo.TestLot;
+
+                    try
+                    {
+                        var a = productInfo.TestType.Split(';');
+                        TestTypes[0].IsCheck = true;
+                        foreach (var item in a)
+                        {
+                            //如果item在list中,list为true
+                            var result = TestTypes.Any(p => p.Label == item);
+                            if (result)
+                            {
+                                TestTypes.Where(p => p.Label == item).FirstOrDefault().IsCheck = true;
+                            }
+                        }
+                    }
+                    catch (NullReferenceException)
+                    {
+
+                        
+                    }
+                    
+              
+                    //拆分
+
+
                     GetTemplate(parameter);
+                }
+
+
+                else
+                {
+                    aggregator.SendMessage("未查询到该产品");
+                }
+                var testProcess = context.TestProcess.SingleOrDefault(p => p.ProdId == parameter);
+                if (testProcess.AuditStatus == true)
+                {
+                    CanAduit = false;
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show("未查询到该产品");
+                    CanAduit = true;
                 }
+
 
             }
 
@@ -83,16 +166,60 @@ namespace SicoreQMS.ViewModels
             return;
         }
 
-        private void CreateTestProcess(string modelId)
+        private void UpdateTestProcess()
         {
 
             using (var context = new SicoreQMSEntities1())
             {
-              
+                var testProcessid = "";
+                foreach (var item in TestModelItem)
+                {
+                    var id = item.Id;
+                    var testProcessItem = context.TestProcessItem.SingleOrDefault(p => p.Id == id);
+                    if (testProcessItem != null)
+                    {
+                        testProcessItem.ExperimentItemNo = item.ExperimentItemNo;
+                        testProcessItem.ExperimentName = item.ExperimentName;
+                        testProcessItem.ExperimentStandard = item.ExperimentStandard;
+                        testProcessItem.ExperimentConditions = item.ExperimentConditions;
+                        testProcessItem.ExperimentQty = item.ExperimentQty;
+                        testProcessItem.ExperimentItemPassQty = item.ExperimentItemPassQty;
+                        testProcessItem.ExperimentNo = item.ExperimentNo;
+                        testProcessItem.ExperimentUser = item.ExperimentUser;
+                        testProcessItem.ExperimentBasis = item.ExperimentBasis;
+                        testProcessItem.ExperimentType = item.ExperimentType;
+                        testProcessItem.EstimatedCompletionTime = item.EstimatedCompletionTime;
+                        testProcessItem.ExperimentSatrtTime = item.ExperimentSatrtTime;
+                        testProcessItem.ExperimentEndTime = item.ExperimentEndTime;
+                        testProcessItem.ExperimentStatus = item.ExperimentStatus;
+                        testProcessItem.Remark = item.Remark;
+                        testProcessItem.IsDeleted = item.IsDeleted;
+                        testProcessItem.CreateUser = item.CreateUser;
+                        testProcessItem.CreateDate = item.CreateDate;
+                        testProcessItem.ModifyUserNo = item.ModifyUserNo;
+                        testProcessItem.ModifyTime = item.ModifyTime;
+                        testProcessItem.ProdId = item.ProdId;
+                        testProcessItem.AuditStatus = true;
+                    }
+                    else
+                    {
+                        item.Id = Guid.NewGuid().ToString();
+                        item.AuditStatus = true;
+                        context.TestProcessItem.Add(item);
+                    }
+                    testProcessid = item.TestProcessId;
 
+
+                    //context.TestProcessItem.Add(item);
+                }
+
+                var testProcess = context.TestProcess.SingleOrDefault(p => p.Id == testProcessid);
+                testProcess.AuditStatus = true;
                 context.SaveChanges();
 
             }
+            aggregator.SendMessage("审核成功!");
+            GetInfo(ProdId);
             return;
 
         }
@@ -106,7 +233,7 @@ namespace SicoreQMS.ViewModels
             TestModelItem.Clear();
             using (var contxt = new SicoreQMSEntities1())
             {
-                var items = contxt.TestProcessItem.Where(p => p.ProdId== obj).OrderByDescending(p => p.ExperimentItemNo).ToList();
+                var items = contxt.TestProcessItem.Where(p => p.ProdId == obj && p.IsDeleted == false).OrderBy(p => p.ExperimentItemNo).ToList();
 
                 if (items.Count == 0)
                 {
@@ -123,9 +250,17 @@ namespace SicoreQMS.ViewModels
         }
         #region 属性
 
+        private bool _canAduit;
+
+        public bool CanAduit
+        {
+            get { return _canAduit; }
+            set { SetProperty(ref _canAduit, value); }
+        }
+
         public DelegateCommand<string> CheckCommand { get; private set; }
 
-        public DelegateCommand<string> OnSumbit { get; private set; }
+        public DelegateCommand OnSumbit { get; private set; }
 
         private ObservableCollection<SelectBasic> _productNameBasic;
 
@@ -135,13 +270,19 @@ namespace SicoreQMS.ViewModels
             set { _productNameBasic = value; RaisePropertyChanged(); }
         }
 
-        public DelegateCommand<string> HandelSelect { get; set; }
+        public DelegateCommand<string> HandleSelect { get; set; }
 
+        public DelegateCommand<TestProcessItem> HandleDel { get; set; }
+
+        public DelegateCommand HandleAdd { get; set; }
         private ObservableCollection<SelectBasic> _modelType;
 
         private ObservableCollection<TestProcessItem> _testModelItem;
 
         private string _prodName;
+
+
+        public string ProdId { get; set; }
 
         public string ProdName
         {
@@ -212,6 +353,8 @@ namespace SicoreQMS.ViewModels
             get { return _testTypes; }
             set { _testTypes = value; RaisePropertyChanged(); }
         }
+
+        public bool KeepAlive { get; set; } = false;
         #endregion
 
         void CreateData()
@@ -222,16 +365,7 @@ namespace SicoreQMS.ViewModels
             TestTypes.Add(new CheckBasic() { Label = "研发验证", IsCheck = false });
             TestTypes.Add(new CheckBasic() { Label = "其它", IsCheck = false });
 
-            using (var context = new SicoreQMSEntities1())
-            {
-                var selectItem = context.TestModelBasic.ToList();
 
-                foreach (var item in selectItem)
-                {
-                    ModelType.Add(item.GetSelection());
-                }
-
-            }
 
 
         }

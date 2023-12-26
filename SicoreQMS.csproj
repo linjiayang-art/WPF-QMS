@@ -181,6 +181,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\DBHelper.cs" />
     <Compile Include="Common\Events\MessageEvent.cs" />
     <Compile Include="Common\IConfigureService.cs" />
     <Compile Include="Common\Interface\IDialogHostAware.cs" />
@@ -215,6 +216,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>OperationModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Models\Operation\proc_QAExperimentReport_Result.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Common\Models\Operation\ProdInfo.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
@@ -254,6 +258,7 @@
     <Compile Include="Extensions\PrismManger.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Service\LoginService.cs" />
+    <Compile Include="Service\PrintService.cs" />
     <Compile Include="Service\ProdBasicService.cs" />
     <Compile Include="Service\ProdProcessService.cs" />
     <Compile Include="Service\TestProcessService.cs" />
@@ -262,6 +267,7 @@
     <Compile Include="ViewModels\DialogModels\LotSplitViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestProcessItemUpdateViewModel.cs" />
+    <Compile Include="ViewModels\DialogModels\TsetItemAddViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PrintModels\ProdProcessPrintViewModel.cs" />
@@ -279,6 +285,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\TestProcessItemUpdateView.xaml.cs">
       <DependentUpon>TestProcessItemUpdateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\TestItemAddView.xaml.cs">
+      <DependentUpon>TestItemAddView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\IndexView.xaml.cs">
       <DependentUpon>IndexView.xaml</DependentUpon>
@@ -323,6 +332,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\TestProcessItemUpdateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\TestItemAddView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -382,6 +395,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Prints\ProdProcess.rdlc" />
+    <EmbeddedResource Include="Prints\TestProcess.rdlc" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

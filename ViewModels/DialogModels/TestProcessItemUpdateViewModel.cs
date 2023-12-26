@@ -4,6 +4,8 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using SicoreQMS.Common.Interface;
 using SicoreQMS.Common.Models.Operation;
+using SicoreQMS.Common.Server;
+using SicoreQMS.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace SicoreQMS.ViewModels.DialogModels
 {
@@ -28,8 +31,7 @@ namespace SicoreQMS.ViewModels.DialogModels
         public TestProcessItemUpdateViewModel()
         {
             DialogHostName = "Root";
-            SaveCommand = new DelegateCommand(Save);
-            CancelCommand = new DelegateCommand(Cancel);
+      
 
             BtnStart = new DelegateCommand(ProcessStart, CanStartExecute);
             BtnEnd = new DelegateCommand(ProcessEnd, CanEndExecute);
@@ -37,16 +39,7 @@ namespace SicoreQMS.ViewModels.DialogModels
             Title = "试验流程卡进度更新";
         }
 
-        void Save()
-        {
-
-        }
-        void Cancel()
-        {
-            
-
-        }
-
+ 
         /// <summary>
         /// 窗口关闭
         /// </summary>
@@ -60,46 +53,35 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         private void ProcessEnd()
         {
-            using (var context = new SicoreQMSEntities1())
+            var result_info = TestProcessService.EndTest(id: Id, passQty: PassQty, remark: Remark);
+            if (result_info.ResultStatus == false)
             {
-                var item = context.TestProcessItem.Find(Id);
-                if (item.ExperimentQty < this.PassQty)
-                {
-                    MessageBox.Show("产出数大于投入数!");
-                    return;
-                }
-                item.ExperimentItemPassQty = this.PassQty;
-                item.ExperimentStatus = 2;
-                item.Remark += "完成时备注:" + this.Remark;
-                item.ExperimentEndTime = DateTime.Now;
-                item.EstimatedCompletionTime = DateTime.Now;
-
-                context.SaveChanges();
+                System.Windows.Forms.MessageBox.Show(result_info.ResultMessage);
+                return;
             }
-            ButtonResult result = ButtonResult.None;
 
-            RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(result));
+
+            var dialogResult = new Prism.Services.Dialogs.DialogResult(ButtonResult.OK, new DialogParameters { { "key", result_info.ResultMessage } });
+
+            RaiseRequestClose(dialogResult);
 
         }
         private void ProcessStart()
         {
-            using (var context = new SicoreQMSEntities1())
+            var result_info= TestProcessService.StartTset(id:Id,passQty:PassQty,remark: Remark);
+            
+            if (result_info.ResultStatus==false)
             {
-                var item = context.TestProcessItem.Find(Id);
-                if (item.ExperimentQty < this.PassQty)
-                {
-                    MessageBox.Show("产出数大于投入数!");
-                    return;
-                }
-                item.ExperimentItemPassQty = this.PassQty;
-                item.ExperimentStatus = 1;
-                item.Remark += this.Remark;
-                item.ExperimentSatrtTime = DateTime.Now;
-                context.SaveChanges();
+                System.Windows.Forms.MessageBox.Show(result_info.ResultMessage);
+                return;
             }
-            ButtonResult result = ButtonResult.None;
 
-            RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(result));
+            var dialogResult = new Prism.Services.Dialogs.DialogResult(ButtonResult.OK, new DialogParameters { { "key", result_info.ResultMessage } });
+
+       
+
+            RaiseRequestClose(dialogResult);
+
         }
 
 

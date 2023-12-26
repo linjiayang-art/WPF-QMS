@@ -73,20 +73,17 @@ namespace SicoreQMS.ViewModels
         void CreateMenuBar()
         {
             MenuBars.Add(new MenuBar() { Icon = "Home", Title = "首页", NameSpace = "IndexView" });
+
             MenuBars.Add(new MenuBar() { Icon = "WrenchCheck", Title = "实验需求申请", NameSpace = "TestRequestView" });
+            MenuBars.Add(new MenuBar() { Icon = "PencilBoxMultiple", Title = "试验流程卡审核编制", NameSpace = "TestCreateView" });
 
             MenuBars.Add(new MenuBar() { Icon = "PencilBoxMultiple", Title = "生产流程卡进度更新", NameSpace = "ProdProcessUpdateView" });
 
             MenuBars.Add(new MenuBar() { Icon = "PencilBoxMultiple", Title = "试验流程卡进度更新", NameSpace = "TestProcessUpdateView" });
-
-            MenuBars.Add(new MenuBar() { Icon = "PencilBoxMultiple", Title = "试验流程卡编制", NameSpace = "TestCreateView" });
-
-            
-            MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "生产流程卡编制", NameSpace = "ProdProcessCreateView" });
-          
-            MenuBars.Add(new MenuBar() { Icon = "PrinterPosOutline", Title = "生产流程卡打印", NameSpace = "ProdProcessPrintView" });
-            MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "生产流程卡模板维护", NameSpace = "ProdModelMaintainView" });
-            MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "设置", NameSpace = "SettingsView" });
+            //MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "生产流程卡编制", NameSpace = "ProdProcessCreateView" });
+            //MenuBars.Add(new MenuBar() { Icon = "PrinterPosOutline", Title = "生产流程卡打印", NameSpace = "ProdProcessPrintView" });
+            //MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "生产流程卡模板维护", NameSpace = "ProdModelMaintainView" });
+            //MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "设置", NameSpace = "SettingsView" });
 
         }
         /// <summary>
@@ -95,9 +92,9 @@ namespace SicoreQMS.ViewModels
 
         public void Configure()
         {
-     
+   
             CreateMenuBar();
-            regionManager.Regions[PrismManger.MainViewRegionName].RequestNavigate("TestProcessUpdateView");
+            regionManager.Regions[PrismManger.MainViewRegionName].RequestNavigate("ProdProcessUpdateView");
         }
     }
 }

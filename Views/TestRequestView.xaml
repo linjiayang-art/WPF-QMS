@@ -18,7 +18,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="200" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <TextBlock
             Padding="10,10"
@@ -32,38 +34,11 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <DockPanel>
-                <TextBlock
-                    Padding="10"
-                    FontSize="20"
-                    Text="试验类别" />
-                <TextBlock
-                    Margin="10"
-                    materialDesign:HintAssist.HelperText="试验类别:"
-                    materialDesign:HintAssist.Hint="试验类别">
-                    <ItemsControl x:Name="cbt" ItemsSource="{Binding TestTypes}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <CheckBox
-                                    Margin="0,0,10,0"
-                                    Command="{Binding DataContext.CheckCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
-                                    CommandParameter="{Binding Label}"
-                                    Content="{Binding Label}"
-                                    IsChecked="{Binding IsCheck}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </TextBlock>
 
-            </DockPanel>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <TextBox
+                    Width="250"
                     MinWidth="100"
                     MaxWidth="5000"
                     Margin="10"
@@ -75,6 +50,7 @@
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding ProdName}" />
                 <TextBox
+                    Width="250"
                     MinWidth="100"
                     MaxWidth="5000"
                     Margin="10"
@@ -110,7 +86,7 @@
                     Text="{Binding Qty}" />
 
 
-                <Button Command="{Binding BtnSumbit}" Content="提交申请" />
+
 
 
             </StackPanel>
@@ -118,6 +94,7 @@
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -166,8 +143,42 @@
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding Prodstandard}" />
             </StackPanel>
+
         </Grid>
 
+        <Grid Grid.Row="3" Margin="10">
+            <DockPanel Grid.Column="3">
+                <TextBlock
+                    Padding="10"
+                    FontSize="20"
+                    Text="试验类别" />
+                <TextBlock
+                    Margin="10"
+                    materialDesign:HintAssist.HelperText="试验类别:"
+                    materialDesign:HintAssist.Hint="试验类别">
+                    <ItemsControl x:Name="cbt" ItemsSource="{Binding TestTypes}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox
+                                    Margin="0,0,10,0"
+                                    Command="{Binding DataContext.CheckCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding Label}"
+                                    Content="{Binding Label}"
+                                    IsChecked="{Binding IsCheck}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TextBlock>
 
+            </DockPanel>
+        </Grid>
+        <Grid Grid.Row="4" Margin="10">
+            <Button Command="{Binding BtnSumbit}" Content="提交申请" />
+        </Grid>
     </Grid>
 </UserControl>

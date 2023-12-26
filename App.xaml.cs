@@ -57,6 +57,8 @@ namespace SicoreQMS
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
 
+            containerRegistry.RegisterDialog<TestItemAddView, TestItemAddViewModel>();
+
             containerRegistry.RegisterDialog<LoginView, LoginViewModel>();
 
             containerRegistry.RegisterDialog<TestProcessItemUpdateView, TestProcessItemUpdateViewModel>();

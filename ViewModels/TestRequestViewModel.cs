@@ -48,9 +48,23 @@ namespace SicoreQMS.ViewModels
                 //   MessageBox.Show("请完善数据后再提交");
                 return;
             }
+            TestTypeStr = "";
 
+            foreach (var item in TestTypes)
+            {
+
+                if (item.IsCheck == true)
+                {
+                    TestTypeStr += item.Label + ";";
+                }
+
+            }
+
+            //去除TestTypeStr最后一个分号
+            TestTypeStr = TestTypeStr.Substring(0, TestTypeStr.Length - 1);
+      
             bool result = ProdBasicService.CreateProdBasic(prodName: this.ProdName, prodType: this.ProdType,
-                        qty: this.Qty, prodLot: this.ProdLot, testLot: this.TestLot, prodNumber: this.ProdNumber,prodstandard:this.Prodstandard);
+                        qty: this.Qty, prodLot: this.ProdLot, testLot: this.TestLot, prodNumber: this.ProdNumber,prodstandard:this.Prodstandard,testType:this.TestTypeStr);
 
             if (result)
             {
@@ -94,6 +108,7 @@ namespace SicoreQMS.ViewModels
             set { SetProperty(ref _prodstandard, value); }
         }
 
+        public string TestTypeStr { get; set; }
         private string _prodNumber;
 
         public string ProdNumber

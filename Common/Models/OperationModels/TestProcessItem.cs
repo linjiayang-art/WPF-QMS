@@ -17,11 +17,11 @@ namespace SicoreQMS.Common.Models.Operation
         {
             get
             {
-                if (ExperimentStatus== 0)
+                if (ExperimentStatus== 0&& AuditStatus == true)
                 {
                     return true;
                 }
-                if (ExperimentStatus == 1)
+                if (ExperimentStatus == 1 && AuditStatus == true)
                 {
                     return true;
                 }
@@ -32,9 +32,24 @@ namespace SicoreQMS.Common.Models.Operation
             set { }
         }
 
+        public bool IsAuditButtonEnabled
+        {
+            get
+            {
+                if (AuditStatus == false)
+                {
+                    return true;
+                }
+              
+                else { return false; }
+
+            }
+            set { }
+        }
+
         public TestProcessItem()
         {
-           
+           AuditStatus = false;
             ExperimentStatus = 0;
             IsDeleted = false;
             CreateDate = DateTime.Now;

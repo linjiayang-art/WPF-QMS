@@ -40,5 +40,8 @@ namespace SicoreQMS.Common.Models.Operation
         public string ModifyUserNo { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
         public string ProdId { get; set; }
+        public Nullable<bool> AuditStatus { get; set; }
+        public string StartUser { get; set; }
+        public string EndUser { get; set; }
     }
 }

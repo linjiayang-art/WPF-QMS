@@ -1,4 +1,5 @@
 ﻿using Prism.Events;
+using SicoreQMS.Common.Server;
 using SicoreQMS.Extensions;
 using System.Windows;
 using System.Windows.Input;
@@ -38,6 +39,8 @@ namespace SicoreQMS.Views
             };
             btnClose.Click += (s, e) =>
             {
+            
+               
                 this.Close();
             };
             colorZone.MouseMove += (s, e) =>
@@ -49,12 +52,10 @@ namespace SicoreQMS.Views
             };
             colorZone.MouseDoubleClick += (s, e) =>
             {
-                if (this.WindowState == WindowState.Maximized)
-                {
+                if (this.WindowState == WindowState.Normal)
+                    this.WindowState = WindowState.Maximized;
+                else
                     this.WindowState = WindowState.Normal;
-                    return;
-                }
-                this.WindowState = WindowState.Maximized;
 
             };
         }

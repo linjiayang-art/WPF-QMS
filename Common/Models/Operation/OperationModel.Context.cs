@@ -12,6 +12,8 @@ namespace SicoreQMS.Common.Models.Operation
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class SicoreQMSEntities1 : DbContext
     {
@@ -36,5 +38,14 @@ namespace SicoreQMS.Common.Models.Operation
         public virtual DbSet<TestModelItem> TestModelItem { get; set; }
         public virtual DbSet<TestProcessItem> TestProcessItem { get; set; }
         public virtual DbSet<UserInfo> UserInfo { get; set; }
+    
+        public virtual ObjectResult<proc_QAExperimentReport_Result> proc_QAExperimentReport(string lotNo)
+        {
+            var lotNoParameter = lotNo != null ?
+                new ObjectParameter("lotNo", lotNo) :
+                new ObjectParameter("lotNo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<proc_QAExperimentReport_Result>("proc_QAExperimentReport", lotNoParameter);
+        }
     }
 }

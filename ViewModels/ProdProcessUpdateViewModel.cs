@@ -141,7 +141,7 @@ namespace SicoreQMS.ViewModels
             {
                 return;
             }
-         
+
                 ProdProcessId = parameter;
 
                 using (var context = new SicoreQMSEntities1())

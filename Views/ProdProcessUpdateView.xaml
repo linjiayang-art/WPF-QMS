@@ -166,6 +166,22 @@
                     Binding="{Binding Id}"
                     Header="ID"
                     Visibility="Hidden" />
+                <DataGridTemplateColumn Width="120" Header="操作">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                Command="{Binding DataContext.UpdateProgressCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                CommandParameter="{Binding}"
+                                Content="进度更新"
+                                IsEnabled="{Binding IsButtonEnabled, Mode=OneWay}"
+                                Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
+                            <!--<StackPanel Orientation="Horizontal">
+                                    <Border Width="10" Height="10" Background="Aqua"/>
+                                </StackPanel>-->
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn
                     Width="60"
                     Binding="{Binding ModelSort}"
@@ -228,22 +244,7 @@
                     Binding="{Binding NowStatus}"
                     Header="当前状态"
                     IsReadOnly="True" />
-                <DataGridTemplateColumn Width="120" Header="操作">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button
-                                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                                Command="{Binding DataContext.UpdateProgressCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
-                                CommandParameter="{Binding}"
-                                Content="进度更新"
-                                IsEnabled="{Binding IsButtonEnabled, Mode=OneWay}"
-                                Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
-                            <!--<StackPanel Orientation="Horizontal">
-                                    <Border Width="10" Height="10" Background="Aqua"/>
-                                </StackPanel>-->
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+
             </DataGrid.Columns>
         </DataGrid>
 
