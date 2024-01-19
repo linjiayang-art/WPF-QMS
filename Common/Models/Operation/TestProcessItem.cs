@@ -43,5 +43,6 @@ namespace SicoreQMS.Common.Models.Operation
         public Nullable<bool> AuditStatus { get; set; }
         public string StartUser { get; set; }
         public string EndUser { get; set; }
+        public Nullable<int> ExperimentItemRank { get; set; }
     }
 }

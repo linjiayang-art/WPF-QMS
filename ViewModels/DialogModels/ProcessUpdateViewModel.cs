@@ -3,6 +3,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
+using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
 using SicoreQMS.Extensions;
 using SicoreQMS.Service;
@@ -27,6 +28,7 @@ namespace SicoreQMS.ViewModels.DialogModels
             IsStartEnabled = false;
             IsEndEnabled = false;
             this.aggregator = aggregator;
+            EquipemtList=Service.EquipmentService.GetEquipmentBasic();
         }
 
 
@@ -55,6 +57,31 @@ namespace SicoreQMS.ViewModels.DialogModels
         public DelegateCommand BtnEnd { get; set; }
 
         #region  属性
+
+
+        private string _equipmentId;
+
+        public string EquipmentId
+        {
+            get { return _equipmentId; }
+            set
+            {
+                SetProperty(ref _equipmentId, value);
+            }
+        }
+
+
+
+        public ObservableCollection<SelectBasic> _equipemtList { get; set; }
+        public ObservableCollection<SelectBasic> EquipemtList
+        {
+            get { return _equipemtList; }
+            set
+            {
+                _equipemtList = value; RaisePropertyChanged();
+            }
+        }
+
 
 
         private string _beginRemark;
@@ -158,6 +185,11 @@ namespace SicoreQMS.ViewModels.DialogModels
                 aggregator.SendMessage(result.ResultMessage);
                 return;
             }
+            if (!string.IsNullOrEmpty(EquipmentId))
+            {
+                var a = EquipmentService.RecordEquipmentLog(EquipmentId, "生产流程卡", ProcessType);
+
+            }
 
             ButtonResult btnResult = ButtonResult.None;
 
@@ -172,12 +204,21 @@ namespace SicoreQMS.ViewModels.DialogModels
         private void ProcessStart()  
         {
  
-            var result=  ProdProcessService.BeginProcess(id: Id, qty: InputQty,remark:BeginRemark);
+            var result=  ProdProcessService.BeginProcess(id: Id, qty: InputQty,equipmentId:EquipmentId,remark:BeginRemark);
             if (result.ResultStatus==false)
             {
                 aggregator.SendMessage(result.ResultMessage);
                 return;
             }
+            //设备记录
+            if (!string.IsNullOrEmpty(EquipmentId))
+            {
+                var a = EquipmentService.RecordEquipmentLog(EquipmentId, "生产流程卡", ProcessType);
+               
+            }
+            
+
+
 
             ButtonResult btnResult = ButtonResult.None;
 

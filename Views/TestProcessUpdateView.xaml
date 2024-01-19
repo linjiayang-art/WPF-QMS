@@ -41,7 +41,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="800" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="50" />
 
         </Grid.RowDefinitions>
         <TextBlock
@@ -192,10 +193,10 @@
 
         <Grid Grid.Row="2">
             <DataGrid
-                x:Name="dgvProcessModel"
+                x:Name="TestProcess"
                 Width="auto"
                 Height="auto"
-                MaxHeight="600"
+                MaxHeight="450"
                 Margin="10,10"
                 materialDesign:DataGridAssist.CellPadding="4 2 2 2"
                 materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
@@ -218,7 +219,7 @@
                                 <Button
                                     Width="90"
                                     materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                                    Command="{Binding DataContext.BtnCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                    Command="{Binding DataContext.BtnCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
                                     CommandParameter="{Binding}"
                                     Content="进度更新"
                                     FontSize="13"
@@ -267,7 +268,6 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn
-                        Width="50"
                         Binding="{Binding ExperimentQty}"
                         CanUserSort="False"
                         Header="试验数量"
@@ -283,18 +283,18 @@
                         CanUserSort="False"
                         Header="试验编号"
                         IsReadOnly="True" />
-                    <DataGridTextColumn
+                    <!--<DataGridTextColumn
                         Binding="{Binding ExperimentUser}"
                         CanUserSort="False"
                         Header="试验人"
-                        IsReadOnly="True" />
+                        IsReadOnly="True" />-->
                     <DataGridTextColumn
-                        Binding="{Binding ExperimentSatrtTime}"
+                        Binding="{Binding ExperimentSatrtTime, StringFormat=yyyy-MM-dd}"
                         CanUserSort="False"
                         Header="试验开始时间"
                         IsReadOnly="True" />
                     <DataGridTextColumn
-                        Binding="{Binding ExperimentEndTime}"
+                        Binding="{Binding ExperimentEndTime, StringFormat=yyyy-MM-dd}"
                         CanUserSort="False"
                         Header="试验结束时间"
                         IsReadOnly="True" />
@@ -317,7 +317,9 @@
 
         </Grid>
 
-
+        <Grid Grid.Row="3">
+            <StackPanel />
+        </Grid>
 
 
     </Grid>

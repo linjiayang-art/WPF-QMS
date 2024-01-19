@@ -10,6 +10,11 @@
     Height="600"
     Background="White"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -90,7 +95,7 @@
                     AcceptsReturn="True"
                     IsEnabled="False"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding TestItem.ExperimentSatrtTime}"
+                    Text="{Binding TestItem.ExperimentSatrtTime, StringFormat=yyyy-MM-dd}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
                 <TextBox
@@ -112,31 +117,49 @@
 
 
         <Grid Grid.Row="2" Margin="25">
-            <StackPanel Orientation="Horizontal">
-                <TextBox
-                    MinWidth="180"
-                    Margin="10"
-                    VerticalAlignment="Center"
-                    materialDesign:HintAssist.HelperText="合格数量"
-                    materialDesign:HintAssist.Hint="合格数量"
-                    AcceptsReturn="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding PassQty}"
-                    TextWrapping="Wrap"
-                    VerticalScrollBarVisibility="Auto" />
+            <StackPanel>
 
-                <TextBox
-                    MinWidth="180"
+                <ComboBox
                     Margin="10"
-                    VerticalAlignment="Center"
-                    materialDesign:HintAssist.HelperText="新增备注"
-                    materialDesign:HintAssist.Hint="新增备注"
-                    AcceptsReturn="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding Remark}"
-                    TextWrapping="Wrap"
-                    VerticalScrollBarVisibility="Auto" />
+                    materialDesign:HintAssist.Hint="请选择设备类型"
+                    DisplayMemberPath="Label"
+                    IsEditable="True"
+                    IsTextSearchEnabled="True"
+                    ItemsSource="{Binding EquipemtList}"
+                    SelectedValue="{Binding EquipmentId, Mode=TwoWay}"
+                    SelectedValuePath="Value"
+                    Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                    TextSearch.TextPath="Label"
+                    Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        MinWidth="180"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.HelperText="合格数量"
+                        materialDesign:HintAssist.Hint="合格数量"
+                        AcceptsReturn="True"
+                        IsEnabled="{Binding IsEndEnabled}"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        Text="{Binding PassQty}"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto"
+                        Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                    <TextBox
+                        MinWidth="180"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.HelperText="新增备注"
+                        materialDesign:HintAssist.Hint="新增备注"
+                        AcceptsReturn="True"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        Text="{Binding Remark}"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto" />
+                </StackPanel>
             </StackPanel>
+
 
         </Grid>
         <StackPanel

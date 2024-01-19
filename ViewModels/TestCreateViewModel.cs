@@ -58,7 +58,7 @@ namespace SicoreQMS.ViewModels
             if (result.ResultStatus)
             {
                 aggregator.SendMessage(result.ResultMessage);
-                GetInfo(ProdId);
+                GetInfo(TestProcessId);
 
             }
             else
@@ -79,8 +79,12 @@ namespace SicoreQMS.ViewModels
             };
             dialog.ShowDialog("TestItemAddView", dialogParameters, result =>
             {
-                aggregator.SendMessage("新增成功!");
-                GetInfo(ProdId);
+                if (result.Result == ButtonResult.OK)
+                {
+                    aggregator.SendMessage("新增成功!");
+                    GetInfo(TestProcessId);
+                }
+                
 
             });
         }
@@ -92,11 +96,17 @@ namespace SicoreQMS.ViewModels
             {
                 return;
             }
-            ProdId = parameter;
+            TestProcessId=parameter;
+
+
 
             using (var context = new SicoreQMSEntities1())
             {
-                var productInfo = context.ProdInfo.SingleOrDefault(b => b.Id == parameter);
+
+                var testProcee= context.TestProcess.SingleOrDefault(p => p.Id == parameter);
+
+                ProdId = testProcee.ProdId;
+                var productInfo = context.ProdInfo.SingleOrDefault(b => b.Id == ProdId );
 
                 if (productInfo != null)
                 {
@@ -109,11 +119,20 @@ namespace SicoreQMS.ViewModels
 
                     try
                     {
-                        var a = productInfo.TestType.Split(';');
-                        TestTypes[0].IsCheck = true;
+                        var a = testProcee.TestType.Split(';');
+
+                        //TestTypes[0].IsCheck = true;
+
+                        foreach (var testType in TestTypes)
+                        {
+                            testType.IsCheck = false;
+                        }
+
                         foreach (var item in a)
                         {
+
                             //如果item在list中,list为true
+                            //测试项从testProcess中获取
                             var result = TestTypes.Any(p => p.Label == item);
                             if (result)
                             {
@@ -126,10 +145,8 @@ namespace SicoreQMS.ViewModels
 
                         
                     }
-                    
-              
-                    //拆分
 
+                    //拆分
 
                     GetTemplate(parameter);
                 }
@@ -139,7 +156,7 @@ namespace SicoreQMS.ViewModels
                 {
                     aggregator.SendMessage("未查询到该产品");
                 }
-                var testProcess = context.TestProcess.SingleOrDefault(p => p.ProdId == parameter);
+                var testProcess = context.TestProcess.SingleOrDefault(p => p.Id == parameter);
                 if (testProcess.AuditStatus == true)
                 {
                     CanAduit = false;
@@ -219,7 +236,7 @@ namespace SicoreQMS.ViewModels
 
             }
             aggregator.SendMessage("审核成功!");
-            GetInfo(ProdId);
+            GetInfo(TestProcessId);
             return;
 
         }
@@ -233,7 +250,7 @@ namespace SicoreQMS.ViewModels
             TestModelItem.Clear();
             using (var contxt = new SicoreQMSEntities1())
             {
-                var items = contxt.TestProcessItem.Where(p => p.ProdId == obj && p.IsDeleted == false).OrderBy(p => p.ExperimentItemNo).ToList();
+                var items = contxt.TestProcessItem.Where(p => p.ProdId ==ProdId && p.IsDeleted == false&&p.TestProcessId== obj).OrderBy(p => p.ExperimentItemRank).ToList();
 
                 if (items.Count == 0)
                 {
@@ -281,6 +298,7 @@ namespace SicoreQMS.ViewModels
 
         private string _prodName;
 
+        public string TestProcessId { get; set; }
 
         public string ProdId { get; set; }
 

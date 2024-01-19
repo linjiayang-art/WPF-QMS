@@ -175,48 +175,60 @@ namespace SicoreQMS.Service
 
         public static void CreateTestProcess(ProdInfo prodInfo)
         {
-            using (var context = new SicoreQMSEntities1())
+            var testType = prodInfo.TestType;
+
+            string[] testTypeItems = testType.Split(';');
+
+            foreach (var testTypeitem in testTypeItems)
             {
-                TestProcess testProcess = new TestProcess()
+                using (var context = new SicoreQMSEntities1())
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    ProdId = prodInfo.Id,
-                    ModelTypeId = "CE282394-1E58-4A38-BA00-C87D512617D7",//默认军工
-                    CreateUser = AppSession.UserID,
-                    ProdName = prodInfo.ProdName,
-                    ProdType = prodInfo.ProdType,
-                    ProdLot = prodInfo.ProdLot,
-                    Prodstandard = prodInfo.Prodstandard,
-                    TestLot = prodInfo.TestLot,
-                    TestType = "",
-                    ProdNumber = prodInfo.ProdNumber,
-                };
-
-                context.TestProcess.Add(testProcess);
-                context.SaveChanges();
-
-                var items = context.TestModelItem.Where(p => p.ModelId == "CE282394-1E58-4A38-BA00-C87D512617D7").OrderByDescending(p => p.ExperimentItemNo).ToList();
-                foreach (var item in items)
-                {
-                    TestProcessItem testProcessitem = new TestProcessItem()
+                    TestProcess testProcess = new TestProcess()
                     {
                         Id = Guid.NewGuid().ToString(),
                         ProdId = prodInfo.Id,
-                        TestProcessId = testProcess.Id,
-                        ModelId = item.Id,
-                        ExperimentItemNo = item.ExperimentItemNo,
-                        ExperimentName = item.ExperimentItemName,
-                        ExperimentStandard = item.ExperimentItemStandard,
-                        ExperimentConditions = item.ExperimentItemConditions,
-                        ExperimentNo = item.ExperimentItemNumber,
-                        ExperimentQty = item.ExperimentItemQty,
+                        ModelTypeId = "CE282394-1E58-4A38-BA00-C87D512617D7",//默认军工
+                        CreateUser = AppSession.UserID,
+                        ProdName = prodInfo.ProdName,
+                        ProdType = prodInfo.ProdType,
+                        ProdLot = prodInfo.ProdLot,
+                        Prodstandard = prodInfo.Prodstandard,
+                        TestLot = prodInfo.TestLot,
+                        TestType = testTypeitem,
+                        ProdNumber = prodInfo.ProdNumber,
                     };
-                    context.TestProcessItem.Add(testProcessitem);
+
+                    context.TestProcess.Add(testProcess);
+                    context.SaveChanges();
+
+                    var items = context.TestModelItem.Where(p => p.ModelId == "CE282394-1E58-4A38-BA00-C87D512617D7").OrderByDescending(p => p.ExperimentItemRank).ToList();
+                    foreach (var item in items)
+                    {
+                        TestProcessItem testProcessitem = new TestProcessItem()
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            ProdId = prodInfo.Id,
+                            TestProcessId = testProcess.Id,
+                            ModelId = item.Id,
+                            ExperimentItemNo = item.ExperimentItemNo,
+                            ExperimentName = item.ExperimentItemName,
+                            ExperimentStandard = item.ExperimentItemStandard,
+                            ExperimentConditions = item.ExperimentItemConditions,
+                            ExperimentNo = item.ExperimentItemNumber,
+                            ExperimentQty = item.ExperimentItemQty,
+                            ExperimentItemRank=item.ExperimentItemRank
+                        };
+                        context.TestProcessItem.Add(testProcessitem);
+                    }
+
+                    context.SaveChanges();
+
                 }
 
-                context.SaveChanges();
 
             }
+
+
 
 
         }

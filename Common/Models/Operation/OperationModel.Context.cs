@@ -38,6 +38,9 @@ namespace SicoreQMS.Common.Models.Operation
         public virtual DbSet<TestModelItem> TestModelItem { get; set; }
         public virtual DbSet<TestProcessItem> TestProcessItem { get; set; }
         public virtual DbSet<UserInfo> UserInfo { get; set; }
+        public virtual DbSet<Equipment> Equipment { get; set; }
+        public virtual DbSet<EquipmentStatus> EquipmentStatus { get; set; }
+        public virtual DbSet<UsageRecord> UsageRecord { get; set; }
     
         public virtual ObjectResult<proc_QAExperimentReport_Result> proc_QAExperimentReport(string lotNo)
         {

@@ -14,7 +14,7 @@ namespace SicoreQMS.Service
     public class ProdProcessService
     {
 
-        public static ResultInfo BeginProcess(string id,int qty, string remark = "")
+        public static ResultInfo BeginProcess(string id, int qty, string equipmentId, string remark = "")
         {
             var resultInfo = new ResultInfo();
 
@@ -51,9 +51,12 @@ namespace SicoreQMS.Service
                 prodprocess.CurrentProcess = prodProcessItem.ModelSort;
 
                 //更新流程卡进程
-                prodProcessItem.Operator=AppSession.UserID; 
+                prodProcessItem.Operator=AppSession.UserID;
+                prodProcessItem.OperatorName = AppSession.UserName;
+                prodProcessItem.EquipmentId= equipmentId;
                 prodProcessItem.BeginRemark = remark;
                 prodProcessItem.InputQty = qty;
+                prodProcessItem.StartDate = DateTime.Now;
                 prodProcessItem.ItemStatus = 1;//状态变更为正在进行
                 context.SaveChanges();
 
@@ -108,7 +111,7 @@ namespace SicoreQMS.Service
                 prodProcessItem.EndRemark = remark;
                 prodProcessItem.OutQty = qty;
                 prodProcessItem.ItemStatus = 2;//状态变更为正在进行
-
+                prodProcessItem.EndDate = DateTime.Now;
                 prodProcessItem.IsComplete = true;
                 context.SaveChanges();
 

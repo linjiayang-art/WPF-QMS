@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SicoreQMS.ViewModels.DialogModels
 {
@@ -19,9 +20,20 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         public TestItemAddViewModel()
         {
+            CancelCommand = new DelegateCommand(Cancel);
             SaveCommand = new DelegateCommand(Save);
             _model=new TestProcessItem();
         }
+
+        private void Cancel()
+        {
+            ButtonResult btnResult = ButtonResult.None;
+
+
+            RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(btnResult));
+        }
+
+        public DelegateCommand CancelCommand { get;set; }
 
         public virtual void RaiseRequestClose(IDialogResult dialogResult)
         {
@@ -31,11 +43,34 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         private void Save()
         {
+            if (string.IsNullOrEmpty(Model.ExperimentItemNo))
+            {
+                MessageBox.Show("请填写实验编号");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(Model.ExperimentName))
+            {
+                MessageBox.Show("请填写实验项目");
+                return;
+            }
+            if  (string.IsNullOrEmpty(Model.ExperimentConditions))
+            {
+                MessageBox.Show("请填写试验条件");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(Model.ExperimentNo))
+            {
+                MessageBox.Show("请填写试验编号");
+                return;
+            }
+
             var result= TestProcessService.ADDItem(Model);
             if (result.ResultStatus==true)
             {
 
-                ButtonResult btnResult = ButtonResult.None;
+                ButtonResult btnResult = ButtonResult.OK;
 
                 RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(btnResult));
             }

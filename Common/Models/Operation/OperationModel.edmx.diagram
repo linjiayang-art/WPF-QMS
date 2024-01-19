@@ -4,8 +4,8 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="cf486ed82fab4d9397fa086bb0b2741d" Name="Diagram1" ZoomLevel="97" >
-        <EntityTypeShape EntityType="SicoreQMSModel.Prod_ProcessModel" Width="3" PointX="10" PointY="3.875" />
+      <Diagram DiagramId="cf486ed82fab4d9397fa086bb0b2741d" Name="Diagram1" ZoomLevel="85" >
+        <EntityTypeShape EntityType="SicoreQMSModel.Prod_ProcessModel" Width="3" PointX="9.625" PointY="4" />
         <EntityTypeShape EntityType="SicoreQMSModel.Prod_ProcessBasic" Width="3.875" PointX="9.5" PointY="0.875" />
         <EntityTypeShape EntityType="SicoreQMSModel.ProdInfo" Width="2.5" PointX="5.25" PointY="0.875" />
         <EntityTypeShape EntityType="SicoreQMSModel.Prod_Process" Width="2.875" PointX="4.375" PointY="6.625" />
@@ -16,6 +16,10 @@
         <EntityTypeShape EntityType="SicoreQMSModel.TestModelItem" Width="4" PointX="1.25" PointY="11.125" />
         <EntityTypeShape EntityType="SicoreQMSModel.TestProcessItem" Width="2.625" PointX="10.375" PointY="7.75" />
         <EntityTypeShape EntityType="SicoreQMSModel.UserInfo" Width="1.5" PointX="14.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SicoreQMSModel.Equipment" Width="3.125" PointX="14.375" PointY="3.75" />
+        <EntityTypeShape EntityType="SicoreQMSModel.EquipmentStatus" Width="1.5" PointX="18.25" PointY="4.375" />
+        <EntityTypeShape EntityType="SicoreQMSModel.UsageRecord" Width="1.5" PointX="14.375" PointY="8.75" />
+        <AssociationConnector Association="SicoreQMSModel.FK_EquipmentStatus_Equipment" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

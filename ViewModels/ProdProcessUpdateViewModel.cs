@@ -34,6 +34,7 @@ namespace SicoreQMS.ViewModels
             HandelSelect = new DelegateCommand<string>(GetInfo);
             QualityLevel = "军品";
             this.dialog = dialog;
+            var a=Service.EquipmentService.GetEquipmentBasic();
 
         }
 

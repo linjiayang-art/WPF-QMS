@@ -8,7 +8,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Width="450"
     Height="500"
+    Background="White"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -54,6 +58,19 @@
                     Text="{Binding ProdStandard}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
+                <ComboBox
+                    materialDesign:HintAssist.Hint="请选择设备类型"
+                    DisplayMemberPath="Label"
+                    IsEditable="True"
+                    IsTextSearchEnabled="True"
+                    ItemsSource="{Binding EquipemtList}"
+                    SelectedValue="{Binding EquipmentId, Mode=TwoWay}"
+                    SelectedValuePath="Value"
+                    Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                    TextSearch.TextPath="Label" />
+
+
+
                 <TextBox
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="投入数"
@@ -73,7 +90,8 @@
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding BeginRemark}"
                     TextWrapping="Wrap"
-                    VerticalScrollBarVisibility="Auto" />
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                 <TextBox
                     VerticalAlignment="Center"
@@ -84,7 +102,8 @@
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding OutQty}"
                     TextWrapping="Wrap"
-                    VerticalScrollBarVisibility="Auto" />
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                 <TextBox
                     VerticalAlignment="Center"
@@ -95,7 +114,8 @@
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding EndRemark}"
                     TextWrapping="Wrap"
-                    VerticalScrollBarVisibility="Auto" />
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
 
 

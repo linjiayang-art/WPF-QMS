@@ -3,11 +3,13 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using SicoreQMS.Common.Interface;
+using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
 using SicoreQMS.Common.Server;
 using SicoreQMS.Service;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -19,7 +21,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 {
     public class TestProcessItemUpdateViewModel : BindableBase, IDialogAware
     {
-   
+
 
         public string DialogHostName { get; set; }
         public DelegateCommand SaveCommand { get; set; }
@@ -31,15 +33,16 @@ namespace SicoreQMS.ViewModels.DialogModels
         public TestProcessItemUpdateViewModel()
         {
             DialogHostName = "Root";
-      
+
 
             BtnStart = new DelegateCommand(ProcessStart, CanStartExecute);
             BtnEnd = new DelegateCommand(ProcessEnd, CanEndExecute);
 
             Title = "试验流程卡进度更新";
+            EquipemtList = Service.EquipmentService.GetEquipmentBasic();
         }
 
- 
+
         /// <summary>
         /// 窗口关闭
         /// </summary>
@@ -60,6 +63,11 @@ namespace SicoreQMS.ViewModels.DialogModels
                 return;
             }
 
+            if (!string.IsNullOrEmpty(EquipmentId))
+            {
+                var a = EquipmentService.RecordEquipmentLog(EquipmentId, "试验流程卡", TestItem.ExperimentName);
+
+            }
 
             var dialogResult = new Prism.Services.Dialogs.DialogResult(ButtonResult.OK, new DialogParameters { { "key", result_info.ResultMessage } });
 
@@ -68,17 +76,25 @@ namespace SicoreQMS.ViewModels.DialogModels
         }
         private void ProcessStart()
         {
-            var result_info= TestProcessService.StartTset(id:Id,passQty:PassQty,remark: Remark);
-            
-            if (result_info.ResultStatus==false)
+            var result_info = TestProcessService.StartTset(id: Id, passQty: PassQty, remark: Remark);
+
+            if (result_info.ResultStatus == false)
             {
                 System.Windows.Forms.MessageBox.Show(result_info.ResultMessage);
                 return;
             }
 
+
+            if (!string.IsNullOrEmpty(EquipmentId))
+            {
+                var a = EquipmentService.RecordEquipmentLog(EquipmentId, "试验流程卡", TestItem.ExperimentName);
+
+            }
+
+
             var dialogResult = new Prism.Services.Dialogs.DialogResult(ButtonResult.OK, new DialogParameters { { "key", result_info.ResultMessage } });
 
-       
+
 
             RaiseRequestClose(dialogResult);
 
@@ -92,8 +108,41 @@ namespace SicoreQMS.ViewModels.DialogModels
         /// <summary>
         /// 按钮相关
         /// </summary>
+        /// 
+        #region EquipemtList
+        public ObservableCollection<SelectBasic> _equipemtList { get; set; }
+        public ObservableCollection<SelectBasic> EquipemtList
+        {
+            get { return _equipemtList; }
+            set
+            {
+                _equipemtList = value; RaisePropertyChanged();
+            }
+        }
+        #endregion
+        #region  equipmentId
+        private string _equipmentId;
+
+        public string EquipmentId
+        {
+            get { return _equipmentId; }
+            set
+            {
+                SetProperty(ref _equipmentId, value);
+            }
+        }
+        #endregion
         public DelegateCommand BtnStart { get; set; }
         public DelegateCommand BtnEnd { get; set; }
+
+        private string _canVisabile;
+
+        public string CanVisabile
+        {
+            get { return _canVisabile; }
+            set { SetProperty(ref _canVisabile, value); RaisePropertyChanged(); }
+        }
+
 
         private bool _isStartEnabled;
         public bool IsStartEnabled

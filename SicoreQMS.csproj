@@ -199,6 +199,12 @@
     <Compile Include="Common\Models\OperationModels\TestModelBasic.cs" />
     <Compile Include="Common\Models\OperationModels\TestProcess.cs" />
     <Compile Include="Common\Models\OperationModels\TestProcessItem.cs" />
+    <Compile Include="Common\Models\Operation\Equipment.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Models\Operation\EquipmentStatus.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Common\Models\Operation\LotRelation.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
@@ -247,9 +253,13 @@
     <Compile Include="Common\Models\Operation\TestProcessItem.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Common\Models\Operation\UsageRecord.cs">
+      <DependentUpon>OperationModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Common\Models\Operation\UserInfo.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Common\Models\Report\TestCountReport.cs" />
     <Compile Include="Common\Server\AppSession.cs" />
     <Compile Include="Common\Server\DialogHostService.cs" />
     <Compile Include="Extensions\DialogExtensions.cs" />
@@ -257,6 +267,8 @@
     <Compile Include="Extensions\PassWordExtensions.cs" />
     <Compile Include="Extensions\PrismManger.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Service\EquipmentService.cs" />
+    <Compile Include="Service\IndexService.cs" />
     <Compile Include="Service\LoginService.cs" />
     <Compile Include="Service\PrintService.cs" />
     <Compile Include="Service\ProdBasicService.cs" />

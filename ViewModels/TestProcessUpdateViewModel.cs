@@ -93,7 +93,7 @@ namespace SicoreQMS.ViewModels
             string folderPath = @"C:\Users\1000145\Desktop\report.docx";
 
             SqlParameter[] param = {
-                new SqlParameter("LotNo","萨法执行SV在")
+                new SqlParameter("LotNo",TestProcessInfo.ProdLot)
             };
 
             string sql = "proc_QAExperimentReport";
@@ -143,9 +143,7 @@ namespace SicoreQMS.ViewModels
                     GetTestItem(Id);
                     //显示信息
                     this.aggregator.SendMessage(message);
-                }
-
-                            }
+                }}
             );
 
 
@@ -166,7 +164,7 @@ namespace SicoreQMS.ViewModels
 
                 TestProcessInfo = context.TestProcess.Find(Id);
 
-                var result = context.TestProcessItem.Where(p => p.TestProcessId == Id).OrderBy(p=>p.ExperimentItemNo).ToList();
+                var result = context.TestProcessItem.Where(p => p.TestProcessId == Id&&p.IsDeleted==false).OrderBy(p=>p.ExperimentItemNo).ToList();
                 if (result.Count == 0)
                 {
                     return;
@@ -177,7 +175,7 @@ namespace SicoreQMS.ViewModels
                 }
             }
 
-            TestTypes= TestProcessService.GetTestTypeList(TestProcessInfo.ProdId);
+            TestTypes= TestProcessService.GetTestTypeList(TestProcessInfo.Id);
 
         }
 

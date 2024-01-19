@@ -1,35 +1,35 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
+using SicoreQMS.Common.Models.Report;
 using System;
+using System.Collections.ObjectModel;
 
 namespace SicoreQMS.ViewModels
 {
     public class IndexViewModel:BindableBase
     {
-        private readonly IDialogService dialog;
 
-        public IndexViewModel(IDialogService dialog)
+        #region
+
+    
+
+        public ObservableCollection<TestCountReport> _testReportList { get; set; }
+
+        public ObservableCollection<TestCountReport>  TestReportList { 
+            get { return _testReportList; }
+            set { _testReportList = value; RaisePropertyChanged(); } }
+        #endregion
+
+
+        public IndexViewModel()
         {
-            ExcuteCommand = new DelegateCommand<string>(Execute);
-            this.dialog = dialog;
+            TestReportList= Service.IndexService.GetTestCountReport();
         }
 
-        private void Execute(string obj)
-        {
-           if (obj == "生产流程卡进度更新") 
-            {
-                UpdateProcess();
-            }
-           else { return; }
-        }
 
-        void UpdateProcess()
-        {
-            dialog.ShowDialog("ProdProcessPrintView");
-        }
 
-        public DelegateCommand<string> ExcuteCommand { get; set; }
+  
 
       
 

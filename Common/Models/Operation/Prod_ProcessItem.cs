@@ -40,5 +40,7 @@ namespace SicoreQMS.Common.Models.Operation
         public Nullable<int> ItemStatus { get; set; }
         public string BeginRemark { get; set; }
         public string EndRemark { get; set; }
+        public string OperatorName { get; set; }
+        public string EquipmentId { get; set; }
     }
 }

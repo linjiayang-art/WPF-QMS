@@ -34,9 +34,13 @@
             FontSize="20"
             FontWeight="Bold"
             Text="生产流程卡进度更新" />
+
+
+
         <StackPanel
             Grid.Row="1"
             Margin="25"
+            HorizontalAlignment="Center"
             Orientation="Horizontal">
             <StackPanel.Resources>
                 <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="TextBox">
@@ -229,15 +233,15 @@
                     Header="产出数"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Operator}"
+                    Binding="{Binding OperatorName}"
                     Header="操作人"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding StartDate}"
+                    Binding="{Binding StartDate, StringFormat=yyyy-MM-dd}"
                     Header="开始时间"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding EndDate}"
+                    Binding="{Binding EndDate, StringFormat=yyyy-MM-dd}"
                     Header="结束时间"
                     IsReadOnly="True" />
                 <DataGridTextColumn

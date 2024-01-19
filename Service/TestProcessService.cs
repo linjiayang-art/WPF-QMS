@@ -134,7 +134,7 @@ namespace SicoreQMS.Service
         }
 
 
-        public static ObservableCollection<CheckBasic> GetTestTypeList(string prodId)
+        public static ObservableCollection<CheckBasic> GetTestTypeList(string testProcessId)
         {
 
             var list = new ObservableCollection<CheckBasic>() { };
@@ -146,8 +146,8 @@ namespace SicoreQMS.Service
 
             using (var context = new SicoreQMSEntities1())
             {
-                var productInfo = context.ProdInfo.SingleOrDefault(b => b.Id == prodId);
-                var a = productInfo.TestType.Split(';');
+                var testProcessInfo = context.TestProcess.SingleOrDefault(b => b.Id == testProcessId);
+                var a = testProcessInfo.TestType.Split(';');
                 foreach (var item in a)
                 {
                     //如果item在list中,list为true

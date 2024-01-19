@@ -15,7 +15,7 @@ namespace SicoreQMS.Common.Models.Operation
         /// </summary>
         public Prod_ProcessItem()
         {
-            
+
             IsComplete = false;
             ItemStatus = 0;
             IsDeleted = false;
@@ -27,7 +27,7 @@ namespace SicoreQMS.Common.Models.Operation
         {
             get
             {
-                if (ItemStatus==5)
+                if (ItemStatus == 5)
                 {
                     return false;
                 }
@@ -51,7 +51,7 @@ namespace SicoreQMS.Common.Models.Operation
             /// </summary>
             get
             {
-                if (ItemStatus ==0 )
+                if (ItemStatus == 0)
                 {
                     return "未开始";
                 }
@@ -73,7 +73,6 @@ namespace SicoreQMS.Common.Models.Operation
 
             set { SetProperty(ref _nowStatus, value); }
         }
-
 
         public void CopyModelData(Prod_ProcessModel prod_Process)
         {

@@ -60,6 +60,11 @@ namespace SicoreQMS.ViewModels
 
             }
 
+            if (TestTypeStr.Length==0)
+            {
+                Aggregator.SendMessage("请勾选实验类型");
+                return;
+            }
             //去除TestTypeStr最后一个分号
             TestTypeStr = TestTypeStr.Substring(0, TestTypeStr.Length - 1);
       
@@ -74,7 +79,16 @@ namespace SicoreQMS.ViewModels
                 ProdName = "";
                 ProdType = "";
                 ProdLot = "";
-
+                Prodstandard = "";
+                TestLot = "";
+                ProdNumber = "";
+                Qty = 0;
+                //清空checkbox
+                foreach (var item in TestTypes)
+                {
+                   item.IsCheck = false;
+                    
+                }
             }
             else
             {

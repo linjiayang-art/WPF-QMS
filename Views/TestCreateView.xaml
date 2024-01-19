@@ -83,6 +83,7 @@
                     materialDesign:HintAssist.HelperText="产品型号"
                     materialDesign:HintAssist.Hint="产品型号"
                     BorderThickness="1"
+                    IsEnabled="False"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding ProdType}" />
                 <TextBox
@@ -96,6 +97,7 @@
                     materialDesign:HintAssist.HelperText="生产批次"
                     materialDesign:HintAssist.Hint="生产批次"
                     BorderThickness="1"
+                    IsEnabled="False"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding ProdLot}" />
             </StackPanel>
@@ -109,6 +111,7 @@
                 materialDesign:HintAssist.HelperText="试验依据"
                 materialDesign:HintAssist.Hint="试验依据"
                 BorderThickness="1"
+                IsEnabled="False"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding Prodstandard}" />
             <!--<ComboBox
@@ -147,6 +150,7 @@
                 materialDesign:HintAssist.HelperText="试验批次"
                 materialDesign:HintAssist.Hint="试验批次"
                 BorderThickness="1"
+                IsEnabled="False"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding TestLot}" />
             <StackPanel
@@ -188,6 +192,7 @@
                 materialDesign:HintAssist.HelperText="试验数/编号"
                 materialDesign:HintAssist.Hint="试验数/编号"
                 BorderThickness="1"
+                IsEnabled="False"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding ProdNumber}" />
             <Button
@@ -252,8 +257,7 @@
                         MaxWidth="230"
                         Binding="{Binding ExperimentName}"
                         CanUserSort="False"
-                        Header="试验项目"
-                        IsReadOnly="True">
+                        Header="试验项目">
                         <DataGridTextColumn.ElementStyle>
                             <Style>
                                 <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
