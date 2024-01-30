@@ -159,9 +159,6 @@
                     AllowDrop="False" />
             </Grid>
 
-
-
-
         </materialDesign:DrawerHost>
     </materialDesign:DialogHost>
 </Window>

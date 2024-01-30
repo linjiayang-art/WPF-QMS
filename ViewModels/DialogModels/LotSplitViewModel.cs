@@ -1,4 +1,6 @@
-﻿using Prism.Commands;
+﻿using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
+using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using SicoreQMS.Common.Models.Basic;
@@ -34,7 +36,7 @@ namespace SicoreQMS.ViewModels.DialogModels
             set { _spiltList = value; }
         }
 
-
+        public IEventAggregator Aggregator { get; }
 
         public DelegateCommand BtnCommitSpilt { get; set; }
 
@@ -67,13 +69,14 @@ namespace SicoreQMS.ViewModels.DialogModels
 
 
         #endregion
-        public LotSplitViewModel()
+        public LotSplitViewModel(IEventAggregator aggregator)
         {
             Title = "拆批";
             SplitQty = 0;
             BtnCommitSpilt = new DelegateCommand(SpiltLot);
 
             SpiltList = new ObservableCollection<SpiltModel>();
+            Aggregator = aggregator;
 
 
         }
@@ -123,7 +126,8 @@ namespace SicoreQMS.ViewModels.DialogModels
 
             if (SplitQty > Processes.Qty)
             {
-                MessageBox.Show("拆分数大于已有数量!");
+                Aggregator.SendMessage("拆分数大于已有数量!");
+               //MessageBox.Show("拆分数大于已有数量!");
                 return;
             }
             using (var context = new SicoreQMSEntities1())
@@ -192,7 +196,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                     ProdType = Processes.ProdType,
                     ProdLot = childNumber,
                     QualityLevel = Processes.QualityLevel,
-                    OrginQty = qty,
+                    OriginQty = qty,
                     Qty = qty,
                 };
 
@@ -232,7 +236,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                     ProdName = newProdInfo.ProdName,
                     ProdLot = childNumber,
                     Qty = qty,
-                    OrginQty = qty,
+                    OriginQty = qty,
                     QualityLevel = newProdInfo.QualityLevel,
                     ProdType = newProdInfo.ProdType,
                     ModelName = "军工",
@@ -259,14 +263,13 @@ namespace SicoreQMS.ViewModels.DialogModels
                         Lot = childNumber,
                         QualityLevel = newProdInfo.QualityLevel,
                         ModelName = "军工",
-                        
-
-
                     };
                     if (isCompleteCount>0)
                     {
                         newProcessItem.IsComplete = true;
                         newProcessItem.ItemStatus = 2;
+                        newProcessItem.OutQty = qty;
+                        newProcessItem.InputQty = qty;
                         isCompleteCount--;
                     }
 

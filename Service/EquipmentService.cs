@@ -1,11 +1,16 @@
 ﻿using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
+using SicoreQMS.Common.Models.Report;
+using SicoreQMS.Common.Server;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SicoreQMS.Service
@@ -65,10 +70,12 @@ namespace SicoreQMS.Service
                         EquipmentId = equipmentId,
                         StartDate = DateTime.Now,
                         UseType = useType,
-                        UseProcess = useProcess
+                        UseProcess = useProcess,
+                        UseUser= AppSession.UserID
                     };
                     context.UsageRecord.Add(usageRecord);
                     equipmentStatus.EquipmentStatus1 = 1;
+                    equipmentStatus.StatusDesc = "运行中";
                     context.SaveChanges();
                     return new ResultInfo()
                     { ResultStatus = true, ResultMessage = "设备状态更新成功" };
@@ -83,6 +90,7 @@ namespace SicoreQMS.Service
                     }
                     usageRecord.EndDate = DateTime.Now;
                     equipmentStatus.EquipmentStatus1 = 0;
+                    equipmentStatus.StatusDesc = "待机";
                     context.SaveChanges();
                 }
         
@@ -91,6 +99,111 @@ namespace SicoreQMS.Service
             return new ResultInfo()
              { ResultStatus = true, ResultMessage = "设备状态更新成功" };
         }
+
+
+        public static ObservableCollection<EquipemntUsageReport> GetEquipmentStatus(string equipmentNoFilter=null)
+        {
+            var results = new ObservableCollection<EquipemntUsageReport>();
+
+
+
+            using (var context = new SicoreQMSEntities1())
+            {
+                var usages = context.UsageRecord.ToList();
+
+                var now = DateTime.Now;
+                var firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
+
+                var usageSummary = usages
+                     .Where(u => u.StartDate >= firstDayOfMonth)
+                   .GroupBy(u => u.EquipmentId)
+                   .Select(group => new
+                   {
+                       EquipmentId = group.Key,
+                       TotalDays = group.Sum(g =>
+                       {
+                           // 计算每个使用记录的天数
+                           DateTime end = g.EndDate ?? DateTime.Now; // 如果EndDate为null，使用当前日期
+                           TimeSpan duration = (TimeSpan)(end - g.StartDate);
+                           return duration.Days + 1; // 包含起始日期
+                       })
+                   }).ToDictionary(u => u.EquipmentId, u => u.TotalDays);
+                // 创建设备状态报告的查询
+                var equipmentData =( from e in context.Equipment
+                                     where string.IsNullOrEmpty(equipmentNoFilter) || e.EquipmentNo.Contains(equipmentNoFilter)
+                                     join eStatus in context.EquipmentStatus on e.EquipmentID equals eStatus.EquipmentID
+                            select new 
+                            {
+                                e.EquipmentName,
+                                e.EquipmentModel,
+                                e.EquipmentNo,
+                                e.EquipmentID,
+                                eStatus.EquipmentStatus1,
+                                eStatus.StatusDesc
+
+                            }).ToList();
+                foreach (var e in equipmentData)
+                {
+                    var totalUsageDays = usageSummary.TryGetValue(e.EquipmentID, out var days) ? days : 0;
+                    var report = new EquipemntUsageReport
+                    {
+                        EquipmentName = e.EquipmentName,
+                        EquipmentModel = e.EquipmentModel,
+                        EquipmentID = e.EquipmentID,
+                        EquipmentNo = e.EquipmentNo,
+                        EquipmentStatus1 = (int)e.EquipmentStatus1,
+                        StatusDesc = e.StatusDesc,
+                        TotalUsageDays = totalUsageDays
+                    };
+                    results.Add(report);
+                }
+              
+            }
+
+
+            return results;
+        }
+
+
+        //public static ObservableCollection<EquipemntUsageReport> GetEquipmentStatus1()
+        //{
+        //    var results = new ObservableCollection<EquipemntUsageReport>();
+        //    using (var context = new SicoreQMSEntities1())
+        //    {
+        //        var endDate = DateTime.Now;
+        //        var usageSummary = context.UsageRecord
+        //            .GroupBy(u => u.EquipmentId)
+        //            .Select(group => new
+        //            {
+        //                EquipmentId = group.Key,
+        //                TotalDays = group.Sum(g => (g.EndDate ?? endDate).Subtract(g.StartDate ?? default(DateTime)).Days + 1)
+        //            })
+        //            .ToDictionary(u => u.EquipmentId, u => u.TotalDays);//转换为字典，方便后续查询
+
+        //        var query = from e in context.Equipment
+        //                    join eStatus in context.EquipmentStatus on e.EquipmentID equals eStatus.EquipmentID
+        //                    join u in usageSummary on e.EquipmentID equals u.Key into usageJoin
+        //                    from uj in usageJoin.DefaultIfEmpty()
+        //                    select new EquipemntUsageReport
+        //                    {
+        //                        EquipmentName = e.EquipmentName,
+        //                        EquipmentModel = e.EquipmentModel,
+        //                        EquipmentID = e.EquipmentID,
+        //                        EquipmentNo = e.EquipmentNo,
+        //                        EquipmentStatus1 = (int)eStatus.EquipmentStatus1,
+        //                        StatusDesc = eStatus.StatusDesc,
+        //                        TotalUsageDays = usageSummary.ContainsKey(e.EquipmentID) ? usageSummary[e.EquipmentID] : 0
+
+        //                    };
+        //        foreach (var equipemntUsageReport in query)
+        //        {
+        //            results.Add(equipemntUsageReport);
+        //        }
+        //    }
+
+
+        //    return results;
+        //}
 
 
     }

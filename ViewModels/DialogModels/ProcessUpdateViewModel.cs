@@ -59,6 +59,15 @@ namespace SicoreQMS.ViewModels.DialogModels
         #region  属性
 
 
+        private string equipmentNo;
+
+        public string EquipmentNo
+        {
+            get { return equipmentNo; }
+            set { SetProperty(ref equipmentNo, value); }
+        }
+
+
         private string _equipmentId;
 
         public string EquipmentId
@@ -185,10 +194,18 @@ namespace SicoreQMS.ViewModels.DialogModels
                 aggregator.SendMessage(result.ResultMessage);
                 return;
             }
-            if (!string.IsNullOrEmpty(EquipmentId))
-            {
-                var a = EquipmentService.RecordEquipmentLog(EquipmentId, "生产流程卡", ProcessType);
 
+            //获取设备的ID
+
+
+            using (var context = new SicoreQMSEntities1())
+            {
+                var prodProcessItem = context.Prod_ProcessItem.SingleOrDefault(b => b.Id == Id);
+                if (prodProcessItem != null)
+                {
+                    EquipmentId = prodProcessItem.EquipmentId;
+                    var a = EquipmentService.RecordEquipmentLog(EquipmentId, "生产流程卡", ProcessType);
+                }
             }
 
             ButtonResult btnResult = ButtonResult.None;
@@ -217,8 +234,6 @@ namespace SicoreQMS.ViewModels.DialogModels
                
             }
             
-
-
 
             ButtonResult btnResult = ButtonResult.None;
 
@@ -269,6 +284,18 @@ namespace SicoreQMS.ViewModels.DialogModels
                 }
                 if (prodProcessItem.ItemStatus == 1)
                 {
+
+                    var eq=context.Equipment.SingleOrDefault(e => e.EquipmentID == prodProcessItem.EquipmentId);
+                  
+                    if (eq!=null)
+                    {
+                        EquipmentNo = eq.EquipmentNo;
+
+                    }
+                    else
+                    {
+                        EquipmentNo = "未使用设备";
+                    }
                     IsStartEnabled = false;
                     IsEndEnabled = true;
                     return;

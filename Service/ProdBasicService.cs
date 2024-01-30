@@ -107,7 +107,7 @@ namespace SicoreQMS.Service
                     ProdType = prodType,
                     ProdStatus = 0,
                     Qty = qty,
-                    OrginQty = qty,
+                    OriginQty = qty,
                     ProdLot = prodLot,
                     QualityLevel = qualityLevel,
                     Prodstandard = prodstandard,
@@ -145,7 +145,7 @@ namespace SicoreQMS.Service
                     ProdType = prodInfo.ProdType,
                     ModelName = "军工",/*ad*/
                     Qty = prodInfo.Qty,
-                    OrginQty = prodInfo.Qty,
+                    OriginQty = prodInfo.Qty,
                 };
 
                 // 将新的 ProdInfo 对象添加到数据库

@@ -135,7 +135,7 @@ namespace SicoreQMS.ViewModels
                     ProdType = this.ProdType,
                     ModelName = "军工",/*ad*/
                     Qty=this.Qty,
-                    OrginQty=this.Qty,
+                    OriginQty=this.Qty,
                 };
 
                 // 将新的 ProdInfo 对象添加到数据库

@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:SicoreQMS.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     d:DesignHeight="450"
@@ -15,7 +16,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="75" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock
@@ -24,14 +25,59 @@
             FontSize="20"
             FontWeight="Bold"
             Text="实验流程进度统计" />
-        <StackPanel Grid.Row="1">
-            <TextBlock
-                Margin="10"
-                Padding="10"
-                FontSize="20"
-                FontWeight="Bold"
-                Text="待办事项" />
-        </StackPanel>
+
+        <Grid
+            Grid.Row="1"
+            Margin="5,5,5,5"
+            Cursor="Hand">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox
+                Grid.Column="0"
+                MinWidth="155"
+                Margin="5"
+                VerticalAlignment="Top"
+                materialDesign:HintAssist.HelperText="产品型号"
+                materialDesign:HintAssist.Hint="产品型号"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding ProdType}"
+                TextWrapping="Wrap" />
+            <TextBox
+                Grid.Column="1"
+                MinWidth="155"
+                Margin="5"
+                VerticalAlignment="Top"
+                materialDesign:HintAssist.HelperText="生产批次"
+                materialDesign:HintAssist.Hint="生产批次"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding Lot}"
+                TextWrapping="Wrap" />
+            <TextBox
+                Grid.Column="2"
+                MinWidth="155"
+                Margin="5"
+                VerticalAlignment="Top"
+                materialDesign:HintAssist.HelperText="试验类别"
+                materialDesign:HintAssist.Hint="试验类别"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                TextWrapping="Wrap" />
+            <Button
+                Grid.Column="3"
+                Width="125"
+                Margin="5"
+                Command="{Binding ExecuetCommand}"
+                CommandParameter="查询"
+                Content="查询" />
+        </Grid>
+
+
+
+
 
         <StackPanel Grid.Row="2">
             <DataGrid
@@ -44,8 +90,15 @@
                     <DataGridTextColumn Binding="{Binding ProdType}" Header="产品型号" />
                     <DataGridTextColumn Binding="{Binding ProdLot}" Header="生产批次" />
                     <DataGridTextColumn Binding="{Binding TestTpye}" Header="试验类别" />
-                    <DataGridTextColumn Binding="{Binding NowProcess}" Header="当前节点" />
-                    <DataGridTextColumn Binding="{Binding Completeness, StringFormat={}{0}%}" Header="任务完成度" />
+                    <DataGridTextColumn Binding="{Binding OriginQty}" Header="原始总数量" />
+                    <DataGridTextColumn Binding="{Binding Qty}" Header="总数量" />
+                    <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼投入数量" />
+                    <DataGridTextColumn Binding="{Binding AgingCountOut}" Header="老炼完成数量" />
+                    <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
+                    <DataGridTextColumn Binding="{Binding UltrasonicTestingOut}" Header="超声检测完成数量" />
+                    <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
+
+                    <!--<DataGridTextColumn Binding="{Binding Completeness, StringFormat={}{0}%}" Header="任务完成度" />
                     <DataGridTemplateColumn Width="100" Header="任务完成度">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -53,7 +106,7 @@
                                 <ProgressBar Height="10" Value="{Binding Completeness}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    </DataGridTemplateColumn>-->
                 </DataGrid.Columns>
             </DataGrid>
 

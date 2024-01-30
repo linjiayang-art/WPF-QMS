@@ -7,11 +7,13 @@ using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
 using SicoreQMS.Common.Server;
 using SicoreQMS.Service;
+using Syncfusion.XlsIO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -63,6 +65,9 @@ namespace SicoreQMS.ViewModels.DialogModels
                 return;
             }
 
+
+
+
             if (!string.IsNullOrEmpty(EquipmentId))
             {
                 var a = EquipmentService.RecordEquipmentLog(EquipmentId, "试验流程卡", TestItem.ExperimentName);
@@ -76,7 +81,7 @@ namespace SicoreQMS.ViewModels.DialogModels
         }
         private void ProcessStart()
         {
-            var result_info = TestProcessService.StartTset(id: Id, passQty: PassQty, remark: Remark);
+            var result_info = TestProcessService.StartTset(id: Id, passQty: PassQty, remark: Remark,equipmentid:EquipmentId);
 
             if (result_info.ResultStatus == false)
             {
@@ -132,6 +137,17 @@ namespace SicoreQMS.ViewModels.DialogModels
             }
         }
         #endregion
+
+
+        private string equipmentNo;
+
+        public string EquipmentNo
+        {
+            get { return equipmentNo; }
+            set { SetProperty(ref equipmentNo, value); }
+        }
+
+
         public DelegateCommand BtnStart { get; set; }
         public DelegateCommand BtnEnd { get; set; }
 
@@ -243,11 +259,28 @@ namespace SicoreQMS.ViewModels.DialogModels
             }
             if (TestItem.ExperimentStatus == 1)
             {
+                using (var context = new SicoreQMSEntities1())
+                {
+                    var eq = context.Equipment.SingleOrDefault(e => e.EquipmentID == TestItem.EquipmentId);
+                    if (eq!=null)
+                    {
+                        EquipmentNo = eq.EquipmentNo;
+                        EquipmentId = eq.EquipmentID;
+
+                    }
+                    else
+                    {
+                        EquipmentNo = "未使用设备";
+
+                    }
+                 
+                }
+                    
                 IsStartEnabled = false;
                 IsEndEnabled = true;
                 return;
             }
-
+            
 
         }
 
@@ -259,18 +292,22 @@ namespace SicoreQMS.ViewModels.DialogModels
             using (var context = new SicoreQMSEntities1())
             {
                 TestItem = context.TestProcessItem.Find(Id);
-            }
-            if (TestItem.ExperimentStatus == 0)
-            {
-                IsStartEnabled = true;
-                IsEndEnabled = false;
-                return;
-            }
-            if (TestItem.ExperimentStatus == 1)
-            {
-                IsStartEnabled = false;
-                IsEndEnabled = true;
-                return;
+
+                if (TestItem.ExperimentStatus == 0)
+                {
+                    IsStartEnabled = true;
+                    IsEndEnabled = false;
+                    return;
+                }
+                if (TestItem.ExperimentStatus == 1)
+                {
+                    var eq = context.Equipment.SingleOrDefault(e => e.EquipmentID == TestItem.EquipmentId);
+                    EquipmentNo = eq.EquipmentNo;
+                    EquipmentId= eq.EquipmentID;
+                    IsStartEnabled = false;
+                    IsEndEnabled = true;
+                    return;
+                }
             }
         }
     }

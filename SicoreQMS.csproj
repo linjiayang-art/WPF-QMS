@@ -259,8 +259,10 @@
     <Compile Include="Common\Models\Operation\UserInfo.cs">
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Common\Models\Report\EquipemntUsageReport.cs" />
     <Compile Include="Common\Models\Report\TestCountReport.cs" />
     <Compile Include="Common\Server\AppSession.cs" />
+    <Compile Include="Common\Server\DeviceStatusToBackgroundColorConverter.cs" />
     <Compile Include="Common\Server\DialogHostService.cs" />
     <Compile Include="Extensions\DialogExtensions.cs" />
     <Compile Include="Extensions\Factory.cs" />
@@ -280,6 +282,7 @@
     <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestProcessItemUpdateViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TsetItemAddViewModel.cs" />
+    <Compile Include="ViewModels\EquipemntUsageViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PrintModels\ProdProcessPrintViewModel.cs" />
@@ -300,6 +303,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\TestItemAddView.xaml.cs">
       <DependentUpon>TestItemAddView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EquipemntUsageView.xaml.cs">
+      <DependentUpon>EquipemntUsageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\IndexView.xaml.cs">
       <DependentUpon>IndexView.xaml</DependentUpon>
@@ -348,6 +354,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\TestItemAddView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EquipemntUsageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -478,7 +488,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controls\ScrollViewer\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

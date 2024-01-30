@@ -25,11 +25,11 @@ namespace SicoreQMS.Common.Models.Operation
         public string CreateUser { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public string ParentId { get; set; }
-        public Nullable<int> OrginQty { get; set; }
         public Nullable<int> Qty { get; set; }
         public string Prodstandard { get; set; }
         public string TestLot { get; set; }
         public string TestType { get; set; }
         public string ProdNumber { get; set; }
+        public Nullable<int> OriginQty { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SicoreQMS.Common.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,6 +54,8 @@ namespace SicoreQMS.Common.Models.Operation
             ExperimentStatus = 0;
             IsDeleted = false;
             CreateDate = DateTime.Now;
+            CreateUser=AppSession.UserID;
+            
         }
 
     }

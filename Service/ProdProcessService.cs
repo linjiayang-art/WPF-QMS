@@ -55,7 +55,10 @@ namespace SicoreQMS.Service
                 prodProcessItem.OperatorName = AppSession.UserName;
                 prodProcessItem.EquipmentId= equipmentId;
                 prodProcessItem.BeginRemark = remark;
-                prodProcessItem.InputQty = qty;
+                //投入不计数
+                //prodProcessItem.InputQty = qty;
+                prodProcessItem.InputQty = prodprocess.Qty;
+
                 prodProcessItem.StartDate = DateTime.Now;
                 prodProcessItem.ItemStatus = 1;//状态变更为正在进行
                 context.SaveChanges();
@@ -95,6 +98,14 @@ namespace SicoreQMS.Service
                 }
 
                 var prodprocess = context.Prod_Process.Find(prodProcessItem.ProdProcessId);
+
+                if ( qty==0)
+                {
+                    resultInfo.ResultStatus = false;
+                    resultInfo.ResultMessage = $"产出数量为0!";
+                    return resultInfo;
+                }
+
 
                 if (prodProcessItem.InputQty < qty)
                 {

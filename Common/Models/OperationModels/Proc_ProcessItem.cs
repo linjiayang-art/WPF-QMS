@@ -20,6 +20,7 @@ namespace SicoreQMS.Common.Models.Operation
             ItemStatus = 0;
             IsDeleted = false;
             CreateDate = DateTime.Now;
+            InputQty = 0;
         }
 
         private bool _isButtonEnabled;

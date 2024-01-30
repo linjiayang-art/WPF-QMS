@@ -102,7 +102,7 @@ namespace SicoreQMS.ViewModels
             DataTable body_dataTable = ds.Tables[1];
 
             PrintService.ExportReportToWord("TestProcess.rdlc", folderPath, dataSource1: body_dataTable, dataSource2:  head_dataTable, dataSourceName1: "DataSet1",dataSourceName2: "DataSet2");
-
+            this.aggregator.SendMessage("打印成功!");
             //DataTable dataTable = new DataTable();
             //dataTable.Columns.Add("ModelSort", typeof(int));
             //dataTable.Columns.Add("ProdProcessCard", typeof(string));
@@ -156,9 +156,7 @@ namespace SicoreQMS.ViewModels
             {
                 return;
             }
-
-
-            TestItems.Clear();
+            //TestItems.Clear();
             using (var context = new SicoreQMSEntities1())
             {
 
@@ -169,6 +167,7 @@ namespace SicoreQMS.ViewModels
                 {
                     return;
                 }
+                TestItems.Clear();
                 foreach (var item in result)
                 {
                     TestItems.Add(item);

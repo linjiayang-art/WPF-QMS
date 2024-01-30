@@ -131,6 +131,17 @@
                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                     TextSearch.TextPath="Label"
                     Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBox
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="使用设备"
+                    AcceptsReturn="True"
+                    IsEnabled="False"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding EquipmentNo}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
                 <StackPanel Orientation="Horizontal">
                     <TextBox
                         MinWidth="180"

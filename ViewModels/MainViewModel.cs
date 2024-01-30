@@ -80,7 +80,7 @@ namespace SicoreQMS.ViewModels
             MenuBars.Add(new MenuBar() { Icon = "PencilBoxMultiple", Title = "生产流程卡进度更新", NameSpace = "ProdProcessUpdateView" });
 
             MenuBars.Add(new MenuBar() { Icon = "PencilBoxMultiple", Title = "试验流程卡进度更新", NameSpace = "TestProcessUpdateView" });
-            MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "设备运行统计", NameSpace = "SettingsView" });
+            MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "设备运行统计", NameSpace = "EquipemntUsageView" });
             //MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "生产流程卡编制", NameSpace = "ProdProcessCreateView" });
             //MenuBars.Add(new MenuBar() { Icon = "PrinterPosOutline", Title = "生产流程卡打印", NameSpace = "ProdProcessPrintView" });
             //MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "生产流程卡模板维护", NameSpace = "ProdModelMaintainView" });

@@ -40,6 +40,8 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <!--  滚动条样式  -->
+
         </ResourceDictionary>
 
     </Application.Resources>

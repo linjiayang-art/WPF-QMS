@@ -62,7 +62,7 @@ namespace SicoreQMS.Service
             }
         }
 
-        public static ResultInfo StartTset(string id, int passQty, string remark)
+        public static ResultInfo StartTset(string id, int passQty, string remark,string equipmentid=null)
         {
             var resultInfo = new ResultInfo();
             using (var context = new SicoreQMSEntities1())
@@ -86,6 +86,7 @@ namespace SicoreQMS.Service
                     return resultInfo;
                 }
                 item.ExperimentItemPassQty = passQty;
+                item.EquipmentId = equipmentid;
                 item.ExperimentStatus = 1;
                 item.Remark += remark;
                 item.ExperimentSatrtTime = DateTime.Now;

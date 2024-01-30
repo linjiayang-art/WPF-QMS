@@ -67,8 +67,19 @@
                     SelectedValue="{Binding EquipmentId, Mode=TwoWay}"
                     SelectedValuePath="Value"
                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                    TextSearch.TextPath="Label" />
+                    TextSearch.TextPath="Label"
+                    Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
+                <TextBox
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="使用设备"
+                    AcceptsReturn="True"
+                    IsEnabled="False"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding EquipmentNo}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
 
                 <TextBox
@@ -76,11 +87,13 @@
                     materialDesign:HintAssist.Hint="投入数"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     AcceptsReturn="True"
-                    IsEnabled="{Binding IsStartEnabled}"
+                    IsEnabled="False"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding InputQty}"
                     TextWrapping="Wrap"
-                    VerticalScrollBarVisibility="Auto" />
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <!--  IsEnabled="{Binding IsStartEnabled}"  -->
                 <TextBox
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="任务开始备注"

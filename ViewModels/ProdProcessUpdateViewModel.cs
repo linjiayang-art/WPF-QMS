@@ -1,9 +1,12 @@
-﻿using Prism.Commands;
+﻿using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
+using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
+using SicoreQMS.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,7 +22,7 @@ namespace SicoreQMS.ViewModels
     public class ProdProcessUpdateViewModel:BindableBase, IRegionMemberLifetime
     {
         
-        public ProdProcessUpdateViewModel(IDialogService dialog)
+        public ProdProcessUpdateViewModel(IDialogService dialog, IEventAggregator aggregator)
         {
             ProductNameBasic = new ObservableCollection<SelectBasic>();
 
@@ -35,7 +38,7 @@ namespace SicoreQMS.ViewModels
             QualityLevel = "军品";
             this.dialog = dialog;
             var a=Service.EquipmentService.GetEquipmentBasic();
-
+            Aggregator = aggregator;
         }
 
         private void SpiltLot(SelectBasic obj)
@@ -44,7 +47,22 @@ namespace SicoreQMS.ViewModels
             {
                 return;
             }
-            DialogParameters dialogParameters = new DialogParameters
+
+            using (var context=new SicoreQMSEntities1())
+            {
+                var prodprocee = context.Prod_Process.Find(obj.Value);
+                //查看明细中有无正在进行的步骤，如果有则不允许拆批
+                var prodprocessItem = context.Prod_ProcessItem.Where(b => b.ProdProcessId == obj.Value && b.ItemStatus == 1).ToList();
+                if (prodprocessItem.Count>0)
+                {
+                    Aggregator.SendMessage("该产品有正在进行的步骤，不允许拆批.请完成当前步骤后再进行拆批");
+                    //System.Windows.MessageBox.Show("该产品有正在进行的步骤，不允许拆批");
+                    return;
+                }
+            }
+
+
+                DialogParameters dialogParameters = new DialogParameters
             {
                 { "Id",obj.Value},
 
@@ -156,7 +174,8 @@ namespace SicoreQMS.ViewModels
                     }
                     else
                     {
-                    System.Windows.MessageBox.Show("未查询到该产品");
+                    Aggregator.SendMessage("未查询到该产品");
+                    //System.Windows.MessageBox.Show("未查询到该产品");
                     }
 
                 }
@@ -216,7 +235,6 @@ namespace SicoreQMS.ViewModels
             get;
             private set;
         }
-
-      
+        public IEventAggregator Aggregator { get; }
     }
 }

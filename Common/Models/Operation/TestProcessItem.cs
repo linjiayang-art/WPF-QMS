@@ -44,5 +44,6 @@ namespace SicoreQMS.Common.Models.Operation
         public string StartUser { get; set; }
         public string EndUser { get; set; }
         public Nullable<int> ExperimentItemRank { get; set; }
+        public string EquipmentId { get; set; }
     }
 }

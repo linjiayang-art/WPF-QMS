@@ -8,6 +8,8 @@ namespace SicoreQMS.Common.Models.Report
 {
     public class TestCountReport
     {
+
+        public int Qty { get; set; }
         public string ProdName { get; set; }
         public string ProdType { get; set; }
 
@@ -15,8 +17,16 @@ namespace SicoreQMS.Common.Models.Report
 
         public string TestTpye { get; set; }
 
-        public string NowProcess { get; set; }
 
         public int Completeness { get; set; }
+
+        public int OriginQty { get; set; }
+        public int TotalCount { get; set; }
+
+        public int AgingCount { get; set; }
+        public int AgingCountOut { get; set; }
+        public int UltrasonicTesting { get; set; }
+        public int UltrasonicTestingOut { get; set; }
+        public int StockIn { get; set; }
     }
 }

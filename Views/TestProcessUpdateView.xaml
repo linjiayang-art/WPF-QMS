@@ -191,12 +191,12 @@
 
         </Grid>
 
-        <Grid Grid.Row="2">
+        <ScrollViewer Grid.Row="2">
             <DataGrid
-                x:Name="TestProcess"
+                x:Name="TestProcessDgv"
                 Width="auto"
                 Height="auto"
-                MaxHeight="450"
+                MaxHeight="500"
                 Margin="10,10"
                 materialDesign:DataGridAssist.CellPadding="4 2 2 2"
                 materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
@@ -206,8 +206,7 @@
                 HeadersVisibility="All"
                 HorizontalScrollBarVisibility="Auto"
                 ItemsSource="{Binding TestItems}"
-                SelectionUnit="Cell"
-                VerticalScrollBarVisibility="Auto">
+                SelectionUnit="Cell">
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Id}"
@@ -315,11 +314,11 @@
 
             </DataGrid>
 
-        </Grid>
+        </ScrollViewer>
 
-        <Grid Grid.Row="3">
+        <!--<Grid Grid.Row="3">
             <StackPanel />
-        </Grid>
+        </Grid>-->
 
 
     </Grid>

@@ -64,15 +64,17 @@ namespace SicoreQMS
             containerRegistry.RegisterDialog<TestProcessItemUpdateView, TestProcessItemUpdateViewModel>();
 
             containerRegistry.RegisterDialog<LotSplitView, LotSplitViewModel>();
-            containerRegistry.RegisterDialog<ProdProcessPrintView, ProdProcessPrintViewModel>();
+            //containerRegistry.RegisterDialog<ProdProcessPrintView, ProdProcessPrintViewModel>();
 
             containerRegistry.RegisterDialog<ProcessUpdateView,ProcessUpdateViewModel>();
             //containerRegistry.RegisterForNavigation<ProcessUpdateView, ProcessUpdateViewModel>();
 
             //containerRegistry.Register<IDialogHostService, DialogHostService>();
 
+            containerRegistry.RegisterForNavigation< EquipemntUsageView,EquipemntUsageViewModel>();
+
             containerRegistry.RegisterForNavigation<ProdProcessPrintView, ProdProcessPrintViewModel>();
-            containerRegistry.RegisterForNavigation<TestProcessUpdateView, TestProcessUpdateViewModel>();
+            //containerRegistry.RegisterForNavigation<TestProcessUpdateView, TestProcessUpdateViewModel>();
 
             containerRegistry.RegisterForNavigation<TestProcessUpdateView, TestProcessUpdateViewModel>();
 

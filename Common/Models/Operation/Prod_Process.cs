@@ -26,7 +26,7 @@ namespace SicoreQMS.Common.Models.Operation
         public string ProdType { get; set; }
         public string ProdLot { get; set; }
         public string QualityLevel { get; set; }
-        public Nullable<int> OrginQty { get; set; }
         public Nullable<int> Qty { get; set; }
+        public Nullable<int> OriginQty { get; set; }
     }
 }
