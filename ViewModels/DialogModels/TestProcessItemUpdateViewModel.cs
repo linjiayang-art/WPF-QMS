@@ -42,6 +42,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 
             Title = "试验流程卡进度更新";
             EquipemtList = Service.EquipmentService.GetEquipmentBasic();
+            FilterEquipmentList = EquipemtList;
         }
 
 
@@ -137,6 +138,28 @@ namespace SicoreQMS.ViewModels.DialogModels
             }
         }
         #endregion
+
+
+        private ObservableCollection<SelectBasic> filterEquipmentlist;
+
+        public ObservableCollection<SelectBasic> FilterEquipmentList
+        {
+            get { return filterEquipmentlist; }
+            set { filterEquipmentlist = value; RaisePropertyChanged(); }
+        }
+
+        private string searchText;
+
+        public string SearchText
+        {
+            get { return searchText; }
+            set
+            {
+                SetProperty(ref searchText, value);
+                PerformFiltering();
+            }
+        }
+  
 
 
         private string equipmentNo;
@@ -283,7 +306,18 @@ namespace SicoreQMS.ViewModels.DialogModels
             
 
         }
-
+        private void PerformFiltering()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                FilterEquipmentList = EquipemtList;
+            }
+            else
+            {
+                FilterEquipmentList = new ObservableCollection<SelectBasic>(
+                    EquipemtList.Where(item => item.Label.ToLower().Contains(SearchText.ToLower())));
+            }
+        }
         public void OnDialogOpend(IDialogParameters parameters)
         {
 

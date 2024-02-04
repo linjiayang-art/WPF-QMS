@@ -125,10 +125,11 @@
                     DisplayMemberPath="Label"
                     IsEditable="True"
                     IsTextSearchEnabled="True"
-                    ItemsSource="{Binding EquipemtList}"
+                    ItemsSource="{Binding FilterEquipmentList}"
                     SelectedValue="{Binding EquipmentId, Mode=TwoWay}"
                     SelectedValuePath="Value"
                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                    Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                     TextSearch.TextPath="Label"
                     Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <TextBox

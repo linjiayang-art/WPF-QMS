@@ -112,6 +112,7 @@ namespace SicoreQMS.Service
                     QualityLevel = qualityLevel,
                     Prodstandard = prodstandard,
                     TestType = testType,
+                    CreateUser = AppSession.UserID,
                 };
                 // 将新的 ProdInfo 对象添加到数据库
                 dbContext.ProdInfo.Add(newProdInfo);
@@ -146,6 +147,7 @@ namespace SicoreQMS.Service
                     ModelName = "军工",/*ad*/
                     Qty = prodInfo.Qty,
                     OriginQty = prodInfo.Qty,
+                    CreateUser = AppSession.UserID,
                 };
 
                 // 将新的 ProdInfo 对象添加到数据库
@@ -165,6 +167,7 @@ namespace SicoreQMS.Service
                         Lot = prodInfo.ProdLot,
                         QualityLevel = prodInfo.QualityLevel,
                         ModelName = "军工",
+                        CreateUser = AppSession.UserID,
                     };
                     newProcessItem.CopyModelData(item);
                     context.Prod_ProcessItem.Add(newProcessItem);
@@ -232,5 +235,8 @@ namespace SicoreQMS.Service
 
 
         }
+
+
+        
     }
 }

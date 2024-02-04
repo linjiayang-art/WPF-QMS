@@ -19,6 +19,31 @@ namespace SicoreQMS.Service
     {
 
 
+        public static ObservableCollection<string> GetEquipmentList()
+        {
+            var results = new ObservableCollection<string>();
+            using (var context = new SicoreQMSEntities1())
+            {
+                var query = from e in context.Equipment
+                            join eStatus in context.EquipmentStatus on e.EquipmentID equals eStatus.EquipmentID
+                            where eStatus.EquipmentStatus1 == 0
+                            select new
+                            {
+                                e.EquipmentName,
+                                EquipmentNo = e.EquipmentNo,
+                                EquipmentID = e.EquipmentID
+
+                            };
+                var list = query.ToList();
+                foreach (var r in list)
+                {
+                    results.Add( r.EquipmentNo );
+                }
+                return results;
+            }
+
+        }
+
         public static ObservableCollection<SelectBasic> GetEquipmentBasic()
         {
             var results = new ObservableCollection<SelectBasic>();

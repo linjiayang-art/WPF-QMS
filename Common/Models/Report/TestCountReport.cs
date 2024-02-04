@@ -9,13 +9,19 @@ namespace SicoreQMS.Common.Models.Report
     public class TestCountReport
     {
 
+        public TestCountReport()
+        {
+            // 初始化 ChildItems 防止空引用
+            ChildItems = new List<TestCountReport>();
+        }
+
         public int Qty { get; set; }
         public string ProdName { get; set; }
         public string ProdType { get; set; }
 
         public string ProdLot { get; set; }
 
-        public string TestTpye { get; set; }
+        public string TestType { get; set; }
 
 
         public int Completeness { get; set; }
@@ -28,5 +34,9 @@ namespace SicoreQMS.Common.Models.Report
         public int UltrasonicTesting { get; set; }
         public int UltrasonicTestingOut { get; set; }
         public int StockIn { get; set; }
+        public List<TestCountReport> ChildItems { get; set; }
     }
+
+ 
+
 }

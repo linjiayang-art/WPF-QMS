@@ -18,6 +18,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="75" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock
             Margin="10"
@@ -76,10 +77,93 @@
         </Grid>
 
 
-
-
-
         <StackPanel Grid.Row="2">
+            <DataGrid
+                Margin="10"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding TestReportList}">
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+
+                        <Expander Header="详细信息">
+                            <!--  使用 PackIcon 控件为 Expander 添加图标  -->
+                            <Expander.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon VerticalAlignment="Center" Kind="ExpandMore" />
+                                        <TextBlock
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Text="详细信息" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Expander.HeaderTemplate>
+                            <DataGrid
+                                AutoGenerateColumns="False"
+                                IsReadOnly="True"
+                                ItemsSource="{Binding ChildItems}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding ProdName}" Header="产品名称" />
+                                    <DataGridTextColumn Binding="{Binding ProdType}" Header="产品型号" />
+                                    <DataGridTextColumn Binding="{Binding ProdLot}" Header="生产批次" />
+                                    <DataGridTextColumn Binding="{Binding TestType}" Header="试验类别" />
+                                    <DataGridTextColumn Binding="{Binding OriginQty}" Header="原始总数量" />
+                                    <DataGridTextColumn Binding="{Binding Qty}" Header="总数量" />
+                                    <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼投入数量" />
+                                    <DataGridTextColumn Binding="{Binding AgingCountOut}" Header="老炼完成数量" />
+                                    <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
+                                    <DataGridTextColumn Binding="{Binding UltrasonicTestingOut}" Header="超声检测完成数量" />
+                                    <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Expander>
+
+
+
+
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Binding="{Binding ProdName}" Header="产品名称" />
+                    <DataGridTextColumn Binding="{Binding ProdType}" Header="产品型号" />
+                    <DataGridTextColumn Binding="{Binding ProdLot}" Header="生产批次" />
+                    <DataGridTextColumn Binding="{Binding TestType}" Header="试验类别" />
+                    <DataGridTextColumn Binding="{Binding OriginQty}" Header="原始总数量" />
+                    <DataGridTextColumn Binding="{Binding Qty}" Header="总数量" />
+                    <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼投入数量" />
+                    <DataGridTextColumn Binding="{Binding AgingCountOut}" Header="老炼完成数量" />
+                    <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
+                    <DataGridTextColumn Binding="{Binding UltrasonicTestingOut}" Header="超声检测完成数量" />
+                    <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
+                    <DataGridTemplateColumn Width="110" Header="操作">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Width="75"
+                                    materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                    Command="{Binding DataContext.BtnCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                    CommandParameter="{Binding}"
+                                    Content="删除"
+                                    FontSize="13"
+                                    Style="{StaticResource MaterialDesignOutlinedButton}" />
+                                <!--<StackPanel Orientation="Horizontal">
+                                 IsEnabled="{Binding IsButtonEnabled, Mode=OneWay}"
+                                 <Border Width="10" Height="10" Background="Aqua"/>
+                             </StackPanel>-->
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+
+        </StackPanel>
+
+        <!--<StackPanel Grid.Row="3" Margin="5">
             <DataGrid
                 Margin="10"
                 AutoGenerateColumns="False"
@@ -97,20 +181,43 @@
                     <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
                     <DataGridTextColumn Binding="{Binding UltrasonicTestingOut}" Header="超声检测完成数量" />
                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
-
-                    <!--<DataGridTextColumn Binding="{Binding Completeness, StringFormat={}{0}%}" Header="任务完成度" />
-                    <DataGridTemplateColumn Width="100" Header="任务完成度">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-
-                                <ProgressBar Height="10" Value="{Binding Completeness}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>-->
+        -->
+        <!--<DataGridTextColumn Binding="{Binding Completeness, StringFormat={}{0}%}" Header="任务完成度" />
+           <DataGridTemplateColumn Width="100" Header="任务完成度">
+               <DataGridTemplateColumn.CellTemplate>
+                   <DataTemplate>
+                       <ProgressBar Height="10" Value="{Binding Completeness}" />
+                   </DataTemplate>
+               </DataGridTemplateColumn.CellTemplate>
+           </DataGridTemplateColumn>-->
+        <!--
                 </DataGrid.Columns>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <Expander Header="详细信息">
+                            <DataGrid
+                                AutoGenerateColumns="False"
+                                IsReadOnly="True"
+                                ItemsSource="{Binding ChildItems}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding ProdName}" Header="产品名称" />
+                                    <DataGridTextColumn Binding="{Binding ProdType}" Header="产品型号" />
+                                    <DataGridTextColumn Binding="{Binding ProdLot}" Header="生产批次" />
+                                    <DataGridTextColumn Binding="{Binding TestTpye}" Header="试验类别" />
+                                    <DataGridTextColumn Binding="{Binding OriginQty}" Header="原始总数量" />
+                                    <DataGridTextColumn Binding="{Binding Qty}" Header="总数量" />
+                                    <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼投入数量" />
+                                    <DataGridTextColumn Binding="{Binding AgingCountOut}" Header="老炼完成数量" />
+                                    <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
+                                    <DataGridTextColumn Binding="{Binding UltrasonicTestingOut}" Header="超声检测完成数量" />
+                                    <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Expander>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
             </DataGrid>
 
-        </StackPanel>
-
+        </StackPanel>-->
     </Grid>
 </UserControl>

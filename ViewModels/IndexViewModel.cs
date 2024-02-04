@@ -12,6 +12,9 @@ namespace SicoreQMS.ViewModels
 
         #region
 
+
+        public DelegateCommand<TestCountReport>  BtnCommand { get; private set; }
+
         public DelegateCommand<string> ExecuetCommand { get; private set; }
 
         public ObservableCollection<TestCountReport> _testReportList { get; set; }
@@ -41,8 +44,19 @@ namespace SicoreQMS.ViewModels
 
         public IndexViewModel()
         {
-            TestReportList= Service.IndexService.GetTestCountReport();
+            ProdType = "";
+            Lot = "";
+            TestReportList = Service.IndexService.GetTestCountReport();
             ExecuetCommand=new DelegateCommand<string>(Execuet);
+            BtnCommand= new DelegateCommand<TestCountReport>(BtnExecuet);
+        }
+
+        private void BtnExecuet(TestCountReport report)
+        {
+            Service.IndexService.DelProd(report);
+            TestReportList = Service.IndexService.GetTestCountReport();
+            return;
+            throw new NotImplementedException();
         }
 
         private void Execuet(string obj)
@@ -55,8 +69,10 @@ namespace SicoreQMS.ViewModels
 
         public void GetList()
         {
+
             _testReportList.Clear();
             TestReportList = Service.IndexService.GetTestCountReport(prodType:prodType,lot:Lot);
+
         }
     }
 }

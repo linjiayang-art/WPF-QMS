@@ -20,6 +20,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 {
     public class ProcessUpdateViewModel : BindableBase, IDialogAware
     {
+
         public ProcessUpdateViewModel(IEventAggregator aggregator)
         {
             Title = "生产流程卡进度更新";
@@ -28,10 +29,14 @@ namespace SicoreQMS.ViewModels.DialogModels
             IsStartEnabled = false;
             IsEndEnabled = false;
             this.aggregator = aggregator;
-            EquipemtList=Service.EquipmentService.GetEquipmentBasic();
+            EquipemtList =Service.EquipmentService.GetEquipmentBasic();
+            FilterEquipmentList = EquipemtList;
         }
 
-
+        private void SelectEquipment(string obj)
+        {
+            aggregator.SendMessage(obj);
+        }
 
         public virtual void RaiseRequestClose(IDialogResult dialogResult)
         {
@@ -79,8 +84,6 @@ namespace SicoreQMS.ViewModels.DialogModels
             }
         }
 
-
-
         public ObservableCollection<SelectBasic> _equipemtList { get; set; }
         public ObservableCollection<SelectBasic> EquipemtList
         {
@@ -88,6 +91,24 @@ namespace SicoreQMS.ViewModels.DialogModels
             set
             {
                 _equipemtList = value; RaisePropertyChanged();
+            }
+        }
+
+        private ObservableCollection<SelectBasic> filterEquipmentlist;
+
+        public ObservableCollection<SelectBasic> FilterEquipmentList
+        {
+            get { return filterEquipmentlist; }
+            set { filterEquipmentlist = value; RaisePropertyChanged(); }
+        }
+
+        private string  searchText;
+
+        public string  SearchText
+        {
+            get { return searchText; }
+            set { SetProperty(ref searchText, value);
+                PerformFiltering();
             }
         }
 
@@ -183,7 +204,18 @@ namespace SicoreQMS.ViewModels.DialogModels
         }
         #endregion
 
-
+        private void PerformFiltering()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                FilterEquipmentList =EquipemtList;
+            }
+            else
+            {
+                FilterEquipmentList = new ObservableCollection<SelectBasic>(
+                    EquipemtList.Where(item => item.Label.ToLower().Contains(SearchText.ToLower())));
+            }
+        }
         private void ProcessEnd()
         {
 

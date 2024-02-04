@@ -88,7 +88,7 @@ namespace SicoreQMS.Service
             {
                 var query = from pP in context.Prod_Process
                             join pPI in context.Prod_ProcessItem on pP.Id equals pPI.ProdProcessId
-                            where cardList.Any(card => pPI.ProdProcessCard==(card))
+                            where cardList.Any(card => pPI.ProdProcessCard==(card)&& pP.IsDeleted==false)
                             orderby pP.ProdLot, pPI.ModelSort
                             select new
                             {
@@ -117,7 +117,7 @@ namespace SicoreQMS.Service
                     testCountReport.OriginQty = (int)resultList[newI].OriginQty;
                     testCountReport.ProdType = resultList[newI].ProdType;
                     testCountReport.ProdLot = resultList[newI].ProdLot;
-                    testCountReport.TestTpye = resultList[newI].ProcessType;
+                    testCountReport.TestType = resultList[newI].ProcessType;
                     testCountReport.AgingCount= (int)resultList[newI    ].InputQty;
                     testCountReport.AgingCountOut = string.IsNullOrEmpty(resultList[newI].OutQty.ToString()) ? 0 : (int)resultList[newI].OutQty;
                     testCountReport.UltrasonicTesting = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString())? 0 : (int)resultList[newI + 1].InputQty;
@@ -126,11 +126,10 @@ namespace SicoreQMS.Service
                     results.Add(testCountReport);
 
                 }
-
-
             }
+            var newResults = testCountFactory(results);
 
-            return results;
+            return newResults;
         }
         public static ObservableCollection<TestCountReport> GetTestCountReport(string prodType,string lot,string testType=null)
         {
@@ -143,7 +142,8 @@ namespace SicoreQMS.Service
                             join pPI in context.Prod_ProcessItem on pP.Id equals pPI.ProdProcessId
                             where cardList.Any(card => pPI.ProdProcessCard == card)
               && (!String.IsNullOrEmpty( pP.ProdType)  && pP.ProdType.Contains(prodType))
-              && (!String.IsNullOrEmpty(pP.ProdLot) && pP.ProdLot.Contains(lot))
+              && (!String.IsNullOrEmpty(pP.ProdLot) && pP.ProdLot.Contains(lot)
+              && pP.IsDeleted == false)
                             orderby pP.ProdLot, pPI.ModelSort
                             select new
                             {
@@ -163,29 +163,73 @@ namespace SicoreQMS.Service
                 {
                     var newI = i * 3;
                     var testCountReport = new TestCountReport();
-
                     testCountReport.ProdName = resultList[newI].ProdName;
-
                     testCountReport.Qty = (int)resultList[newI].Qty;
                     testCountReport.OriginQty = (int)resultList[newI].OriginQty;
                     testCountReport.ProdType = resultList[newI].ProdType;
                     testCountReport.ProdLot = resultList[newI].ProdLot;
-                    testCountReport.TestTpye = resultList[newI].ProcessType;
+                    testCountReport.TestType = resultList[newI].ProcessType;
                     testCountReport.AgingCount = (int)resultList[newI].InputQty;
                     testCountReport.AgingCountOut = string.IsNullOrEmpty(resultList[newI].OutQty.ToString()) ? 0 : (int)resultList[newI].OutQty;
                     testCountReport.UltrasonicTesting = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString()) ? 0 : (int)resultList[newI + 1].InputQty;
                     testCountReport.UltrasonicTestingOut = string.IsNullOrEmpty(resultList[newI + 1].OutQty.ToString()) ? 0 : (int)resultList[newI + 1].OutQty;
                     testCountReport.StockIn = string.IsNullOrEmpty(resultList[newI + 2].InputQty.ToString()) ? 0 : (int)resultList[newI + 2].InputQty;
                     results.Add(testCountReport);
-
                 }
-
-
             }
+            //return results;
 
-            return results;
+            var newResults = testCountFactory(results);
+
+            return newResults;
         }
 
+
+
+        public static ObservableCollection<TestCountReport> testCountFactory(ObservableCollection<TestCountReport>  testCountReports)
+        {
+            var resluts=new ObservableCollection<TestCountReport>();
+            var testProdTypeCount = new List<string>();
+            var testLotCount = new List<string>();
+            foreach (var item in testCountReports)
+            {
+
+                //存在就更新子批
+                if (testProdTypeCount.Contains(item.ProdType)&&
+                    testLotCount.Any(i => item.ProdLot.ToLower().Contains(i.ToLower())))
+                {
+                    //找到父级
+                    var itemToUpdate = resluts.FirstOrDefault(newItem => newItem.ProdType == item.ProdType);
+                    if (itemToUpdate != null)
+                    {
+                        itemToUpdate.ChildItems.Add(item);
+                    }
+                }
+                else
+                {
+                    resluts.Add(item);
+                    testProdTypeCount.Add(item.ProdType);
+                    testLotCount.Add(item.ProdLot);
+                }
+            }
+            return resluts;
+        }
+
+        public static void DelProd(TestCountReport testCountReport)
+        {
+            var prodLot= testCountReport.ProdLot;
+            var prodType= testCountReport.ProdType;
+           using (var context=new SicoreQMSEntities1())
+            {
+                var prodProcess = context.Prod_Process.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).ToList();
+                foreach (var item in prodProcess)
+                {
+                    item.IsDeleted = true;
+                }
+                context.SaveChanges();
+            }
+
+        }
 
     }
 }
