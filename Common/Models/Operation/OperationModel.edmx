@@ -135,6 +135,8 @@
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ParentId" Type="nvarchar" MaxLength="50" />
+          <Property Name="TestNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdNo" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdName" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdStatus" Type="int" />
@@ -376,6 +378,8 @@
           <Property Name="TestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProdNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OriginQty" Type="Int32" />
+          <Property Name="TestNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Prod_Process">
           <Key>
@@ -648,6 +652,8 @@
           <EntitySetMapping Name="ProdInfo">
             <EntityTypeMapping TypeName="SicoreQMSModel.ProdInfo">
               <MappingFragment StoreEntitySet="ProdInfo">
+                <ScalarProperty Name="ProdNo" ColumnName="ProdNo" />
+                <ScalarProperty Name="TestNo" ColumnName="TestNo" />
                 <ScalarProperty Name="OriginQty" ColumnName="OriginQty" />
                 <ScalarProperty Name="ProdNumber" ColumnName="ProdNumber" />
                 <ScalarProperty Name="TestType" ColumnName="TestType" />

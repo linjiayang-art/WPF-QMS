@@ -66,7 +66,7 @@ namespace SicoreQMS.Common.Models.Operation
                 }
                 if (ItemStatus == 5)
                 {
-                    return "批次拆分,当前批次已锁定";
+                    return "拆批锁定";
                 }
                 return "状态未明确";
                 ;

@@ -4,6 +4,7 @@ using Prism.Services.Dialogs;
 using SicoreQMS.Common.Models.Report;
 using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace SicoreQMS.ViewModels
 {
@@ -63,8 +64,19 @@ namespace SicoreQMS.ViewModels
         {
             switch (obj)
             {
-                case "查询": GetList();break; 
+                case "查询": GetList();break;
+
+                case "导出":ExportFile();break;
             }
+
+
+        }
+
+        private void ExportFile()
+        {
+            Service.IndexService.ExportTestCountReportListToExcel( TestReportList, @"C:\Users\1000145\Desktop\testresult.xlsx");
+
+            MessageBox.Show("导出数据");
         }
 
         public void GetList()

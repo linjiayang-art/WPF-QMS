@@ -22,6 +22,7 @@
                 <Setter Property="Margin" Value="0,6" />
                 <Setter Property="Opacity" Value="0.56" />
                 <Setter Property="VerticalAlignment" Value="Top" />
+
             </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
@@ -152,12 +153,14 @@
         <ScrollViewer Grid.Row="2" Margin="10,10">
             <DataGrid
                 x:Name="dgvProcessModel"
+                Height="400"
                 Margin="10,10"
                 materialDesign:DataGridAssist.CellPadding="4 2 2 2"
                 materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 CanUserReorderColumns="True"
+                FontSize="10"
                 HeadersVisibility="All"
                 ItemsSource="{Binding ProcessItem}"
                 SelectionUnit="Cell">
@@ -167,7 +170,7 @@
                         Binding="{Binding Id}"
                         Header="ID"
                         Visibility="Hidden" />
-                    <DataGridTemplateColumn Width="120" Header="操作">
+                    <DataGridTemplateColumn Width="80" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button
@@ -175,6 +178,7 @@
                                     Command="{Binding DataContext.UpdateProgressCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
                                     CommandParameter="{Binding}"
                                     Content="进度更新"
+                                    FontSize="10"
                                     IsEnabled="{Binding IsButtonEnabled, Mode=OneWay}"
                                     Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
                                 <!--<StackPanel Orientation="Horizontal">
@@ -183,10 +187,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn
-                        Width="60"
-                        Binding="{Binding ModelSort}"
-                        Header="序号">
+                    <DataGridTextColumn Binding="{Binding ModelSort}" Header="序号">
                         <DataGridTextColumn.HeaderStyle>
                             <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
                                 <Setter Property="ContentTemplate">
@@ -194,12 +195,12 @@
                                         <DataTemplate>
                                             <TextBlock
                                                 Text="{Binding}"
-                                                TextAlignment="Right"
+                                                TextAlignment="Center"
                                                 TextWrapping="Wrap" />
                                         </DataTemplate>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
                             </Style>
                         </DataGridTextColumn.HeaderStyle>
                     </DataGridTextColumn>
@@ -240,6 +241,16 @@
                     <DataGridTextColumn
                         Binding="{Binding EndDate, StringFormat=yyyy-MM-dd}"
                         Header="结束时间"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding BeginRemark}"
+                        CanUserSort="False"
+                        Header="开始备注"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding EndRemark}"
+                        CanUserSort="False"
+                        Header="结束备注"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding NowStatus}"

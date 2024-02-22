@@ -15,20 +15,21 @@ using SicoreQMS.Service;
 using Prism.Events;
 using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
 using SicoreQMS.Extensions;
+using SicoreQMS.Common.Server;
 
 namespace SicoreQMS.ViewModels
 {
     public class TestRequestViewModel : BindableBase
     {
 
-        public DelegateCommand BtnSumbit { get; set; }
+        public DelegateCommand<string> BtnSumbit { get; set; }
 
 
 
 
         public TestRequestViewModel(IEventAggregator aggregator)
         {
-            BtnSumbit = new DelegateCommand(OnSumbit);
+            BtnSumbit = new DelegateCommand<string>(ExecuteBtn);
             TestTypes = ProdBasicService.GetTestType();
             CheckCommand = new DelegateCommand(HandelSelect);
             Aggregator = aggregator;
@@ -38,6 +39,21 @@ namespace SicoreQMS.ViewModels
         {
 
         }
+
+        public void ExecuteBtn(string obj)
+        {
+            switch (obj)
+            {
+                case "Sumbit":
+                    OnSumbit();
+                    break;
+                case "Clear":
+                    ClearForm();
+                    break;
+
+            }
+        }
+
 
         private void OnSumbit()
         {
@@ -60,35 +76,52 @@ namespace SicoreQMS.ViewModels
 
             }
 
-            if (TestTypeStr.Length==0)
+            if (TestTypeStr.Length == 0)
             {
                 Aggregator.SendMessage("请勾选实验类型");
                 return;
             }
             //去除TestTypeStr最后一个分号
             TestTypeStr = TestTypeStr.Substring(0, TestTypeStr.Length - 1);
-      
-            bool result = ProdBasicService.CreateProdBasic(prodName: this.ProdName, prodType: this.ProdType,
-                        qty: this.Qty, prodLot: this.ProdLot, testLot: this.TestLot, prodNumber: this.ProdNumber,prodstandard:this.Prodstandard,testType:this.TestTypeStr);
+
+            string lastChar = ProdType.Substring(ProdType.Length - 1, 1).ToUpper();
+            string qualityLevel;
+            if (lastChar == "J")
+            {
+                qualityLevel = "军品";
+            }
+            else
+            {
+                qualityLevel = "民品";
+            }
+
+            var prodinfo = new ProdInfo // 创建一个新的 ProdInfo 对象o = 
+            {
+                Id = Guid.NewGuid().ToString(),
+                TestLot = TestLot,
+                ProdNumber = ProdNumber,
+                ProdName = ProdName,
+                ProdType = ProdType,
+                ProdStatus = 0,
+                Qty = Qty,
+                OriginQty = Qty,
+                ProdLot = ProdLot,
+                QualityLevel = qualityLevel,
+                Prodstandard = Prodstandard,
+                TestType = TestTypeStr,
+                TestNo = TestNo,
+                ProdNo = ProdNo,
+                CreateUser = AppSession.UserID,
+            };
+
+            bool result = ProdBasicService.CreateProdBasic(prodinfo);
 
             if (result)
             {
                 Aggregator.SendMessage("新增成功!");
                 // MessageBox.Show("新增成功!");
 
-                ProdName = "";
-                ProdType = "";
-                ProdLot = "";
-                Prodstandard = "";
-                TestLot = "";
-                ProdNumber = "";
-                Qty = 0;
-                //清空checkbox
-                foreach (var item in TestTypes)
-                {
-                   item.IsCheck = false;
-                    
-                }
+                this.ClearForm();
             }
             else
             {
@@ -98,6 +131,25 @@ namespace SicoreQMS.ViewModels
 
         }
 
+
+        public void ClearForm()
+        {
+            ProdName = "";
+            ProdType = "";
+            ProdLot = "";
+            Prodstandard = "";
+            TestLot = "";
+            ProdNumber = "";
+            Qty = 0;
+            TestNo = "";
+            ProdNo = "";
+            //清空checkbox
+            foreach (var item in TestTypes)
+            {
+                item.IsCheck = false;
+
+            }
+        }
 
         #region 属性
 
@@ -112,9 +164,9 @@ namespace SicoreQMS.ViewModels
         }
 
 
-        
 
-       private string _prodstandard;
+
+        private string _prodstandard;
 
         public string Prodstandard
         {
@@ -138,6 +190,23 @@ namespace SicoreQMS.ViewModels
             get { return _testLot; }
             set { SetProperty(ref _testLot, value); }
         }
+
+        private string testNo;
+
+        public string TestNo
+        {
+            get { return testNo; }
+            set { SetProperty(ref testNo, value); }
+        }
+
+        private string prodNo;
+
+        public string ProdNo
+        {
+            get { return prodNo; }
+            set { SetProperty(ref prodNo, value); }
+        }
+
 
 
 

@@ -21,6 +21,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <TextBlock
             Padding="10,10"
@@ -184,9 +185,59 @@
             </StackPanel>
 
         </Grid>
-
         <Grid Grid.Row="4" Margin="10">
-            <Button Command="{Binding BtnSumbit}" Content="提交申请" />
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBox
+                x:Name="testNo"
+                Grid.Column="0"
+                Width="250"
+                MinWidth="150"
+                MaxWidth="5000"
+                Margin="10"
+                materialDesign:HintAssist.HelperText="试验流水号"
+                materialDesign:HintAssist.Hint="试验流水号"
+                BorderThickness="1"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding TestNo}" />
+            <TextBox
+                x:Name="ProdNo"
+                Grid.Column="1"
+                Width="250"
+                MinWidth="150"
+                MaxWidth="5000"
+                Margin="10"
+                materialDesign:HintAssist.HelperText="生产流水号"
+                materialDesign:HintAssist.Hint="生产流水号"
+                BorderThickness="1"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding ProdNo}" />
+        </Grid>
+
+        <Grid Grid.Row="5" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="2"
+                Margin="10"
+                Command="{Binding BtnSumbit}"
+                CommandParameter="Sumbit"
+                Content="提交申请" />
+            <Button
+                Grid.Column="3"
+                Margin="10"
+                Command="{Binding BtnSumbit}"
+                CommandParameter="Clear"
+                Content="清空表单" />
         </Grid>
     </Grid>
 </UserControl>

@@ -69,11 +69,11 @@ namespace SicoreQMS.Service
 
                 #endregion
                 var productItem = context.TestProcess
-                    .Where(B=> B.AuditStatus==false)
+                    .Where(B => B.AuditStatus == false)
                     //.Where(b => b.ProdStatus == 0 || b.ProdStatus == 5 || b.ProdStatus == 1)
                     .ToList().OrderBy(x => x.CreateDate);
-                
-                
+
+
                 foreach (var item in productItem)
                 {
                     values.Add(item.ProductSelect());
@@ -83,37 +83,23 @@ namespace SicoreQMS.Service
             //ProductNameBasic = newProductNameBasic;
         }
 
-        public static bool CreateProdBasic(string prodName, string prodType, int qty, string prodLot,string testLot,string prodNumber,string prodstandard,string testType)
+        //public static bool CreateProdBasic(string prodName, string prodType, int qty, string prodLot,string testLot,
+        //                                    string prodNumber,string prodstandard,string testType,string prodNo,string TestNo)
+        public static bool CreateProdBasic(ProdInfo prodInfo)
         {
-            string lastChar = prodType.Substring(prodType.Length - 1, 1).ToUpper();
-            var qualityLevel = "";
-            if (lastChar == "J")
-            {
-                qualityLevel = "军品";
-            }
-            else
-            {
-                qualityLevel = "民品";
-            }
+            //string lastChar = prodType.Substring(prodType.Length - 1, 1).ToUpper();
+            //string qualityLevel ;
+            //if (lastChar == "J")
+            //{
+            //    qualityLevel = "军品";
+            //}
+            //else
+            //{
+            //    qualityLevel = "民品";
+            //}
             using (var dbContext = new SicoreQMSEntities1())
             {
-                // 创建一个新的 ProdInfo 对象
-                ProdInfo newProdInfo = new ProdInfo
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    TestLot = testLot,
-                    ProdNumber = prodNumber,
-                    ProdName = prodName,
-                    ProdType = prodType,
-                    ProdStatus = 0,
-                    Qty = qty,
-                    OriginQty = qty,
-                    ProdLot = prodLot,
-                    QualityLevel = qualityLevel,
-                    Prodstandard = prodstandard,
-                    TestType = testType,
-                    CreateUser = AppSession.UserID,
-                };
+                ProdInfo newProdInfo = prodInfo;
                 // 将新的 ProdInfo 对象添加到数据库
                 dbContext.ProdInfo.Add(newProdInfo);
                 dbContext.SaveChanges();
@@ -219,7 +205,7 @@ namespace SicoreQMS.Service
                             ExperimentConditions = item.ExperimentItemConditions,
                             ExperimentNo = item.ExperimentItemNumber,
                             ExperimentQty = item.ExperimentItemQty,
-                            ExperimentItemRank=item.ExperimentItemRank
+                            ExperimentItemRank = item.ExperimentItemRank
                         };
                         context.TestProcessItem.Add(testProcessitem);
                     }
@@ -237,6 +223,6 @@ namespace SicoreQMS.Service
         }
 
 
-        
+
     }
 }

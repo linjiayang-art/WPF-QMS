@@ -11,6 +11,8 @@ using System.Data.Entity;
 using Prism.Regions;
 using System.Windows.Forms;
 using ImTools;
+using ClosedXML.Excel;
+
 
 namespace SicoreQMS.Service
 {
@@ -23,7 +25,7 @@ namespace SicoreQMS.Service
 
         //    using (var context= new SicoreQMSEntities1())
         //    {
-              
+
 
         //       var testProecess= context.TestProcess.Where(p => p.Isdeletd == false).ToList();
 
@@ -57,15 +59,15 @@ namespace SicoreQMS.Service
         //            if (completeness == null)
         //            {
         //                testCountReport.NowProcess = "未开始";
-                        
+
         //            }
         //            else
         //            {
         //                testCountReport.NowProcess = completeness.ExperimentName;
         //            }
 
-                  
-                    
+
+
         //            testCountReport.Completeness = Completeness;
 
         //            testCountReportList.Add(testCountReport);
@@ -77,18 +79,18 @@ namespace SicoreQMS.Service
 
         //    return testCountReportList;
         //}
-        
+
 
         public static ObservableCollection<TestCountReport> GetTestCountReport()
         {
-            var results=new ObservableCollection<TestCountReport>();
+            var results = new ObservableCollection<TestCountReport>();
             var cardList = new List<string> { "老炼", "超声扫描", "入库（筛选品）" };
 
-            using(var context=new SicoreQMSEntities1())
+            using (var context = new SicoreQMSEntities1())
             {
                 var query = from pP in context.Prod_Process
                             join pPI in context.Prod_ProcessItem on pP.Id equals pPI.ProdProcessId
-                            where cardList.Any(card => pPI.ProdProcessCard==(card)&& pP.IsDeleted==false)
+                            where cardList.Any(card => pPI.ProdProcessCard == (card) && pP.IsDeleted == false)
                             orderby pP.ProdLot, pPI.ModelSort
                             select new
                             {
@@ -100,29 +102,29 @@ namespace SicoreQMS.Service
                                 pPI.InputQty,
                                 pPI.OutQty,
                                 pP.Qty,
-                               pP.OriginQty,
+                                pP.OriginQty,
 
-                              
+
                             };
                 var resultList = query.ToList();
-                var listCount = resultList.Count()/3;
+                var listCount = resultList.Count() / 3;
                 for (int i = 0; i < listCount; i++)
                 {
-                   var newI=i*3;
+                    var newI = i * 3;
                     var testCountReport = new TestCountReport();
 
                     testCountReport.ProdName = resultList[newI].ProdName;
 
-                    testCountReport.Qty= (int)resultList[newI].Qty;
+                    testCountReport.Qty = (int)resultList[newI].Qty;
                     testCountReport.OriginQty = (int)resultList[newI].OriginQty;
                     testCountReport.ProdType = resultList[newI].ProdType;
                     testCountReport.ProdLot = resultList[newI].ProdLot;
                     testCountReport.TestType = resultList[newI].ProcessType;
-                    testCountReport.AgingCount= (int)resultList[newI    ].InputQty;
+                    testCountReport.AgingCount = (int)resultList[newI].InputQty;
                     testCountReport.AgingCountOut = string.IsNullOrEmpty(resultList[newI].OutQty.ToString()) ? 0 : (int)resultList[newI].OutQty;
-                    testCountReport.UltrasonicTesting = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString())? 0 : (int)resultList[newI + 1].InputQty;
+                    testCountReport.UltrasonicTesting = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString()) ? 0 : (int)resultList[newI + 1].InputQty;
                     testCountReport.UltrasonicTestingOut = string.IsNullOrEmpty(resultList[newI + 1].OutQty.ToString()) ? 0 : (int)resultList[newI + 1].OutQty;
-                    testCountReport.StockIn = string.IsNullOrEmpty(resultList[newI + 2].InputQty.ToString()) ? 0: (int)resultList[newI + 2].InputQty;
+                    testCountReport.StockIn = string.IsNullOrEmpty(resultList[newI + 2].InputQty.ToString()) ? 0 : (int)resultList[newI + 2].InputQty;
                     results.Add(testCountReport);
 
                 }
@@ -131,7 +133,7 @@ namespace SicoreQMS.Service
 
             return newResults;
         }
-        public static ObservableCollection<TestCountReport> GetTestCountReport(string prodType,string lot,string testType=null)
+        public static ObservableCollection<TestCountReport> GetTestCountReport(string prodType, string lot, string testType = null)
         {
             var results = new ObservableCollection<TestCountReport>();
             var cardList = new List<string> { "老炼", "超声扫描", "入库（筛选品）" };
@@ -141,7 +143,7 @@ namespace SicoreQMS.Service
                 var query = from pP in context.Prod_Process
                             join pPI in context.Prod_ProcessItem on pP.Id equals pPI.ProdProcessId
                             where cardList.Any(card => pPI.ProdProcessCard == card)
-              && (!String.IsNullOrEmpty( pP.ProdType)  && pP.ProdType.Contains(prodType))
+              && (!String.IsNullOrEmpty(pP.ProdType) && pP.ProdType.Contains(prodType))
               && (!String.IsNullOrEmpty(pP.ProdLot) && pP.ProdLot.Contains(lot)
               && pP.IsDeleted == false)
                             orderby pP.ProdLot, pPI.ModelSort
@@ -186,22 +188,29 @@ namespace SicoreQMS.Service
 
 
 
-        public static ObservableCollection<TestCountReport> testCountFactory(ObservableCollection<TestCountReport>  testCountReports)
+        public static ObservableCollection<TestCountReport> testCountFactory(ObservableCollection<TestCountReport> testCountReports)
         {
-            var resluts=new ObservableCollection<TestCountReport>();
+            var resluts = new ObservableCollection<TestCountReport>();
             var testProdTypeCount = new List<string>();
             var testLotCount = new List<string>();
             foreach (var item in testCountReports)
             {
 
                 //存在就更新子批
-                if (testProdTypeCount.Contains(item.ProdType)&&
+                if (testProdTypeCount.Contains(item.ProdType) &&
                     testLotCount.Any(i => item.ProdLot.ToLower().Contains(i.ToLower())))
                 {
                     //找到父级
                     var itemToUpdate = resluts.FirstOrDefault(newItem => newItem.ProdType == item.ProdType);
                     if (itemToUpdate != null)
                     {
+                        //更新下后续数量
+                        itemToUpdate.AgingCount += item.AgingCount;
+                        itemToUpdate.AgingCountOut += item.AgingCountOut;
+                        itemToUpdate.UltrasonicTesting += item.UltrasonicTesting;
+                        itemToUpdate.UltrasonicTestingOut += item.UltrasonicTestingOut;
+                        itemToUpdate.StockIn += item.StockIn;
+
                         itemToUpdate.ChildItems.Add(item);
                     }
                 }
@@ -217,9 +226,9 @@ namespace SicoreQMS.Service
 
         public static void DelProd(TestCountReport testCountReport)
         {
-            var prodLot= testCountReport.ProdLot;
-            var prodType= testCountReport.ProdType;
-           using (var context=new SicoreQMSEntities1())
+            var prodLot = testCountReport.ProdLot;
+            var prodType = testCountReport.ProdType;
+            using (var context = new SicoreQMSEntities1())
             {
                 var prodProcess = context.Prod_Process.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).ToList();
                 foreach (var item in prodProcess)
@@ -229,6 +238,81 @@ namespace SicoreQMS.Service
                 context.SaveChanges();
             }
 
+        }
+
+
+        public static void ExportTestCountReportListToExcel(IEnumerable<TestCountReport> oldreports, string filePath)
+        {
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Test Count Report");
+
+                // 添加标题行
+                var currentRow = 1;
+                List<TestCountReport> reports = new List<TestCountReport>();
+                foreach (var item in oldreports)
+                {
+                    var child=item.ChildItems;
+                    if  (child.Count>0)
+                    {
+                        foreach (var childItem in child)
+                        {
+                            reports.Add(childItem);
+                        }
+                    }
+                      reports.Add(item);
+
+                }
+
+
+                worksheet.Cell(currentRow, 1).Value = "产品名称";
+                worksheet.Cell(currentRow, 2).Value = "产品型号";
+                worksheet.Cell(currentRow, 3).Value = "生产批次";
+                worksheet.Cell(currentRow, 4).Value = "试验类别";
+                worksheet.Cell(currentRow, 5).Value = "原始总数量";
+                worksheet.Cell(currentRow, 6).Value = "总数量";
+                worksheet.Cell(currentRow, 7).Value = "老炼投入数量";
+                worksheet.Cell(currentRow, 8).Value = "老炼完成数量";
+                worksheet.Cell(currentRow, 9).Value = "超声波检投入数量";
+                worksheet.Cell(currentRow, 10).Value = "超声波检完成数量";
+                worksheet.Cell(currentRow, 11).Value = "入库总数";
+                // 继续添加其他标题...
+
+                // 填充数据
+                foreach (var report in reports)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = report.ProdName;
+                    worksheet.Cell(currentRow, 2).Value = report.ProdType;
+                    worksheet.Cell(currentRow, 3).Value = report.ProdLot;
+                    worksheet.Cell(currentRow, 4).Value = report.TestType;
+                    worksheet.Cell(currentRow, 5).Value = report.OriginQty;
+                    worksheet.Cell(currentRow, 6).Value = report.Qty;
+                    worksheet.Cell(currentRow, 7).Value = report.AgingCount;
+                    worksheet.Cell(currentRow, 8).Value = report.AgingCountOut;
+                    worksheet.Cell(currentRow, 9).Value = report.UltrasonicTesting;
+                    worksheet.Cell(currentRow, 10).Value = report.UltrasonicTestingOut;
+                    worksheet.Cell(currentRow, 11).Value = report.StockIn;
+
+                    // 继续填充其他字段...
+                }
+                for (int col = 1; col <= 11; col++)
+                {
+                    worksheet.Column(col).AdjustToContents();
+                    if (worksheet.Column(col).Width <=20)
+                    {
+                        worksheet.Column(col).Width = 20;
+                    }
+                    if (worksheet.Column(col).Width > 50) // 假设最大宽度为20
+                    {
+                        worksheet.Column(col).Width = 50;
+                    }
+
+                }
+
+                // 保存到文件
+                workbook.SaveAs(filePath);
+            }
         }
 
     }

@@ -4,21 +4,27 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:SicoreQMS.Views"
+    xmlns:localex="clr-namespace:SicoreQMS.Extensions"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    x:Name="window"
     d:DesignHeight="450"
     d:DesignWidth="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
     Background="White"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <localex:WindowSizeExtensions x:Key="WindowSizeExtensions" />
+    </UserControl.Resources>
+
     <Grid>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="75" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="{Binding Path=ActualHeight, ElementName=window, Converter={StaticResource WindowSizeExtensions}, ConverterParameter=0.75}" />
+
         </Grid.RowDefinitions>
         <TextBlock
             Margin="10"
@@ -36,6 +42,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+
             </Grid.ColumnDefinitions>
 
             <TextBox
@@ -67,20 +74,32 @@
                 materialDesign:HintAssist.Hint="试验类别"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 TextWrapping="Wrap" />
-            <Button
+            <StackPanel
                 Grid.Column="3"
-                Width="125"
-                Margin="5"
-                Command="{Binding ExecuetCommand}"
-                CommandParameter="查询"
-                Content="查询" />
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Width="125"
+                    Margin="5"
+                    Command="{Binding ExecuetCommand}"
+                    CommandParameter="查询"
+                    Content="查询" />
+                <Button
+                    Width="125"
+                    Margin="5"
+                    Command="{Binding ExecuetCommand}"
+                    CommandParameter="导出"
+                    Content="导出数据" />
+            </StackPanel>
+
         </Grid>
 
 
-        <StackPanel Grid.Row="2">
+        <ScrollViewer Grid.Row="2">
             <DataGrid
                 Margin="10"
                 AutoGenerateColumns="False"
+                FontSize="10"
                 IsReadOnly="True"
                 ItemsSource="{Binding TestReportList}">
                 <DataGrid.RowDetailsTemplate>
@@ -101,42 +120,66 @@
                             </Expander.HeaderTemplate>
                             <DataGrid
                                 AutoGenerateColumns="False"
+                                FontSize="10"
                                 IsReadOnly="True"
                                 ItemsSource="{Binding ChildItems}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Binding="{Binding ProdName}" Header="产品名称" />
-                                    <DataGridTextColumn Binding="{Binding ProdType}" Header="产品型号" />
-                                    <DataGridTextColumn Binding="{Binding ProdLot}" Header="生产批次" />
-                                    <DataGridTextColumn Binding="{Binding TestType}" Header="试验类别" />
-                                    <DataGridTextColumn Binding="{Binding OriginQty}" Header="原始总数量" />
+                                    <DataGridTextColumn
+                                        Width="120"
+                                        Binding="{Binding ProdName}"
+                                        Header="产品名称" />
+                                    <DataGridTextColumn
+                                        Width="120"
+                                        Binding="{Binding ProdType}"
+                                        Header="产品型号" />
+                                    <DataGridTextColumn
+                                        Width="120"
+                                        Binding="{Binding ProdLot}"
+                                        Header="生产批次" />
+                                    <DataGridTextColumn
+                                        Width="120"
+                                        Binding="{Binding TestType}"
+                                        Header="试验类别" />
+                                    <DataGridTextColumn
+                                        Width="120"
+                                        Binding="{Binding OriginQty}"
+                                        Header="原始总数量" />
                                     <DataGridTextColumn Binding="{Binding Qty}" Header="总数量" />
                                     <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼投入数量" />
-                                    <DataGridTextColumn Binding="{Binding AgingCountOut}" Header="老炼完成数量" />
                                     <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
-                                    <DataGridTextColumn Binding="{Binding UltrasonicTestingOut}" Header="超声检测完成数量" />
                                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Expander>
-
-
-
 
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
 
                 <DataGrid.Columns>
 
-                    <DataGridTextColumn Binding="{Binding ProdName}" Header="产品名称" />
-                    <DataGridTextColumn Binding="{Binding ProdType}" Header="产品型号" />
-                    <DataGridTextColumn Binding="{Binding ProdLot}" Header="生产批次" />
-                    <DataGridTextColumn Binding="{Binding TestType}" Header="试验类别" />
-                    <DataGridTextColumn Binding="{Binding OriginQty}" Header="原始总数量" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding ProdName}"
+                        Header="产品名称" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding ProdType}"
+                        Header="产品型号" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding ProdLot}"
+                        Header="生产批次" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding TestType}"
+                        Header="试验类别" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding OriginQty}"
+                        Header="原始总数量" />
                     <DataGridTextColumn Binding="{Binding Qty}" Header="总数量" />
                     <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼投入数量" />
-                    <DataGridTextColumn Binding="{Binding AgingCountOut}" Header="老炼完成数量" />
                     <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
-                    <DataGridTextColumn Binding="{Binding UltrasonicTestingOut}" Header="超声检测完成数量" />
                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
                     <DataGridTemplateColumn Width="110" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
@@ -158,10 +201,11 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
 
+
             </DataGrid>
 
 
-        </StackPanel>
+        </ScrollViewer>
 
         <!--<StackPanel Grid.Row="3" Margin="5">
             <DataGrid

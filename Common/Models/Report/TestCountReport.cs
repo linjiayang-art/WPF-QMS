@@ -22,8 +22,6 @@ namespace SicoreQMS.Common.Models.Report
         public string ProdLot { get; set; }
 
         public string TestType { get; set; }
-
-
         public int Completeness { get; set; }
 
         public int OriginQty { get; set; }
