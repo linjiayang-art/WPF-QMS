@@ -69,14 +69,38 @@ namespace SicoreQMS.Service
 
                 return results;
             }
+        }
+
+        public static ObservableCollection<MultiSelectBasic> GetMultiEquipmentBasic()
+        {
+            var results = new ObservableCollection<MultiSelectBasic>();
+            using (var context = new SicoreQMSEntities1())
+            {
 
 
+                var query = from e in context.Equipment
+                            join eStatus in context.EquipmentStatus on e.EquipmentID equals eStatus.EquipmentID
+                            where eStatus.EquipmentStatus1 == 0
+                            select new
+                            {
+                                e.EquipmentName,
+                                EquipmentNo = e.EquipmentNo,
+                                EquipmentID = e.EquipmentID
 
+                            };
+                var list = query.ToList();
+                foreach (var r in list)
+                {
+                    results.Add(new MultiSelectBasic { Value = r.EquipmentID, Label = r.EquipmentName + r.EquipmentNo ,IsCheck=false});
+                }
+
+                return results;
+            }
 
         }
 
 
-        public static ResultInfo RecordEquipmentLog(string equipmentId,string useType,string useProcess)
+        public static ResultInfo RecordEquipmentLog(string equipmentId,string useType,string useProcess,string processId=null)
         {
             using (var context=new SicoreQMSEntities1())
             {
@@ -92,6 +116,7 @@ namespace SicoreQMS.Service
                     var usageRecord = new UsageRecord
                     {
                         Id = Guid.NewGuid().ToString(),
+                        ProcessId=processId,
                         EquipmentId = equipmentId,
                         StartDate = DateTime.Now,
                         UseType = useType,

@@ -91,7 +91,8 @@
           <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
           <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="QualityLevel" Type="nvarchar" MaxLength="50" />
-          <Property Name="EquipmentId" Type="nvarchar" MaxLength="50" />
+          <Property Name="EquipmentId" Type="nvarchar" MaxLength="500" />
+          <Property Name="EquipmentList" Type="nvarchar" MaxLength="500" />
           <Property Name="ItemStatus" Type="int" />
           <Property Name="ModelName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ModelSort" Type="int" />
@@ -247,6 +248,7 @@
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="EquipmentId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProcessId" Type="nvarchar" MaxLength="50" />
           <Property Name="UseType" Type="nvarchar" MaxLength="50" />
           <Property Name="UseProcess" Type="nvarchar" MaxLength="50" />
           <Property Name="UseUser" Type="nvarchar" MaxLength="50" />
@@ -431,7 +433,8 @@
           <Property Name="BeginRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EndRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="OperatorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EquipmentId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EquipmentId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EquipmentList" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LotRelation">
           <Key>
@@ -598,6 +601,7 @@
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="EndDate" Type="DateTime" Precision="3" />
           <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_EquipmentStatus_Equipment">
           <End Type="SicoreQMSModel.Equipment" Role="Equipment" Multiplicity="0..1" />
@@ -697,6 +701,7 @@
           <EntitySetMapping Name="Prod_ProcessItem">
             <EntityTypeMapping TypeName="SicoreQMSModel.Prod_ProcessItem">
               <MappingFragment StoreEntitySet="Prod_ProcessItem">
+                <ScalarProperty Name="EquipmentList" ColumnName="EquipmentList" />
                 <ScalarProperty Name="EquipmentId" ColumnName="EquipmentId" />
                 <ScalarProperty Name="OperatorName" ColumnName="OperatorName" />
                 <ScalarProperty Name="EndRemark" ColumnName="EndRemark" />
@@ -894,6 +899,7 @@
           <EntitySetMapping Name="UsageRecord">
             <EntityTypeMapping TypeName="SicoreQMSModel.UsageRecord">
               <MappingFragment StoreEntitySet="UsageRecord">
+                <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />

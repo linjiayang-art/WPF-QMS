@@ -4,7 +4,9 @@ using Prism.Services.Dialogs;
 using SicoreQMS.Common.Models.Report;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
+
 
 namespace SicoreQMS.ViewModels
 {
@@ -74,7 +76,11 @@ namespace SicoreQMS.ViewModels
 
         private void ExportFile()
         {
-            Service.IndexService.ExportTestCountReportListToExcel( TestReportList, @"C:\Users\1000145\Desktop\testresult.xlsx");
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            // 使用 Path.Combine 构建完整的文件路径
+            string fullPath = Path.Combine(desktopPath, "testresult.xlsx");
+            Service.IndexService.ExportTestCountReportListToExcel( TestReportList, fullPath);
 
             MessageBox.Show("导出数据");
         }

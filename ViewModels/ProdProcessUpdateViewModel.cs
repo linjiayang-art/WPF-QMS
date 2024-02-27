@@ -21,7 +21,59 @@ namespace SicoreQMS.ViewModels
 {
     public class ProdProcessUpdateViewModel:BindableBase, IRegionMemberLifetime
     {
-        
+
+        #region 属性
+        private ObservableCollection<SelectBasic> _productNameBasic;
+        private readonly IDialogService dialog;
+        private ObservableCollection<Prod_ProcessItem> _processItem;
+
+        public DelegateCommand<Prod_ProcessItem> UpdateProgressCommand { get; set; }
+        public DelegateCommand<SelectBasic> SplitLotCommand { get; set; }
+        private string _prodLot;
+        private string _prodName;
+        private string _qualitylevel;
+
+
+
+
+
+
+        private string _prodType;
+
+        private string ProdProcessId { get; set; }
+
+
+
+
+
+
+        public string QualityLevel
+        {
+            get { return _qualitylevel; }
+            set { SetProperty(ref _qualitylevel, value); }
+        }
+
+
+        public string ProdLot
+        {
+            get { return _prodLot; }
+            set { SetProperty(ref _prodLot, value); }
+        }
+
+        public string ProdType
+        {
+            get { return _prodType; }
+            set { SetProperty(ref _prodType, value); }
+        }
+
+        public string ProdName
+        {
+            get { return _prodName; }
+            set { SetProperty(ref _prodName, value); }
+        }
+
+        #endregion
+
         public ProdProcessUpdateViewModel(IDialogService dialog, IEventAggregator aggregator)
         {
             ProductNameBasic = new ObservableCollection<SelectBasic>();
@@ -101,57 +153,7 @@ namespace SicoreQMS.ViewModels
         }
 
         public bool KeepAlive => false;
-        #region 属性
-        private ObservableCollection<SelectBasic> _productNameBasic;
-        private readonly IDialogService dialog;
-        private ObservableCollection<Prod_ProcessItem> _processItem;
-
-       public DelegateCommand<Prod_ProcessItem> UpdateProgressCommand { get; set; }
-        public DelegateCommand<SelectBasic> SplitLotCommand { get; set; }
-        private string _prodLot;
-        private string _prodName;
-        private string _qualitylevel;
-
-   
-
-
-
-
-        private string _prodType;
-
-        private string ProdProcessId { get; set; }
-
-
-
-
-
-
-        public string QualityLevel
-        {
-            get { return _qualitylevel; }
-            set { SetProperty(ref _qualitylevel, value); }
-        }
-
-
-        public string ProdLot
-        {
-            get { return _prodLot; }
-            set { SetProperty(ref _prodLot, value); }
-        }
-
-        public string ProdType
-        {
-            get { return _prodType; }
-            set { SetProperty(ref _prodType, value); }
-        }
-
-        public string ProdName
-        {
-            get { return _prodName; }
-            set { SetProperty(ref _prodName, value); }
-        }
-
-        #endregion
+       
 
 
         private void GetInfo(string parameter)

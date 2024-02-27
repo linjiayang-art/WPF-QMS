@@ -13,6 +13,18 @@ namespace SicoreQMS.Common.Models.Basic
         public string Value { get ; set; }
     }
 
+    public class MultiSelectBasic:BindableBase
+    {
+        private bool _isCheck=false;
+        public string Label { get; set; }
+        public string Value { get; set; }
+        public bool IsCheck
+        {
+            get => _isCheck;
+            set => SetProperty(ref _isCheck, value);
+        }
+    }
+
     public class CheckBasic:BindableBase {
 
         private bool _isCheck;

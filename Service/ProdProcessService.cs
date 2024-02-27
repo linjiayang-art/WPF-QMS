@@ -14,7 +14,7 @@ namespace SicoreQMS.Service
     public class ProdProcessService
     {
 
-        public static ResultInfo BeginProcess(string id, int qty, string equipmentId, string remark = "")
+        public static ResultInfo BeginProcess(string id, int qty, string equipmentList, string equipmentId=null, string remark = "")
         {
             var resultInfo = new ResultInfo();
 
@@ -54,6 +54,7 @@ namespace SicoreQMS.Service
                 prodProcessItem.Operator=AppSession.UserID;
                 prodProcessItem.OperatorName = AppSession.UserName;
                 prodProcessItem.EquipmentId= equipmentId;
+                prodProcessItem.EquipmentList = equipmentList;
                 prodProcessItem.BeginRemark = remark;
                 //投入不计数
                 //prodProcessItem.InputQty = qty;

@@ -28,9 +28,11 @@ namespace SicoreQMS.Common.Models.Report
         public int TotalCount { get; set; }
 
         public int AgingCount { get; set; }
-        public int AgingCountOut { get; set; }
+
+        public int XlineCount { get; set; }
+        //public int AgingCountOut { get; set; }
         public int UltrasonicTesting { get; set; }
-        public int UltrasonicTestingOut { get; set; }
+        //public int UltrasonicTestingOut { get; set; }
         public int StockIn { get; set; }
         public List<TestCountReport> ChildItems { get; set; }
     }

@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,8 +90,11 @@ namespace SicoreQMS.ViewModels
 
         private void PrintModel()
         {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-            string folderPath = @"C:\Users\1000145\Desktop\report.docx";
+            // 使用 Path.Combine 构建完整的文件路径
+
+            string folderPath = Path.Combine(desktopPath, "report.docx");
 
             SqlParameter[] param = {
                 new SqlParameter("LotNo",TestProcessInfo.ProdLot)

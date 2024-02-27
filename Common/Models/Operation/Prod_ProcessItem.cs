@@ -42,5 +42,6 @@ namespace SicoreQMS.Common.Models.Operation
         public string EndRemark { get; set; }
         public string OperatorName { get; set; }
         public string EquipmentId { get; set; }
+        public string EquipmentList { get; set; }
     }
 }

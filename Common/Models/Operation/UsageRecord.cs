@@ -22,5 +22,6 @@ namespace SicoreQMS.Common.Models.Operation
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
         public string Remark { get; set; }
+        public string ProcessId { get; set; }
     }
 }

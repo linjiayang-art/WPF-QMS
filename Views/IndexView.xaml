@@ -99,7 +99,7 @@
             <DataGrid
                 Margin="10"
                 AutoGenerateColumns="False"
-                FontSize="10"
+                FontSize="11"
                 IsReadOnly="True"
                 ItemsSource="{Binding TestReportList}">
                 <DataGrid.RowDetailsTemplate>
@@ -120,7 +120,7 @@
                             </Expander.HeaderTemplate>
                             <DataGrid
                                 AutoGenerateColumns="False"
-                                FontSize="10"
+                                FontSize="11"
                                 IsReadOnly="True"
                                 ItemsSource="{Binding ChildItems}">
                                 <DataGrid.Columns>
@@ -146,6 +146,7 @@
                                         Header="原始总数量" />
                                     <DataGridTextColumn Binding="{Binding Qty}" Header="总数量" />
                                     <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼投入数量" />
+                                    <DataGridTextColumn Binding="{Binding XlineCount}" Header="X光投入数量" />
                                     <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
                                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
                                 </DataGrid.Columns>
@@ -179,6 +180,7 @@
                         Header="原始总数量" />
                     <DataGridTextColumn Binding="{Binding Qty}" Header="总数量" />
                     <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼投入数量" />
+                    <DataGridTextColumn Binding="{Binding XlineCount}" Header="X光投入数量" />
                     <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
                     <DataGridTemplateColumn Width="110" Header="操作">
