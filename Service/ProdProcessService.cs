@@ -14,8 +14,12 @@ namespace SicoreQMS.Service
     public class ProdProcessService
     {
 
-        public static ResultInfo BeginProcess(string id, int qty, string equipmentList, string equipmentId=null, string remark = "")
+        public static ResultInfo BeginProcess(string id, int qty, string equipmentList, string equipmentId=null, string remark = "", DateTime? startTime=null)
         {
+            if (startTime == null)
+            {
+                startTime = DateTime.Now;
+            }
             var resultInfo = new ResultInfo();
 
             using (var context = new SicoreQMSEntities1())
@@ -60,7 +64,7 @@ namespace SicoreQMS.Service
                 //prodProcessItem.InputQty = qty;
                 prodProcessItem.InputQty = prodprocess.Qty;
 
-                prodProcessItem.StartDate = DateTime.Now;
+                prodProcessItem.StartDate = startTime;
                 prodProcessItem.ItemStatus = 1;//状态变更为正在进行
                 context.SaveChanges();
 
@@ -74,8 +78,12 @@ namespace SicoreQMS.Service
 
 
 
-        public static ResultInfo EndProcess(string id,int qty,string remark="")
+        public static ResultInfo EndProcess(string id,int qty,string remark="", DateTime? endTime = null)
         {
+            if (endTime == null)
+            {
+                endTime = DateTime.Now;
+            }
 
             var resultInfo = new ResultInfo();
 
@@ -123,7 +131,7 @@ namespace SicoreQMS.Service
                 prodProcessItem.EndRemark = remark;
                 prodProcessItem.OutQty = qty;
                 prodProcessItem.ItemStatus = 2;//状态变更为正在进行
-                prodProcessItem.EndDate = DateTime.Now;
+                prodProcessItem.EndDate = endTime;
                 prodProcessItem.IsComplete = true;
                 context.SaveChanges();
 

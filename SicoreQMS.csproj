@@ -354,6 +354,7 @@
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewModels\DialogModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\LotSplitViewModel.cs" />
+    <Compile Include="ViewModels\DialogModels\ProcessEditViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestProcessItemUpdateViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TsetItemAddViewModel.cs" />
@@ -369,6 +370,9 @@
     <Compile Include="ViewModels\TestRequestViewModel.cs" />
     <Compile Include="Views\Dialogs\LotSplitView.xaml.cs">
       <DependentUpon>LotSplitView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\ProcessEditView.xaml.cs">
+      <DependentUpon>ProcessEditView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\ProcessUpdateView.xaml.cs">
       <DependentUpon>ProcessUpdateView.xaml</DependentUpon>
@@ -417,6 +421,10 @@
       <DependentUpon>TestRequestView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\Dialogs\LotSplitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\ProcessEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -104,7 +104,6 @@
                 ItemsSource="{Binding TestReportList}">
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
-
                         <Expander Header="详细信息">
                             <!--  使用 PackIcon 控件为 Expander 添加图标  -->
                             <Expander.HeaderTemplate>
@@ -115,9 +114,12 @@
                                             Margin="5,0,0,0"
                                             VerticalAlignment="Center"
                                             Text="详细信息" />
+
                                     </StackPanel>
                                 </DataTemplate>
                             </Expander.HeaderTemplate>
+
+
                             <DataGrid
                                 AutoGenerateColumns="False"
                                 FontSize="11"
@@ -157,6 +159,7 @@
                 </DataGrid.RowDetailsTemplate>
 
                 <DataGrid.Columns>
+
 
                     <DataGridTextColumn
                         Width="120"

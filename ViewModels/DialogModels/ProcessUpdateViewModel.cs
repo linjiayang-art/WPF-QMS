@@ -33,18 +33,20 @@ namespace SicoreQMS.ViewModels.DialogModels
             this.aggregator = aggregator;
             EquipemtList = Service.EquipmentService.GetMultiEquipmentBasic();
             FilterEquipmentList = EquipemtList;
+            StartTime=DateTime.Now;
+            EndTime= DateTime.Now;
         }
 
         private void CheckEquipment(MultiSelectBasic obj)
         {
             CheckEquipmentNo = "";
-            var checkList=EquipemtList.Where(item => item.IsCheck == true).ToList();
-           foreach (var item in checkList)
+            var checkList = EquipemtList.Where(item => item.IsCheck == true).ToList();
+            foreach (var item in checkList)
             {
                 CheckEquipmentNo += item.Label + ";";
             }
-           //去除最后一个;
-           if (CheckEquipmentNo.Length > 0)
+            //去除最后一个;
+            if (CheckEquipmentNo.Length > 0)
             {
                 CheckEquipmentNo = CheckEquipmentNo.Substring(0, CheckEquipmentNo.Length - 1);
             }
@@ -81,6 +83,24 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         #region  属性
 
+        private DateTime staretime;
+
+        public DateTime StartTime
+        {
+            get { return staretime; }
+           set { SetProperty(ref staretime, value); }
+        }
+
+        private DateTime endTime;
+
+        public DateTime EndTime
+        {
+            get { return endTime; }
+            set { SetProperty(ref endTime, value); }
+        }
+
+
+
         public DelegateCommand<MultiSelectBasic> CheckCommand { get; set; }
         public DelegateCommand<MultiSelectBasic> UnCheckCommand { get; set; }
 
@@ -96,9 +116,10 @@ namespace SicoreQMS.ViewModels.DialogModels
         private string _equipmentId;
 
         public string checkEquipmentNo;
-        public string CheckEquipmentNo { 
+        public string CheckEquipmentNo
+        {
             get { return checkEquipmentNo; }
-            set { SetProperty(ref checkEquipmentNo , value); }
+            set { SetProperty(ref checkEquipmentNo, value); }
         }
 
         public string EquipmentId
@@ -117,7 +138,7 @@ namespace SicoreQMS.ViewModels.DialogModels
             set
             {
                 _equipemtList = value;
-              
+
 
                 RaisePropertyChanged();
             }
@@ -162,10 +183,6 @@ namespace SicoreQMS.ViewModels.DialogModels
             set { SetProperty(ref _endRemark, value); }
         }
 
-
-
-
-
         private bool _isStartEnabled;
         public bool IsStartEnabled
         {
@@ -176,8 +193,6 @@ namespace SicoreQMS.ViewModels.DialogModels
                 RaisePropertyChanged();
             }
         }
-
-
 
         private bool _isEndEnabled;
         public bool IsEndEnabled
@@ -249,21 +264,26 @@ namespace SicoreQMS.ViewModels.DialogModels
                 FilterEquipmentList = new ObservableCollection<MultiSelectBasic>(
                    EquipemtList.Where(item => item.Label.ToLower().Contains(SearchText.ToLower())));
 
-                var checklist= EquipemtList.Where(item => item.IsCheck == true).ToList();
+                var checklist = EquipemtList.Where(item => item.IsCheck == true).ToList();
                 foreach (var item in checklist)
-
                 {
-                    FilterEquipmentList.Add(item);
+                    var a = FilterEquipmentList.SingleOrDefault(x => x.Label == item.Label);
+                    if (a == null)
+                    {
+                        FilterEquipmentList.Add(item);
+                    }
+
                 }
-               
+
 
             }
             FilterEquipmentList.OrderBy(x => x.IsCheck);
         }
         private void ProcessEnd()
         {
+         
 
-            var result = ProdProcessService.EndProcess(id: Id, qty: OutQty, remark: EndRemark);
+            var result = ProdProcessService.EndProcess(id: Id, qty: OutQty, remark: EndRemark ,endTime:EndTime);
 
             if (result.ResultStatus == false)
             {
@@ -280,20 +300,23 @@ namespace SicoreQMS.ViewModels.DialogModels
                 var orginEqIdList = prodProcessItem.EquipmentId;
 
 
-                    if (orginEqIdList != null)
+                if (orginEqIdList != null)
+                {
+                    var eqList = orginEqIdList.Split(';');
+                   
+                    foreach (var item in eqList)
                     {
-                        var eqList = orginEqIdList.Split(';');
-                        foreach (var item in eqList)
+                        if (string.IsNullOrEmpty(item))
                         {
-                            var equipment= context.Equipment.SingleOrDefault(e => e.EquipmentID == item);
+                            continue;
+                        }
+                        var equipment = context.Equipment.SingleOrDefault(e => e.EquipmentID == item);
 
                         var eqId = equipment.EquipmentID;
-
-
-                            var a = EquipmentService.RecordEquipmentLog(eqId, "生产流程卡", ProcessType);
-                        }
-
+                        var a = EquipmentService.RecordEquipmentLog(eqId, "生产流程卡", ProcessType);
                     }
+
+                }
 
 
             }
@@ -310,39 +333,48 @@ namespace SicoreQMS.ViewModels.DialogModels
         /// </summary>
         private void ProcessStart()
         {
-            var eqList = CheckEquipmentNo.Split(';');
+
+       
+
+            var eqList = CheckEquipmentNo?.Split(';')??new string[0];
 
             var eqIdList = "";
+
             foreach (var item in eqList)
             {
                 var eqId = EquipemtList.SingleOrDefault(x => x.Label == item).Value;
-                eqIdList += eqId+";";
+                eqIdList += eqId + ";";
             }
+
+
+
             if (eqIdList.Length > 0)
             {
                 eqIdList = eqIdList.Substring(0, eqIdList.Length - 1);
             }
 
-            var result = ProdProcessService.BeginProcess(id: Id, qty: InputQty,  equipmentList: CheckEquipmentNo,equipmentId:eqIdList, remark: BeginRemark);
+
+            var result = ProdProcessService.BeginProcess(id: Id, qty: InputQty, equipmentList: CheckEquipmentNo, equipmentId: eqIdList, remark: BeginRemark,startTime:StartTime);
 
             if (result.ResultStatus == false)
             {
                 aggregator.SendMessage(result.ResultMessage);
                 return;
             }
-            
+
             if (!string.IsNullOrEmpty(CheckEquipmentNo))
             {
-               
+
+
                 foreach (var item in eqList)
                 {
-                    var eqId=EquipemtList.SingleOrDefault(x => x.Label == item).Value;
-                    var a = EquipmentService.RecordEquipmentLog(eqId, "生产流程卡", ProcessType,Id);
+                    var eqId = EquipemtList.SingleOrDefault(x => x.Label == item).Value;
+                    var a = EquipmentService.RecordEquipmentLog(eqId, "生产流程卡", ProcessType, Id);
                 }
 
             }
             //设备记录
-       
+
 
             ButtonResult btnResult = ButtonResult.None;
 

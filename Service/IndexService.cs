@@ -90,6 +90,7 @@ namespace SicoreQMS.Service
             {
                 var query = from pP in context.Prod_Process
                             join pPI in context.Prod_ProcessItem on pP.Id equals pPI.ProdProcessId
+                            join prod in context.ProdInfo on pP.ProdId equals prod.Id
                             where cardList.Any(card => pPI.ProdProcessCard == (card) && pP.IsDeleted == false)
                             orderby pP.ProdLot, pPI.ModelSort
                             select new
@@ -98,6 +99,7 @@ namespace SicoreQMS.Service
                                 pP.ProdType,
                                 pP.ProdLot,
                                 pPI.ProcessType,
+                                prod.TestType,
                                 pPI.ProdProcessCard,
                                 pPI.InputQty,
                                 pPI.OutQty,
@@ -119,7 +121,7 @@ namespace SicoreQMS.Service
                     testCountReport.OriginQty = (int)resultList[newI].OriginQty;
                     testCountReport.ProdType = resultList[newI].ProdType;
                     testCountReport.ProdLot = resultList[newI].ProdLot;
-                    testCountReport.TestType = resultList[newI].ProcessType;
+                    testCountReport.TestType = resultList[newI].TestType;
 
                     testCountReport.AgingCount = (int)resultList[newI].InputQty;
                     testCountReport.XlineCount = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString()) ? 0 : (int)resultList[newI + 1].InputQty;
@@ -144,6 +146,7 @@ namespace SicoreQMS.Service
             {
                 var query = from pP in context.Prod_Process
                             join pPI in context.Prod_ProcessItem on pP.Id equals pPI.ProdProcessId
+                            join prod in context.ProdInfo on pP.ProdId equals prod.Id
                             where cardList.Any(card => pPI.ProdProcessCard == card)
               && (!String.IsNullOrEmpty(pP.ProdType) && pP.ProdType.Contains(prodType))
               && (!String.IsNullOrEmpty(pP.ProdLot) && pP.ProdLot.Contains(lot)
@@ -155,6 +158,7 @@ namespace SicoreQMS.Service
                                 pP.ProdType,
                                 pP.ProdLot,
                                 pPI.ProcessType,
+                                prod.TestType,
                                 pPI.ProdProcessCard,
                                 pPI.InputQty,
                                 pPI.OutQty,
@@ -172,7 +176,7 @@ namespace SicoreQMS.Service
                     testCountReport.OriginQty = (int)resultList[newI].OriginQty;
                     testCountReport.ProdType = resultList[newI].ProdType;
                     testCountReport.ProdLot = resultList[newI].ProdLot;
-                    testCountReport.TestType = resultList[newI].ProcessType;
+                    testCountReport.TestType = resultList[newI].TestType;
                     testCountReport.AgingCount = (int)resultList[newI].InputQty;
                     //testCountReport.AgingCountOut = string.IsNullOrEmpty(resultList[newI].OutQty.ToString()) ? 0 : (int)resultList[newI].OutQty;
                     testCountReport.UltrasonicTesting = string.IsNullOrEmpty(resultList[newI + 2].InputQty.ToString()) ? 0 : (int)resultList[newI + 2].InputQty;

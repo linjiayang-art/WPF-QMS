@@ -97,7 +97,8 @@
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding CheckEquipmentNo}"
                     TextWrapping="Wrap"
-                    VerticalScrollBarVisibility="Auto" />
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
 
                 <TextBox
@@ -135,7 +136,12 @@
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto"
                     Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
+                <DatePicker
+                    materialDesign:HintAssist.HelperText="选择开始日期"
+                    materialDesign:HintAssist.Hint="选择开始日期"
+                    Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                     SelectedDate="{Binding StartTime}"
+                    Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <TextBox
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="产出数"
@@ -158,6 +164,12 @@
                     Text="{Binding EndRemark}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <DatePicker
+                    materialDesign:HintAssist.HelperText="选择结束日期"
+                    materialDesign:HintAssist.Hint="选择结束日期"
+                    Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                    SelectedDate="{Binding EndTime}"
                     Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
 

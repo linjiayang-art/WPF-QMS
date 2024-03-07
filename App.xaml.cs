@@ -67,6 +67,7 @@ namespace SicoreQMS
             //containerRegistry.RegisterDialog<ProdProcessPrintView, ProdProcessPrintViewModel>();
 
             containerRegistry.RegisterDialog<ProcessUpdateView,ProcessUpdateViewModel>();
+            containerRegistry.RegisterDialog<ProcessEditView, ProcessEditViewModel>();
             //containerRegistry.RegisterForNavigation<ProcessUpdateView, ProcessUpdateViewModel>();
 
             //containerRegistry.Register<IDialogHostService, DialogHostService>();
