@@ -36,20 +36,30 @@
             Grid.Row="0"
             Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="240" />
-                <ColumnDefinition Width="400" />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <ComboBox
                 x:Name="comProductName"
+                Grid.Column="0"
                 Width="200"
                 Margin="10,10"
                 materialDesign:HintAssist.HelperText="产品型号"
                 materialDesign:HintAssist.Hint="产品型号"
-                ItemsSource="{Binding Path=ProductNameBasic}"
+                DropDownOpened="MyComboBox_DropDownOpened"
+                IsEditable="True"
+                IsTextSearchEnabled="True"
+                ItemsSource="{Binding Path=SerachProductNameBasic}"
+                KeyUp="comProductName_KeyUp"
+                PreviewTextInput="MyComboBox_PreviewTextInput"
                 SelectedValuePath="Value"
-                Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                TextInput="comProductName_TextInput"
+                TextSearch.TextPath="Label">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <prism:InvokeCommandAction Command="{Binding HandleSelect}" CommandParameter="{Binding SelectedValue, ElementName=comProductName}" />
@@ -69,42 +79,39 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <StackPanel
+
+            <TextBox
+                x:Name="txtProdType"
                 Grid.Row="0"
                 Grid.Column="1"
-                Orientation="Horizontal">
-                <TextBox
-                    x:Name="txtProdType"
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Width="150"
-                    Margin="10"
-                    HorizontalContentAlignment="Left"
-                    materialDesign:HintAssist.HelperText="产品型号"
-                    materialDesign:HintAssist.Hint="产品型号"
-                    BorderThickness="1"
-                    IsEnabled="False"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding ProdType}" />
-                <TextBox
-                    x:Name="txtProdLot"
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    MinWidth="150"
-                    MaxWidth="5000"
-                    Margin="10"
-                    HorizontalContentAlignment="Left"
-                    materialDesign:HintAssist.HelperText="生产批次"
-                    materialDesign:HintAssist.Hint="生产批次"
-                    BorderThickness="1"
-                    IsEnabled="False"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding ProdLot}" />
-            </StackPanel>
+                Width="150"
+                Margin="10"
+                HorizontalContentAlignment="Left"
+                materialDesign:HintAssist.HelperText="产品型号"
+                materialDesign:HintAssist.Hint="产品型号"
+                BorderThickness="1"
+                IsEnabled="False"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding ProdType}" />
+            <TextBox
+                x:Name="txtProdLot"
+                Grid.Row="0"
+                Grid.Column="2"
+                MinWidth="150"
+                MaxWidth="5000"
+                Margin="10"
+                HorizontalContentAlignment="Left"
+                materialDesign:HintAssist.HelperText="生产批次"
+                materialDesign:HintAssist.Hint="生产批次"
+                BorderThickness="1"
+                IsEnabled="False"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding ProdLot}" />
+
             <TextBox
                 x:Name="txtProdTestSta"
                 Grid.Row="0"
-                Grid.Column="2"
+                Grid.Column="3"
                 MinWidth="150"
                 Margin="10"
                 HorizontalContentAlignment="Left"
@@ -114,6 +121,13 @@
                 IsEnabled="False"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding Prodstandard}" />
+
+            <Button
+                Grid.Column="4"
+                Width="150"
+                Command="{Binding OnSumbit}"
+                CommandParameter="import"
+                Content="导入数据" />
             <!--<ComboBox
                 x:Name="comModelType"
                 Grid.Column="3"
@@ -197,11 +211,14 @@
                 Text="{Binding ProdNumber}" />
             <Button
                 Grid.Column="3"
+                Width="150"
                 Command="{Binding OnSumbit}"
+                CommandParameter="audit"
                 Content="试验流程卡审核"
                 IsEnabled="{Binding CanAduit}"
                 Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}"
                 ToolTip="MaterialDesignFlatSecondaryDarkBgButton" />
+
 
         </Grid>
 
@@ -293,6 +310,11 @@
                         Binding="{Binding ExperimentNo}"
                         CanUserSort="False"
                         Header="试验编号" />
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding ItemDesc}"
+                        CanUserSort="False"
+                        Header="其它描述" />
 
                     <!--<DataGridTemplateColumn Width="120" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>

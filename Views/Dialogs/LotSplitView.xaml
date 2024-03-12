@@ -39,7 +39,7 @@
                         AcceptsReturn="True"
                         IsEnabled="False"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        Text="{Binding Processes.ProdLot}"
+                        Text="{Binding ProdData.ProdLot}"
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto" />
                     <TextBox
@@ -50,7 +50,7 @@
                         AcceptsReturn="True"
                         IsEnabled="False"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        Text="{Binding Processes.Qty}"
+                        Text="{Binding ProdData.Qty}"
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto" />
                     <TextBox

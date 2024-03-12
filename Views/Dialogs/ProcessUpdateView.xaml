@@ -14,6 +14,12 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="10" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="10" />
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -26,7 +32,10 @@
             FontSize="20"
             FontWeight="Bold"
             Text="生产流程卡进度更新" />
-        <DockPanel Grid.Row="1" LastChildFill="False">
+        <DockPanel
+            Grid.Row="1"
+            Margin="10"
+            LastChildFill="False">
             <StackPanel
                 Margin="20,10"
                 VerticalAlignment="Center"
@@ -34,6 +43,7 @@
                 Orientation="Vertical">
 
                 <TextBox
+                    Margin="10"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="生产流程卡"
                     AcceptsReturn="True"
@@ -43,6 +53,7 @@
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
                 <TextBox
+                    Margin="10"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="流程类型"
                     AcceptsReturn="True"
@@ -52,6 +63,7 @@
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
                 <TextBox
+                    Margin="10"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="生产依据"
                     AcceptsReturn="True"
@@ -61,6 +73,7 @@
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
                 <ComboBox
+                    Margin="10"
                     materialDesign:HintAssist.Hint="请选择设备类型"
                     IsEditable="True"
                     IsTextSearchEnabled="True"
@@ -90,6 +103,7 @@
                 </ComboBox>
 
                 <TextBox
+                    Margin="10"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="选中设备"
                     AcceptsReturn="True"
@@ -102,6 +116,7 @@
 
 
                 <TextBox
+                    Margin="10"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="使用设备"
                     AcceptsReturn="True"
@@ -114,6 +129,7 @@
 
 
                 <TextBox
+                    Margin="10"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="投入数"
                     materialDesign:TextFieldAssist.HasClearButton="True"
@@ -126,6 +142,7 @@
                     Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <!--  IsEnabled="{Binding IsStartEnabled}"  -->
                 <TextBox
+                    Margin="10"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="任务开始备注"
                     materialDesign:TextFieldAssist.HasClearButton="True"
@@ -137,12 +154,14 @@
                     VerticalScrollBarVisibility="Auto"
                     Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <DatePicker
+                    Margin="10"
                     materialDesign:HintAssist.HelperText="选择开始日期"
                     materialDesign:HintAssist.Hint="选择开始日期"
+                    SelectedDate="{Binding StartTime}"
                     Style="{StaticResource MaterialDesignOutlinedDatePicker}"
-                     SelectedDate="{Binding StartTime}"
                     Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <TextBox
+                    Margin="10"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="产出数"
                     materialDesign:TextFieldAssist.HasClearButton="True"
@@ -155,6 +174,7 @@
                     Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                 <TextBox
+                    Margin="10"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="任务结束备注"
                     materialDesign:TextFieldAssist.HasClearButton="True"
@@ -166,10 +186,11 @@
                     VerticalScrollBarVisibility="Auto"
                     Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <DatePicker
+                    Margin="10"
                     materialDesign:HintAssist.HelperText="选择结束日期"
                     materialDesign:HintAssist.Hint="选择结束日期"
-                    Style="{StaticResource MaterialDesignOutlinedDatePicker}"
                     SelectedDate="{Binding EndTime}"
+                    Style="{StaticResource MaterialDesignOutlinedDatePicker}"
                     Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
 

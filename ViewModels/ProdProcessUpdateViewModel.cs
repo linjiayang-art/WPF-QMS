@@ -1,4 +1,5 @@
-﻿using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -63,6 +64,8 @@ namespace SicoreQMS.ViewModels
         }
 
 
+
+      
         public string QualityLevel
         {
             get { return _qualitylevel; }
@@ -139,14 +142,16 @@ namespace SicoreQMS.ViewModels
                 ProductNameBasic = SelectBasicItem;
                 return;
             }
-            var searchList = SelectBasicItem.Where(b => b.Label.Contains(SearchText)).ToList();
+            var SearchTetxPar=SearchText.ToUpper();
+            var searchList = SelectBasicItem.Where(b => b.Label.Contains(SearchTetxPar)).ToList();
             ProductNameBasic = new ObservableCollection<SelectBasic>(searchList);
 
         }
 
         private void SpiltLot(SelectBasic obj)
         {
-            if (string.IsNullOrEmpty(obj.Value))
+          
+            if (obj is null || string.IsNullOrEmpty(obj.Value))
             {
                 return;
             }

@@ -232,6 +232,7 @@
           <Property Name="ExperimentEndTime" Type="datetime" />
           <Property Name="ExperimentStatus" Type="int" />
           <Property Name="ExperimentItemRank" Type="int" />
+          <Property Name="ItemDesc" Type="nvarchar(max)" />
           <Property Name="Remark" Type="nvarchar(max)" />
           <Property Name="AuditStatus" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
@@ -536,6 +537,7 @@
           <Property Name="EndUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ExperimentItemRank" Type="Int32" />
           <Property Name="EquipmentId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -805,6 +807,7 @@
           <EntitySetMapping Name="TestProcessItem">
             <EntityTypeMapping TypeName="SicoreQMSModel.TestProcessItem">
               <MappingFragment StoreEntitySet="TestProcessItem">
+                <ScalarProperty Name="ItemDesc" ColumnName="ItemDesc" />
                 <ScalarProperty Name="EquipmentId" ColumnName="EquipmentId" />
                 <ScalarProperty Name="ExperimentItemRank" ColumnName="ExperimentItemRank" />
                 <ScalarProperty Name="EndUser" ColumnName="EndUser" />

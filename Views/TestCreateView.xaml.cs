@@ -24,5 +24,31 @@ namespace SicoreQMS.Views
         {
             InitializeComponent();
         }
+
+        private void comProductName_TextInput(object sender, TextCompositionEventArgs e)
+        {
+            comProductName.IsDropDownOpen = true;
+        }
+
+        private void comProductName_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Back || e.Key == Key.Delete)
+            {
+                comProductName.IsDropDownOpen = true;
+            }
+        }
+
+        private void MyComboBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            comProductName.IsDropDownOpen = true;
+        }
+
+
+        private void MyComboBox_DropDownOpened(object sender, EventArgs e)
+        {
+            // Optional: Set the focus to the TextBox part of the ComboBox when the drop down opens
+            var textBox = comProductName.Template.FindName("PART_EditableTextBox", comProductName) as TextBox;
+            textBox?.Focus();
+        }
     }
 }

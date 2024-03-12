@@ -44,6 +44,26 @@ namespace SicoreQMS.Common.Models.Operation
             set { SetProperty(ref _isButtonEnabled, value); }
         }
 
+        private bool  isEditEnabled;
+
+        public bool  IsEditEnabled
+        {
+            get {
+
+                if (IsComplete==false)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            set { isEditEnabled = value; RaisePropertyChanged(); }
+        }
+
+
+
         private string _nowStatus;
         public string NowStatus
         {

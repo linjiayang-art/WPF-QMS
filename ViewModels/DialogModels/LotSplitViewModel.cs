@@ -49,6 +49,16 @@ namespace SicoreQMS.ViewModels.DialogModels
             set { SetProperty(ref _processes, value); }
         }
 
+        private ProdInfo prodData;
+
+        public ProdInfo ProdData
+        {
+            get { return prodData; }
+            set { prodData = value; RaisePropertyChanged(); }
+        }
+
+
+
         private string _id;
         public string Id
         {
@@ -124,7 +134,7 @@ namespace SicoreQMS.ViewModels.DialogModels
         private void SpiltLot()
         {
 
-            if (SplitQty > Processes.Qty)
+            if (SplitQty > ProdData.Qty)
             {
                 Aggregator.SendMessage("拆分数大于已有数量!");
                //MessageBox.Show("拆分数大于已有数量!");
@@ -215,6 +225,8 @@ namespace SicoreQMS.ViewModels.DialogModels
                                                 $" update dbo.Prod_ProcessItem set ItemStatus=5 where ProdProcessId='{Processes.Id}' ");
                 context.Database.ExecuteSqlCommand(
                                                 $" update dbo.Prod_Process set ProdStatus=5,Qty={nowQty} where Id='{Processes.Id}' ");
+                context.Database.ExecuteSqlCommand(
+                                               $" update dbo.ProdInfo set Qty={nowQty} where Id='{Processes.Id}' ");
 
                 LotRelation relation = new LotRelation()
                 {
@@ -300,6 +312,11 @@ namespace SicoreQMS.ViewModels.DialogModels
                 if (prodprocee != null)
                 {
                     Processes = prodprocee;
+                    var prodInfo = context.ProdInfo.Find(prodprocee.ProdId);
+                    if (prodInfo != null)
+                    {
+                        ProdData = prodInfo;
+                    }
                     return;
                 }
                 MessageBox.Show("未获取到批次号");

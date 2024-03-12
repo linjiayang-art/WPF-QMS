@@ -18,6 +18,9 @@ using SicoreQMS.Extensions;
 using Prism.Services.Dialogs;
 using SicoreQMS.Views.Dialogs;
 using Prism.Regions;
+using Microsoft.Win32;
+using System.Data;
+using SicoreQMS.Common.Server;
 
 namespace SicoreQMS.ViewModels
 {
@@ -32,15 +35,16 @@ namespace SicoreQMS.ViewModels
             TestTypes = new ObservableCollection<CheckBasic>();
             ModelType = new ObservableCollection<SelectBasic>();
 
-            HandleSelect = new DelegateCommand<string>(GetInfo);
+            HandleSelect = new DelegateCommand<object>(GetInfo);
             HandleDel = new DelegateCommand<TestProcessItem>(DelInfo);
             HandleAdd = new DelegateCommand(AddInfo);
 
             CheckCommand = new DelegateCommand<string>(ExcuteCheckCommand);
             TestModelItem = new ObservableCollection<TestProcessItem>();
-            OnSumbit = new DelegateCommand(UpdateTestProcess);
+            OnSumbit = new DelegateCommand<string>(SumbitBtnClick);
 
             ProductNameBasic = ProdBasicService.CreateProductSelection();
+            SerachProductNameBasic = ProductNameBasic;
             CreateData();
             this.aggregator = aggregator;
             this.dialog = dialog;
@@ -51,8 +55,103 @@ namespace SicoreQMS.ViewModels
 
         }
 
+
+        private void SumbitBtnClick(string obj)
+        {
+            if (ProdType is null || string.IsNullOrEmpty(ProdType))
+            {
+                return;
+            }
+
+            switch (obj)
+            {
+                case "audit":
+                    UpdateTestProcess();
+                    break;
+                case "import":
+                    ImportInfo();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        private void ImportInfo()
+        {
+            //文件选择框获取文件路径
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            // 设置对话框的标题
+            openFileDialog.Title = "请选择文件";
+
+            // 可以选择设置过滤器，限制用户选择特定类型的文件
+            openFileDialog.Filter = "文本文件 (*.docx)|*.docx|所有文件 (*.*)|*.*";
+
+            // 设置是否允许选择多个文件
+            openFileDialog.Multiselect = false;
+
+            // 显示对话框
+            if (openFileDialog.ShowDialog() == true)
+            {
+                // 获取选中文件的路径
+                string filePath = openFileDialog.FileName;
+                var loadTable= Service.DocService.LoadDoc(filePath);
+                var rank = 0;
+                using (var context = new SicoreQMSEntities1())
+                {
+                    foreach (DataRow row in loadTable.Rows)
+                    {
+                        var testProcessItem = new TestProcessItem()
+                        {
+                            //Id = row["Id"].ToString(),
+                            //TestProcessId = row["TestProcessId"].ToString(),
+                            // ...
+                            Id = Guid.NewGuid().ToString(),
+                            ExperimentItemRank = rank++,
+                            ProdId = ProdId,
+                            TestProcessId=TestProcessId,
+                            ModelId = "IMPORT",
+                            ExperimentItemNo = row["ExperimentItemNo"].ToString(),
+                            ExperimentName = row["ExperimentName"].ToString(),
+                            ExperimentStandard = row["ExperimentStandard"].ToString(),
+                            ExperimentConditions = row["ExperimentConditions"].ToString(),
+                            ExperimentQty = TryGetIntFromDataRow(row, "ExperimentQty"),
+                            ExperimentItemPassQty = TryGetIntFromDataRow(row, "ExperimentItemPassQty"),
+                            ExperimentNo = row["ExperimentNo"].ToString(),
+                            ExperimentUser = row["ExperimentUser"].ToString(),
+                            CreateUser = AppSession.UserID,
+                            // ...
+                            ItemDesc = row["ItemDesc"].ToString(),
+                            // 假设日期和布尔列是可空的，并且使用适当的格式
+
+                        };
+                        context.TestProcessItem.Add(testProcessItem);
+                        context.SaveChanges();
+                        TestModelItem.Add(testProcessItem);
+                    }
+               
+                  
+                }
+                    // 此处可以根据获取到的文件路径进行后续操作
+                   
+            }
+        }
+
+        private static int? TryGetIntFromDataRow(DataRow row, string columnName)
+        {
+            if (row[columnName] == DBNull.Value)
+                return 0;
+
+            if (int.TryParse(row[columnName].ToString(), out int value))
+                return value;
+            return 0;
+         
+        }
+
+
         private void DelInfo(TestProcessItem parmater)
         {
+        
             var id = parmater.Id;
             var result = TestProcessService.DelItem(id);
             if (result.ResultStatus)
@@ -90,13 +189,20 @@ namespace SicoreQMS.ViewModels
         }
 
 
-        private void GetInfo(string parameter)
+        private void GetInfo(object parameter)
         {
+
             if (parameter == null)
             {
                 return;
             }
-            TestProcessId=parameter;
+            if (parameter.GetType().ToString() != "System.String")
+            {
+                return;
+            }
+
+   
+            TestProcessId=parameter.ToString(); ;
 
 
 
@@ -147,8 +253,8 @@ namespace SicoreQMS.ViewModels
                     }
 
                     //拆分
-
-                    GetTemplate(parameter);
+                    
+                    GetTemplate(parameter.ToString());
                 }
 
 
@@ -277,7 +383,7 @@ namespace SicoreQMS.ViewModels
 
         public DelegateCommand<string> CheckCommand { get; private set; }
 
-        public DelegateCommand OnSumbit { get; private set; }
+        public DelegateCommand<string> OnSumbit { get; private set; }
 
         private ObservableCollection<SelectBasic> _productNameBasic;
 
@@ -287,7 +393,16 @@ namespace SicoreQMS.ViewModels
             set { _productNameBasic = value; RaisePropertyChanged(); }
         }
 
-        public DelegateCommand<string> HandleSelect { get; set; }
+        private ObservableCollection<SelectBasic> serachProductNameBasic;
+
+        public ObservableCollection<SelectBasic> SerachProductNameBasic
+        {
+            get { return serachProductNameBasic; }
+            set { serachProductNameBasic = value; RaisePropertyChanged(); }
+        }
+
+
+        public DelegateCommand<object> HandleSelect { get; set; }
 
         public DelegateCommand<TestProcessItem> HandleDel { get; set; }
 
@@ -347,6 +462,31 @@ namespace SicoreQMS.ViewModels
         {
             get { return _testLot; }
             set { SetProperty(ref _testLot, value); }
+        }
+        private string searchText;
+
+        public string SearchText
+        {
+            get { return searchText; }
+            set
+            {
+                SetProperty(ref searchText, value);
+                SearchTextList()
+                ;
+            }
+        }
+
+        private void SearchTextList()
+        {
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                SerachProductNameBasic = ProductNameBasic;
+                return;
+            }
+            var SearchTetxPar = SearchText.ToUpper();
+            var searchList = ProductNameBasic.Where(b => b.Label.Contains(SearchTetxPar)).ToList();
+            SerachProductNameBasic = new ObservableCollection<SelectBasic>(searchList);
+
         }
 
 

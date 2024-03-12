@@ -190,27 +190,28 @@ namespace SicoreQMS.Service
                     context.TestProcess.Add(testProcess);
                     context.SaveChanges();
 
-                    var items = context.TestModelItem.Where(p => p.ModelId == "CE282394-1E58-4A38-BA00-C87D512617D7").OrderByDescending(p => p.ExperimentItemRank).ToList();
-                    foreach (var item in items)
-                    {
-                        TestProcessItem testProcessitem = new TestProcessItem()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            ProdId = prodInfo.Id,
-                            TestProcessId = testProcess.Id,
-                            ModelId = item.Id,
-                            ExperimentItemNo = item.ExperimentItemNo,
-                            ExperimentName = item.ExperimentItemName,
-                            ExperimentStandard = item.ExperimentItemStandard,
-                            ExperimentConditions = item.ExperimentItemConditions,
-                            ExperimentNo = item.ExperimentItemNumber,
-                            ExperimentQty = item.ExperimentItemQty,
-                            ExperimentItemRank = item.ExperimentItemRank
-                        };
-                        context.TestProcessItem.Add(testProcessitem);
-                    }
+                    //直接用导入模板
+                    //var items = context.TestModelItem.Where(p => p.ModelId == "CE282394-1E58-4A38-BA00-C87D512617D7").OrderByDescending(p => p.ExperimentItemRank).ToList();
+                    //foreach (var item in items)
+                    //{
+                    //    TestProcessItem testProcessitem = new TestProcessItem()
+                    //    {
+                    //        Id = Guid.NewGuid().ToString(),
+                    //        ProdId = prodInfo.Id,
+                    //        TestProcessId = testProcess.Id,
+                    //        ModelId = item.Id,
+                    //        ExperimentItemNo = item.ExperimentItemNo,
+                    //        ExperimentName = item.ExperimentItemName,
+                    //        ExperimentStandard = item.ExperimentItemStandard,
+                    //        ExperimentConditions = item.ExperimentItemConditions,
+                    //        ExperimentNo = item.ExperimentItemNumber,
+                    //        ExperimentQty = item.ExperimentItemQty,
+                    //        ExperimentItemRank = item.ExperimentItemRank
+                    //    };
+                    //    context.TestProcessItem.Add(testProcessitem);
+                    //}
 
-                    context.SaveChanges();
+                    //context.SaveChanges();
 
                 }
 

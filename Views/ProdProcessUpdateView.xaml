@@ -84,19 +84,24 @@
             <DockPanel Margin="10" HorizontalAlignment="Left">
                 <ComboBox
                     x:Name="comProductName"
-                    Width="650"
+                    Width="350"
                     Margin="10,10"
                     materialDesign:HintAssist.HelperText="产品型号"
                     materialDesign:HintAssist.Hint="产品型号"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     DisplayMemberPath="Label"
+                    DropDownOpened="MyComboBox_DropDownOpened"
+                    
                     IsEditable="True"
                     IsTextSearchEnabled="True"
                     ItemsSource="{Binding Path=ProductNameBasic}"
+                    KeyUp="comProductName_KeyUp"
+                    PreviewTextInput="MyComboBox_PreviewTextInput"
                     SelectedValue="{Binding ProdProcessId, Mode=TwoWay}"
                     SelectedValuePath="Value"
                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                    TextInput="comProductName_TextInput"
                     TextSearch.TextPath="Label">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
@@ -129,7 +134,13 @@
 
             </ComboBox>-->
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" Margin="10" >
+                <Grid.OpacityMask>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.OpacityMask>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -244,6 +255,7 @@
                                         CommandParameter="{Binding}"
                                         Content="编辑"
                                         FontSize="10"
+                                        IsEnabled="{Binding IsEditEnabled}"
                                         Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
 
                                 </StackPanel>
