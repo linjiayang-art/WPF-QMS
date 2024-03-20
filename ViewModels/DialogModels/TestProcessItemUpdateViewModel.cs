@@ -35,16 +35,33 @@ namespace SicoreQMS.ViewModels.DialogModels
         public TestProcessItemUpdateViewModel()
         {
             DialogHostName = "Root";
-
+            CheckCommand = new DelegateCommand<MultiSelectBasic>(CheckEquipment);
+            UnCheckCommand = new DelegateCommand<MultiSelectBasic>(CheckEquipment);
 
             BtnStart = new DelegateCommand(ProcessStart, CanStartExecute);
             BtnEnd = new DelegateCommand(ProcessEnd, CanEndExecute);
 
             Title = "试验流程卡进度更新";
-            EquipemtList = Service.EquipmentService.GetEquipmentBasic();
+            EquipemtList = Service.EquipmentService.GetMultiEquipmentBasic();
             FilterEquipmentList = EquipemtList;
         }
 
+
+        private void CheckEquipment(MultiSelectBasic obj)
+        {
+            CheckEquipmentNo = "";
+            var checkList = EquipemtList.Where(item => item.IsCheck == true).ToList();
+            foreach (var item in checkList)
+            {
+                CheckEquipmentNo += item.Label + ";";
+            }
+            //去除最后一个;
+            if (CheckEquipmentNo.Length > 0)
+            {
+                CheckEquipmentNo = CheckEquipmentNo.Substring(0, CheckEquipmentNo.Length - 1);
+            }
+            FilterEquipmentList.OrderBy(x => x.IsCheck);
+        }
 
         /// <summary>
         /// 窗口关闭
@@ -66,14 +83,38 @@ namespace SicoreQMS.ViewModels.DialogModels
                 return;
             }
 
-
-
-
-            if (!string.IsNullOrEmpty(EquipmentId))
+            using (var context = new SicoreQMSEntities1())
             {
-                var a = EquipmentService.RecordEquipmentLog(EquipmentId, "试验流程卡", TestItem.ExperimentName);
+                var testItem = context.TestProcessItem.SingleOrDefault(b => b.Id == Id);
+                var orginEqIdList = testItem.EquipmentId;
+
+
+                if (orginEqIdList != null)
+                {
+                    var eqList = orginEqIdList.Split(';');
+
+                    foreach (var item in eqList)
+                    {
+                        if (string.IsNullOrEmpty(item))
+                        {
+                            continue;
+                        }
+                        var equipment = context.Equipment.SingleOrDefault(e => e.EquipmentID == item);
+
+                        var eqId = equipment.EquipmentID;
+                        var a = EquipmentService.RecordEquipmentLog(eqId, "试验流程卡", testItem.ExperimentName);
+                    }
+
+                }
 
             }
+
+
+            //if (!string.IsNullOrEmpty(EquipmentId))
+            //{
+            //    var a = EquipmentService.RecordEquipmentLog(EquipmentId, "试验流程卡", TestItem.ExperimentName);
+
+            //}
 
             var dialogResult = new Prism.Services.Dialogs.DialogResult(ButtonResult.OK, new DialogParameters { { "key", result_info.ResultMessage } });
 
@@ -82,7 +123,25 @@ namespace SicoreQMS.ViewModels.DialogModels
         }
         private void ProcessStart()
         {
-            var result_info = TestProcessService.StartTset(id: Id, passQty: PassQty, remark: Remark,equipmentid:EquipmentId);
+
+            var eqList = CheckEquipmentNo?.Split(';') ?? new string[0];
+
+            var eqIdList = "";
+            foreach (var item in eqList)
+            {
+                var eqId = EquipemtList.SingleOrDefault(x => x.Label == item).Value;
+                eqIdList += eqId + ";";
+            }
+
+
+            if (eqIdList.Length > 0)
+            {
+                eqIdList = eqIdList.Substring(0, eqIdList.Length - 1);
+            }
+
+
+     
+            var result_info = TestProcessService.StartTset(id: Id, passQty: PassQty, remark: Remark,   equipmentid: eqIdList, equipmentList: CheckEquipmentNo);
 
             if (result_info.ResultStatus == false)
             {
@@ -91,9 +150,14 @@ namespace SicoreQMS.ViewModels.DialogModels
             }
 
 
-            if (!string.IsNullOrEmpty(EquipmentId))
+            if (!string.IsNullOrEmpty(CheckEquipmentNo))
             {
-                var a = EquipmentService.RecordEquipmentLog(EquipmentId, "试验流程卡", TestItem.ExperimentName);
+                foreach (var item in eqList)
+                {
+                    var eqId = EquipemtList.SingleOrDefault(x => x.Label == item).Value;
+                    var a = EquipmentService.RecordEquipmentLog(eqId, "试验流程卡", TestItem.ExperimentName, Id);
+                }
+                
 
             }
 
@@ -116,15 +180,39 @@ namespace SicoreQMS.ViewModels.DialogModels
         /// </summary>
         /// 
         #region EquipemtList
-        public ObservableCollection<SelectBasic> _equipemtList { get; set; }
-        public ObservableCollection<SelectBasic> EquipemtList
+        public ObservableCollection<MultiSelectBasic> _equipemtList { get; set; }
+        public ObservableCollection<MultiSelectBasic> EquipemtList
         {
             get { return _equipemtList; }
             set
             {
-                _equipemtList = value; RaisePropertyChanged();
+                _equipemtList = value;
+
+
+                RaisePropertyChanged();
             }
         }
+
+        public string checkEquipmentNo;
+        public string CheckEquipmentNo
+        {
+            get { return checkEquipmentNo; }
+            set { SetProperty(ref checkEquipmentNo, value); }
+        }
+
+        public DelegateCommand<MultiSelectBasic> CheckCommand { get; set; }
+        public DelegateCommand<MultiSelectBasic> UnCheckCommand { get; set; }
+
+
+        private ObservableCollection<MultiSelectBasic> filterEquipmentlist;
+
+        public ObservableCollection<MultiSelectBasic> FilterEquipmentList
+        {
+            get { return filterEquipmentlist; }
+            set { filterEquipmentlist = value; RaisePropertyChanged(); }
+        }
+
+
         #endregion
         #region  equipmentId
         private string _equipmentId;
@@ -140,13 +228,7 @@ namespace SicoreQMS.ViewModels.DialogModels
         #endregion
 
 
-        private ObservableCollection<SelectBasic> filterEquipmentlist;
-
-        public ObservableCollection<SelectBasic> FilterEquipmentList
-        {
-            get { return filterEquipmentlist; }
-            set { filterEquipmentlist = value; RaisePropertyChanged(); }
-        }
+    
 
         private string searchText;
 
@@ -282,23 +364,17 @@ namespace SicoreQMS.ViewModels.DialogModels
             }
             if (TestItem.ExperimentStatus == 1)
             {
-                using (var context = new SicoreQMSEntities1())
+                var eq = TestItem.EquipmentList;
+                if (eq != null)
                 {
-                    var eq = context.Equipment.SingleOrDefault(e => e.EquipmentID == TestItem.EquipmentId);
-                    if (eq!=null)
-                    {
-                        EquipmentNo = eq.EquipmentNo;
-                        EquipmentId = eq.EquipmentID;
+                    EquipmentNo = eq;
 
-                    }
-                    else
-                    {
-                        EquipmentNo = "未使用设备";
-
-                    }
-                 
                 }
-                    
+                else
+                {
+                    EquipmentNo = "未使用设备";
+                }
+
                 IsStartEnabled = false;
                 IsEndEnabled = true;
                 return;
@@ -314,9 +390,23 @@ namespace SicoreQMS.ViewModels.DialogModels
             }
             else
             {
-                FilterEquipmentList = new ObservableCollection<SelectBasic>(
-                    EquipemtList.Where(item => item.Label.ToLower().Contains(SearchText.ToLower())));
+                FilterEquipmentList = new ObservableCollection<MultiSelectBasic>(
+                   EquipemtList.Where(item => item.Label.ToLower().Contains(SearchText.ToLower())));
+
+                var checklist = EquipemtList.Where(item => item.IsCheck == true).ToList();
+                foreach (var item in checklist)
+                {
+                    var a = FilterEquipmentList.SingleOrDefault(x => x.Label == item.Label);
+                    if (a == null)
+                    {
+                        FilterEquipmentList.Add(item);
+                    }
+
+                }
+
+
             }
+            FilterEquipmentList.OrderBy(x => x.IsCheck);
         }
         public void OnDialogOpend(IDialogParameters parameters)
         {

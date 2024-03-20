@@ -60,6 +60,7 @@ namespace SicoreQMS.ViewModels
         {
             if (ProdType is null || string.IsNullOrEmpty(ProdType))
             {
+                aggregator.SendMessage("请选择批次后再进行操作！");
                 return;
             }
 
@@ -95,10 +96,25 @@ namespace SicoreQMS.ViewModels
             {
                 // 获取选中文件的路径
                 string filePath = openFileDialog.FileName;
-                var loadTable= Service.DocService.LoadDoc(filePath);
+                var loadTable = Service.DocService.LoadDoc(filePath);
+                if (loadTable is null)
+                {
+                    aggregator.SendMessage("文件未解密或格式不正确，请检查！");
+                    return;
+                }
+               
                 var rank = 0;
                 using (var context = new SicoreQMSEntities1())
                 {
+                    //删除已有的数据
+                    var items = context.TestProcessItem.Where(p => p.ProdId == ProdId && p.IsDeleted == false && p.TestProcessId == TestProcessId).ToList();
+                    foreach (var item in items)
+                    {
+                        context.TestProcessItem.Remove(item);
+                        context.SaveChanges();
+
+                    }
+                    TestModelItem.Clear();
                     foreach (DataRow row in loadTable.Rows)
                     {
                         var testProcessItem = new TestProcessItem()
@@ -109,7 +125,7 @@ namespace SicoreQMS.ViewModels
                             Id = Guid.NewGuid().ToString(),
                             ExperimentItemRank = rank++,
                             ProdId = ProdId,
-                            TestProcessId=TestProcessId,
+                            TestProcessId = TestProcessId,
                             ModelId = "IMPORT",
                             ExperimentItemNo = row["ExperimentItemNo"].ToString(),
                             ExperimentName = row["ExperimentName"].ToString(),
@@ -129,11 +145,11 @@ namespace SicoreQMS.ViewModels
                         context.SaveChanges();
                         TestModelItem.Add(testProcessItem);
                     }
-               
-                  
+
+
                 }
-                    // 此处可以根据获取到的文件路径进行后续操作
-                   
+                // 此处可以根据获取到的文件路径进行后续操作
+
             }
         }
 
@@ -145,13 +161,13 @@ namespace SicoreQMS.ViewModels
             if (int.TryParse(row[columnName].ToString(), out int value))
                 return value;
             return 0;
-         
+
         }
 
 
         private void DelInfo(TestProcessItem parmater)
         {
-        
+
             var id = parmater.Id;
             var result = TestProcessService.DelItem(id);
             if (result.ResultStatus)
@@ -183,7 +199,7 @@ namespace SicoreQMS.ViewModels
                     aggregator.SendMessage("新增成功!");
                     GetInfo(TestProcessId);
                 }
-                
+
 
             });
         }
@@ -201,18 +217,18 @@ namespace SicoreQMS.ViewModels
                 return;
             }
 
-   
-            TestProcessId=parameter.ToString(); ;
+
+            TestProcessId = parameter.ToString() ;
 
 
 
             using (var context = new SicoreQMSEntities1())
             {
 
-                var testProcee= context.TestProcess.SingleOrDefault(p => p.Id == parameter);
+                var testProcee = context.TestProcess.SingleOrDefault(p => p.Id == parameter.ToString());
 
                 ProdId = testProcee.ProdId;
-                var productInfo = context.ProdInfo.SingleOrDefault(b => b.Id == ProdId );
+                var productInfo = context.ProdInfo.SingleOrDefault(b => b.Id == ProdId);
 
                 if (productInfo != null)
                 {
@@ -249,11 +265,11 @@ namespace SicoreQMS.ViewModels
                     catch (NullReferenceException)
                     {
 
-                        
+
                     }
 
                     //拆分
-                    
+
                     GetTemplate(parameter.ToString());
                 }
 
@@ -356,7 +372,7 @@ namespace SicoreQMS.ViewModels
             TestModelItem.Clear();
             using (var contxt = new SicoreQMSEntities1())
             {
-                var items = contxt.TestProcessItem.Where(p => p.ProdId ==ProdId && p.IsDeleted == false&&p.TestProcessId== obj).OrderBy(p => p.ExperimentItemRank).ToList();
+                var items = contxt.TestProcessItem.Where(p => p.ProdId == ProdId && p.IsDeleted == false && p.TestProcessId == obj).OrderBy(p => p.ExperimentItemRank).ToList();
 
                 if (items.Count == 0)
                 {

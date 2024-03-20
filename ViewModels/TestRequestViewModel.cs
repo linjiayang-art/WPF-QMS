@@ -16,10 +16,11 @@ using Prism.Events;
 using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
 using SicoreQMS.Extensions;
 using SicoreQMS.Common.Server;
+using Prism.Regions;
 
 namespace SicoreQMS.ViewModels
 {
-    public class TestRequestViewModel : BindableBase
+    public class TestRequestViewModel : BindableBase, IRegionMemberLifetime
     {
 
         public DelegateCommand<string> BtnSumbit { get; set; }
@@ -32,7 +33,18 @@ namespace SicoreQMS.ViewModels
             BtnSumbit = new DelegateCommand<string>(ExecuteBtn);
             TestTypes = ProdBasicService.GetTestType();
             CheckCommand = new DelegateCommand(HandelSelect);
-            Aggregator = aggregator;
+            TestModel = Service.TestProcessService.GetTestModel();
+            HandleSelectModel= new DelegateCommand<SelectBasic>(SelectModel);
+           Aggregator = aggregator;
+        }
+
+        private void SelectModel(SelectBasic basic)
+        {
+            if (basic is null)
+            {
+                return;
+            }
+            ModelId=basic.Value;
         }
 
         private void HandelSelect()
@@ -143,6 +155,7 @@ namespace SicoreQMS.ViewModels
             Qty = 0;
             TestNo = "";
             ProdNo = "";
+            modelId = "";
             //清空checkbox
             foreach (var item in TestTypes)
             {
@@ -152,6 +165,25 @@ namespace SicoreQMS.ViewModels
         }
 
         #region 属性
+
+        private string modelId;
+
+        public string ModelId
+        {
+            get { return modelId; }
+            set { modelId = value; RaisePropertyChanged(); }
+        }
+
+         public DelegateCommand<SelectBasic> HandleSelectModel { get; private set;}
+
+
+        private ObservableCollection<SelectBasic> tsetModel;
+
+        public ObservableCollection<SelectBasic> TestModel
+        {
+            get { return tsetModel; }
+            set { tsetModel = value; RaisePropertyChanged(); }
+        }
 
         public DelegateCommand CheckCommand { get; set; }
 
@@ -250,6 +282,8 @@ namespace SicoreQMS.ViewModels
         }
 
         public IEventAggregator Aggregator { get; }
+
+        public bool KeepAlive { get; set; } = false;
 
 
         #endregion

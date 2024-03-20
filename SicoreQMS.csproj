@@ -367,6 +367,7 @@
     <Compile Include="ViewModels\ProdProcessCreateViewModel.cs" />
     <Compile Include="ViewModels\ProdProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\TestCreateViewModel.cs" />
+    <Compile Include="ViewModels\TestModelMaintenanceViewModel.cs" />
     <Compile Include="ViewModels\TestProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\TestRequestViewModel.cs" />
     <Compile Include="Views\Dialogs\LotSplitView.xaml.cs">
@@ -414,6 +415,9 @@
     </Compile>
     <Compile Include="Views\TestCreateView.xaml.cs">
       <DependentUpon>TestCreateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TestModelMaintenanceView.xaml.cs">
+      <DependentUpon>TestModelMaintenanceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TestProcessUpdateView.xaml.cs">
       <DependentUpon>TestProcessUpdateView.xaml</DependentUpon>
@@ -474,6 +478,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TestCreateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TestModelMaintenanceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

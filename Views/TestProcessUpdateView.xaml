@@ -74,9 +74,16 @@
                     materialDesign:HintAssist.HelperText="试验流程卡"
                     materialDesign:HintAssist.Hint="试验流程卡"
                     DisplayMemberPath="Label"
-                    ItemsSource="{Binding AllTestProcess}"
+                    IsEditable="True"
+                    IsTextSearchEnabled="True"
+                    ItemsSource="{Binding SerachProductNameBasic}"
+                    KeyUp="comModelType_KeyUp"
+                    PreviewTextInput="MyComboBox_PreviewTextInput"
                     SelectedValuePath="Value"
-                    Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                    Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                    Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                    TextInput="comModelType_TextInput"
+                    TextSearch.TextPath="Label">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <prism:InvokeCommandAction Command="{Binding HandleSelect}" CommandParameter="{Binding SelectedValue, ElementName=comModelType}" />

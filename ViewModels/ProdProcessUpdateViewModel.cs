@@ -119,14 +119,9 @@ namespace SicoreQMS.ViewModels
             EditProgressCommand = new DelegateCommand<Prod_ProcessItem>(EditProgress);
             SplitLotCommand = new DelegateCommand<SelectBasic>(SpiltLot);
             SelectBasicItem = new ObservableCollection<SelectBasic>();
-
-
-
             CreateProductSelection();
             ProductNameBasic = SelectBasicItem;
-
             ProcessItem = new ObservableCollection<Prod_ProcessItem>();
-
 
             HandelSelect = new DelegateCommand<object>(GetInfo);
             QualityLevel = "军品";
@@ -142,9 +137,10 @@ namespace SicoreQMS.ViewModels
                 ProductNameBasic = SelectBasicItem;
                 return;
             }
-            var SearchTetxPar=SearchText.ToUpper();
-            var searchList = SelectBasicItem.Where(b => b.Label.Contains(SearchTetxPar)).ToList();
-            ProductNameBasic = new ObservableCollection<SelectBasic>(searchList);
+            //转大写会造成逻辑重复调用，明确区分
+            //var SearchTetxPar=SearchText.ToUpper();
+            var searchList = SelectBasicItem.Where(b => b.Label.Contains(SearchText)).ToList();
+            ProductNameBasic  = new ObservableCollection<SelectBasic>(searchList);
 
         }
 

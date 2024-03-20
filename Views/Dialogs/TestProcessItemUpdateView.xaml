@@ -3,11 +3,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:SicoreQMS.Views.Dialogs"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Width="450"
-    Height="600"
+    Height="700"
     Background="White"
     mc:Ignorable="d">
 
@@ -119,7 +120,7 @@
         <Grid Grid.Row="2" Margin="25">
             <StackPanel>
 
-                <ComboBox
+                <!--<ComboBox
                     Margin="10"
                     materialDesign:HintAssist.Hint="请选择设备类型"
                     DisplayMemberPath="Label"
@@ -131,8 +132,53 @@
                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                     TextSearch.TextPath="Label"
-                    Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
+
+                <ComboBox
+                    Margin="10"
+                    materialDesign:HintAssist.Hint="请选择设备类型"
+                    IsEditable="True"
+                    IsTextSearchEnabled="True"
+                    ItemsSource="{Binding FilterEquipmentList}"
+                    Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                    Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                    TextSearch.TextPath="Label"
+                    Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsCheck}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Checked">
+                                            <i:InvokeCommandAction Command="{Binding Path=DataContext.CheckCommand, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                        <i:EventTrigger EventName="Unchecked">
+                                            <i:InvokeCommandAction Command="{Binding Path=DataContext.UnCheckCommand, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" CommandParameter="{Binding}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </CheckBox>
+                                <!--  确保这里的绑定是正确的  -->
+                                <TextBlock Text="{Binding Label}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
                 <TextBox
+                    Margin="10"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="选中设备"
+                    AcceptsReturn="True"
+                    IsEnabled="False"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding CheckEquipmentNo}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+
+                <TextBox
+                    Margin="10"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="使用设备"
                     AcceptsReturn="True"
@@ -142,6 +188,8 @@
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto"
                     Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+
 
                 <StackPanel Orientation="Horizontal">
                     <TextBox

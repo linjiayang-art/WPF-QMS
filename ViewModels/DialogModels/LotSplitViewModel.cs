@@ -134,7 +134,7 @@ namespace SicoreQMS.ViewModels.DialogModels
         private void SpiltLot()
         {
 
-            if (SplitQty > ProdData.Qty)
+            if (SplitQty > Processes.Qty)
             {
                 Aggregator.SendMessage("拆分数大于已有数量!");
                //MessageBox.Show("拆分数大于已有数量!");
@@ -195,6 +195,9 @@ namespace SicoreQMS.ViewModels.DialogModels
 
             using (var context = new SicoreQMSEntities1())
             {
+
+                //更新批次数据
+                ProdInfo parentProd = context.ProdInfo.Find(Processes.ProdId);
                 //插入新批次
                 ProdInfo newProdInfo = new ProdInfo()
                 {
@@ -208,15 +211,16 @@ namespace SicoreQMS.ViewModels.DialogModels
                     QualityLevel = Processes.QualityLevel,
                     OriginQty = qty,
                     Qty = qty,
+                    ProdNo=parentProd.ProdNo,
+                    TestNo=parentProd.TestNo,
+
                 };
 
                 context.ProdInfo.Add(newProdInfo);
                 context.SaveChanges();
 
-                //更新批次数据
-                ProdInfo parentProd = context.ProdInfo.Find(Processes.ProdId);
 
-                int nowQty = (int)(parentProd.Qty - qty);
+                int nowQty = (int)(Processes.Qty - qty);
 
                 parentProd.Qty = nowQty;
                 parentProd.ProdStatus = 4;
@@ -225,8 +229,8 @@ namespace SicoreQMS.ViewModels.DialogModels
                                                 $" update dbo.Prod_ProcessItem set ItemStatus=5 where ProdProcessId='{Processes.Id}' ");
                 context.Database.ExecuteSqlCommand(
                                                 $" update dbo.Prod_Process set ProdStatus=5,Qty={nowQty} where Id='{Processes.Id}' ");
-                context.Database.ExecuteSqlCommand(
-                                               $" update dbo.ProdInfo set Qty={nowQty} where Id='{Processes.Id}' ");
+                //context.Database.ExecuteSqlCommand(
+                //                               $" update dbo.ProdInfo set Qty={nowQty} where Id='{Processes.Id}' ");
 
                 LotRelation relation = new LotRelation()
                 {

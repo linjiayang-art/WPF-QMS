@@ -33,7 +33,7 @@ namespace SicoreQMS.Common.Models.Operation
         {
            return new SelectBasic()
            {
-               Label=$"{ProdName}|{ProdType}|{ProdLot}|{Prodstandard} ",
+               Label=$"{ProdName}|{ProdType}|{ProdLot}|{Prodstandard}|{TestType} ",
                Value=Id
            };
         }

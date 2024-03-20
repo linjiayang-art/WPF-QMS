@@ -57,7 +57,6 @@
                 VerticalAlignment="Center"
                 materialDesign:HintAssist.Hint="流程类型"
                 AcceptsReturn="True"
-                IsEnabled="False"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding ProcessItem.ProcessType, UpdateSourceTrigger=PropertyChanged}"
                 TextWrapping="Wrap"
@@ -69,7 +68,6 @@
                 VerticalAlignment="Center"
                 materialDesign:HintAssist.Hint="生产依据"
                 AcceptsReturn="True"
-                IsEnabled="False"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding ProcessItem.ProdStandard, UpdateSourceTrigger=PropertyChanged}"
                 TextWrapping="Wrap"
@@ -99,7 +97,9 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </CheckBox>
-                            --><!--  确保这里的绑定是正确的  --><!--
+            -->
+            <!--  确保这里的绑定是正确的  -->
+            <!--
                             <TextBlock Text="{Binding Label}" />
                         </StackPanel>
                     </DataTemplate>

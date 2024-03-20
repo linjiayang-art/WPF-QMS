@@ -14,6 +14,22 @@ namespace SicoreQMS.Service
     public class TestProcessService
     {
 
+        public static ObservableCollection<SelectBasic> GetTestModel()
+        {
+            using (var context = new SicoreQMSEntities1())
+            {
+                var list = context.TestModelBasic.Where(b => b.Isdeleted == false).ToList();
+                var result = new ObservableCollection<SelectBasic>();
+                foreach (var item in list)
+                {
+                    result.Add(item.GetSelection());
+                }
+                return result;
+            }
+        }
+
+
+   
 
         public static ResultInfo DelItem(string id)
         {
@@ -62,7 +78,7 @@ namespace SicoreQMS.Service
             }
         }
 
-        public static ResultInfo StartTset(string id, int passQty, string remark,string equipmentid=null)
+        public static ResultInfo StartTset(string id, int passQty, string remark,string equipmentid=null,string equipmentList=null)
         {
             var resultInfo = new ResultInfo();
             using (var context = new SicoreQMSEntities1())
@@ -87,6 +103,7 @@ namespace SicoreQMS.Service
                 }
                 item.ExperimentItemPassQty = passQty;
                 item.EquipmentId = equipmentid;
+                item.EquipmentList = equipmentList;
                 item.ExperimentStatus = 1;
                 item.Remark += remark;
                 item.ExperimentSatrtTime = DateTime.Now;

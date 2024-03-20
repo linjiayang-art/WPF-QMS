@@ -238,8 +238,12 @@ namespace SicoreQMS.Service
             var prodType = testCountReport.ProdType;
             using (var context = new SicoreQMSEntities1())
             {
-                var prodProcess = context.Prod_Process.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).ToList();
-                foreach (var item in prodProcess)
+                var prodProcess = context.Prod_Process.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).SingleOrDefault();
+
+                prodProcess.IsDeleted = true;
+
+                var prodProcessItem = context.Prod_ProcessItem.Where(p => p.ProdProcessId == prodProcess.Id).ToList();
+                foreach (var item in prodProcessItem)
                 {
                     item.IsDeleted = true;
                 }

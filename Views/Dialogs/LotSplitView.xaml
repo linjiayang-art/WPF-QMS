@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Width="500"
     Height="450"
+    Background="White"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -39,7 +40,7 @@
                         AcceptsReturn="True"
                         IsEnabled="False"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        Text="{Binding ProdData.ProdLot}"
+                        Text="{Binding Processes.ProdLot}"
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto" />
                     <TextBox
@@ -50,7 +51,7 @@
                         AcceptsReturn="True"
                         IsEnabled="False"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        Text="{Binding ProdData.Qty}"
+                        Text="{Binding Processes.Qty}"
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto" />
                     <TextBox

@@ -24,5 +24,26 @@ namespace SicoreQMS.Views
         {
             InitializeComponent();
         }
+
+        private void comModelType_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Back || e.Key == Key.Delete)
+            {
+                comModelType.IsDropDownOpen = true;
+            }
+        }
+
+        private void comModelType_TextInput(object sender, TextCompositionEventArgs e)
+        {
+            comModelType.IsDropDownOpen = true;
+        }
+
+        private void MyComboBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            comModelType.IsDropDownOpen = true;
+        }
+
+
+     
     }
 }

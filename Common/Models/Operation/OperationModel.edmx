@@ -180,6 +180,7 @@
           <Property Name="ExperimentItemQty" Type="int" />
           <Property Name="ExperimentItemNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="ExperimentItemRank" Type="int" />
+          <Property Name="ItemDesc" Type="nvarchar" MaxLength="255" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateUserNo" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateDate" Type="datetime" />
@@ -215,7 +216,8 @@
           <Property Name="TestProcessId" Type="nvarchar" MaxLength="50" />
           <Property Name="ModelId" Type="nvarchar" MaxLength="50" />
           <Property Name="EquipmentNo" Type="nvarchar" MaxLength="50" />
-          <Property Name="EquipmentId" Type="nvarchar" MaxLength="50" />
+          <Property Name="EquipmentId" Type="nvarchar" MaxLength="2000" />
+          <Property Name="EquipmentList" Type="nvarchar" MaxLength="2000" />
           <Property Name="TextNo" Type="nvarchar" MaxLength="50" />
           <Property Name="ExperimentItemNo" Type="nchar" MaxLength="10" />
           <Property Name="ExperimentName" Type="nvarchar" MaxLength="50" />
@@ -501,6 +503,7 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="ModifyUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="ItemDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TestProcessItem">
           <Key>
@@ -536,8 +539,9 @@
           <Property Name="StartUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EndUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ExperimentItemRank" Type="Int32" />
-          <Property Name="EquipmentId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EquipmentId" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="ItemDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EquipmentList" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -785,6 +789,7 @@
           <EntitySetMapping Name="TestModelItem">
             <EntityTypeMapping TypeName="SicoreQMSModel.TestModelItem">
               <MappingFragment StoreEntitySet="TestModelItem">
+                <ScalarProperty Name="ItemDesc" ColumnName="ItemDesc" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
                 <ScalarProperty Name="ModifyUserNo" ColumnName="ModifyUserNo" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -807,6 +812,7 @@
           <EntitySetMapping Name="TestProcessItem">
             <EntityTypeMapping TypeName="SicoreQMSModel.TestProcessItem">
               <MappingFragment StoreEntitySet="TestProcessItem">
+                <ScalarProperty Name="EquipmentList" ColumnName="EquipmentList" />
                 <ScalarProperty Name="ItemDesc" ColumnName="ItemDesc" />
                 <ScalarProperty Name="EquipmentId" ColumnName="EquipmentId" />
                 <ScalarProperty Name="ExperimentItemRank" ColumnName="ExperimentItemRank" />

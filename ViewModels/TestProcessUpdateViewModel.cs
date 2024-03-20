@@ -62,7 +62,32 @@ namespace SicoreQMS.ViewModels
             set { _allTestProcess = value; RaisePropertyChanged(); }
         }
 
-        public DelegateCommand<string> HandleSelect { get; set; }
+
+        private ObservableCollection<SelectBasic> serachProductNameBasic;
+
+        public ObservableCollection<SelectBasic> SerachProductNameBasic
+        {
+            get { return serachProductNameBasic; }
+            set { serachProductNameBasic = value; RaisePropertyChanged(); }
+        }
+
+        private string searchText;
+
+        public string SearchText
+        {
+            get { return searchText; }
+            set
+            {
+                SetProperty(ref searchText, value);
+                SearchTextList()
+                ;
+            }
+        }
+
+
+
+
+        public DelegateCommand<object> HandleSelect { get; set; }
 
         private TestProcess _testProcessInfo;
 
@@ -79,7 +104,7 @@ namespace SicoreQMS.ViewModels
         public TestProcessUpdateViewModel(IDialogService dialog, IEventAggregator aggregator)
         {
             AllTestProcess = new ObservableCollection<SelectBasic>();
-            HandleSelect = new DelegateCommand<string>(GetTestItem);
+            HandleSelect = new DelegateCommand<object>(GetTestItem);
             TestItems = new ObservableCollection<TestProcessItem>();
             HandlerPrint = new DelegateCommand(PrintModel);
             BtnCommand = new DelegateCommand<TestProcessItem>(ShowUpdateDiaLog);
@@ -87,6 +112,21 @@ namespace SicoreQMS.ViewModels
             this.dialog = dialog;
             this.aggregator= aggregator;
         }
+
+        private void SearchTextList()
+        {
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                SerachProductNameBasic = AllTestProcess;
+                return;
+            }
+            //var SearchTetxPar = SearchText.ToUpper();
+            var searchList = AllTestProcess.Where(b => b.Label.Contains(SearchText)).ToList();
+            SerachProductNameBasic = new ObservableCollection<SelectBasic>(searchList);
+
+        }
+
+
 
         private void PrintModel()
         {
@@ -153,19 +193,33 @@ namespace SicoreQMS.ViewModels
 
         }
 
-        private void GetTestItem(string obj)
+        private void GetTestItem(object obj)
         {
-            Id = obj;
+
+            if (obj == null)
+            {
+                TestProcessInfo = null;
+                return;
+            }
+            if (obj.GetType().ToString() != "System.String")
+            {
+                TestProcessInfo = null;
+                return;
+            }
+
+
+            Id = obj.ToString();
             if (obj == null)
             {
                 return;
             }
+             
             //TestItems.Clear();
             using (var context = new SicoreQMSEntities1())
             {
 
                 TestProcessInfo = context.TestProcess.Find(Id);
-
+                TestTypes = TestProcessService.GetTestTypeList(TestProcessInfo.Id);
                 var result = context.TestProcessItem.Where(p => p.TestProcessId == Id&&p.IsDeleted==false).OrderBy(p=>p.ExperimentItemNo).ToList();
                 if (result.Count == 0)
                 {
@@ -178,7 +232,7 @@ namespace SicoreQMS.ViewModels
                 }
             }
 
-            TestTypes= TestProcessService.GetTestTypeList(TestProcessInfo.Id);
+          
 
         }
 
@@ -196,6 +250,7 @@ namespace SicoreQMS.ViewModels
 
                 }
             }
+            SerachProductNameBasic = AllTestProcess;
         }
 
 

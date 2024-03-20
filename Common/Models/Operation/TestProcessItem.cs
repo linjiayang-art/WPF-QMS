@@ -46,5 +46,6 @@ namespace SicoreQMS.Common.Models.Operation
         public Nullable<int> ExperimentItemRank { get; set; }
         public string EquipmentId { get; set; }
         public string ItemDesc { get; set; }
+        public string EquipmentList { get; set; }
     }
 }
