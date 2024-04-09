@@ -47,6 +47,18 @@
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateDate" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="Menus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Icon" Type="nvarchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="NameSpace" Type="nvarchar" MaxLength="50" />
+          <Property Name="sort" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateDeta" Type="datetime" />
+        </EntityType>
         <EntityType Name="Prod_Process">
           <Key>
             <PropertyRef Name="Id" />
@@ -282,6 +294,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        
         <Function Name="proc_QAExperimentReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="lotNo" Type="nvarchar" Mode="In" />
         </Function>
@@ -289,6 +302,7 @@
           <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EquipmentStatus" EntityType="Self.EquipmentStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LotRelation" EntityType="Self.LotRelation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Menus" EntityType="Self.Menus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_Process" EntityType="Self.Prod_Process" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_ProcessBasic" EntityType="Self.Prod_ProcessBasic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_ProcessItem" EntityType="Self.Prod_ProcessItem" Schema="dbo" store:Type="Tables" />
@@ -331,6 +345,7 @@
             <End Role="Equipment" EntitySet="Equipment" />
             <End Role="EquipmentStatus" EntitySet="EquipmentStatus" />
           </AssociationSet>
+          <EntitySet Name="Menus" EntityType="SicoreQMSModel.Menus" />
         </EntityContainer>
         <EntityType Name="Prod_ProcessModel">
           <Key>
@@ -621,6 +636,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Menus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Icon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NameSpace" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateDeta" Type="DateTime" Precision="3" />
+          <Property Name="sort" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -920,6 +947,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Menus">
+            <EntityTypeMapping TypeName="SicoreQMSModel.Menus">
+              <MappingFragment StoreEntitySet="Menus">
+                <ScalarProperty Name="sort" ColumnName="sort" />
+                <ScalarProperty Name="CreateDeta" ColumnName="CreateDeta" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="NameSpace" ColumnName="NameSpace" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -934,7 +974,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="无" />

@@ -23,7 +23,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="75" />
-            <RowDefinition Height="{Binding Path=ActualHeight, ElementName=window, Converter={StaticResource WindowSizeExtensions}, ConverterParameter=0.75}" />
+            <RowDefinition Height="{Binding Path=ActualHeight, ElementName=window, Converter={StaticResource WindowSizeExtensions}, ConverterParameter=0.4}" />
+            <RowDefinition Height="{Binding Path=ActualHeight, ElementName=window, Converter={StaticResource WindowSizeExtensions}, ConverterParameter=0.4}" />
+
 
         </Grid.RowDefinitions>
         <TextBlock
@@ -95,7 +97,7 @@
         </Grid>
 
 
-        <ScrollViewer Grid.Row="2">
+        <ScrollViewer Grid.Row="2" Margin="10">
             <DataGrid
                 Margin="10"
                 AutoGenerateColumns="False"
@@ -209,6 +211,56 @@
 
             </DataGrid>
 
+
+        </ScrollViewer>
+
+        <ScrollViewer Grid.Row="3" Margin="10">
+            <DataGrid
+                Margin="10"
+                AutoGenerateColumns="False"
+                FontSize="11"
+                IsReadOnly="True"
+                ItemsSource="{Binding TestItems}">
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding ProdNo}"
+                        Header="生产流水号" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding TestNo}"
+                        Header="测试流水号" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding One}"
+                        Header="项目：1" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding A}"
+                        Header="项目：A" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding B}"
+                        Header="项目：B" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding C}"
+                        Header="项目：C" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding D}"
+                        Header="项目：D" />
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding Two}"
+                        Header="项目：2" />
+
+                </DataGrid.Columns>
+
+
+            </DataGrid>
 
         </ScrollViewer>
 

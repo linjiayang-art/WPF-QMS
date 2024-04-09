@@ -41,6 +41,7 @@ namespace SicoreQMS.Common.Models.Operation
         public virtual DbSet<Equipment> Equipment { get; set; }
         public virtual DbSet<EquipmentStatus> EquipmentStatus { get; set; }
         public virtual DbSet<UsageRecord> UsageRecord { get; set; }
+        public virtual DbSet<Menus> Menus { get; set; }
     
         public virtual ObjectResult<proc_QAExperimentReport_Result> proc_QAExperimentReport(string lotNo)
         {

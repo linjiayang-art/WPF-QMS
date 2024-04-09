@@ -12,6 +12,11 @@ using Prism.Regions;
 using System.Windows.Forms;
 using ImTools;
 using ClosedXML.Excel;
+using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
+using ClosedXML;
+using System.Data.SqlClient;
+using System.Data;
+using System.Dynamic;
 
 
 namespace SicoreQMS.Service
@@ -191,6 +196,111 @@ namespace SicoreQMS.Service
             var newResults = testCountFactory(results);
 
             return newResults;
+        }
+
+
+        public static ObservableCollection<TestProcessItem> GetTestItems(string prodType, string lot)
+        {
+
+      
+            var reslut = new ObservableCollection<TestProcessItem>();
+            using (var context = new SicoreQMSEntities1())
+            {
+
+                var testProcess = context.TestProcess.Where(p =>
+                (!String.IsNullOrEmpty(p.ProdType) && p.ProdType.Contains(prodType))
+                && (!String.IsNullOrEmpty(p.ProdLot) && p.ProdLot.Contains(lot))
+                                                        ).ToList();
+                if (testProcess.Count == 0)
+                {
+                    return reslut;
+                }
+                foreach (var item in testProcess)
+                {
+                    Dictionary<string, string> TestHead = new Dictionary<string, string>();
+
+                    var testProcessItem = context.TestProcessItem.Where(p => p.TestProcessId == item.Id).ToList();
+                    if (testProcessItem.Count == 0)
+                    {
+                        continue;
+                    }
+                    foreach (var testItem in testProcessItem)
+                    {
+                        reslut.Add(testItem);
+
+                    }
+
+                }
+            }
+            return reslut;
+        }
+
+
+        public static ObservableCollection<TestCount> GetTestCounts(string prodType, string lot)
+        {
+
+            var checklist = new List<string> { "1", "A", "B", "C","D","2" };
+            var reslut = new ObservableCollection<TestCount>();
+            using (var context = new SicoreQMSEntities1())
+            {
+
+                var testProcess = context.TestProcess.Where(p =>
+                (!String.IsNullOrEmpty(p.ProdType) && p.ProdType.Contains(prodType))
+                && (!String.IsNullOrEmpty(p.ProdLot) && p.ProdLot.Contains(lot))
+                                                        ).ToList();
+                if (testProcess.Count == 0)
+                {
+                    return reslut;
+                }
+                foreach (var item in testProcess)
+                {
+                
+                    var calculateDict =new Dictionary<string, string>();
+
+                    var testProcessItem = context.TestProcessItem.Where(p => p.TestProcessId == item.Id).ToList();
+                    if (testProcessItem.Count == 0)
+                    {
+                        continue;
+                    }
+                    var expando = new TestCount();
+
+                    expando.TestLot =item.TestLot;
+                    string testNo = "";
+                    string prodNo = "";
+
+                    foreach (var i in checklist)
+                    {
+                        var ExperimentItemNoType = i;
+                        var TestProcessId = item.Id;
+                        SqlParameter[] param = {
+                         new SqlParameter("ExperimentItemNoType",i),
+                          new SqlParameter("TestProcessId",item.Id )
+                          };
+
+                        string sql = "getTestYield";
+                        System.Data.DataSet ds = Common.DBHelper.ExecuteProcRe(sql, param);
+                        DataTable dataTable = ds.Tables[0];
+                        var testCount = dataTable.Rows[0][1].ToString();
+                        var yield = dataTable.Rows[0][0].ToString();
+                        testNo= dataTable.Rows[0][2].ToString();
+                        prodNo = dataTable.Rows[0][3].ToString();
+                        calculateDict.Add(testCount, yield);
+                        //var blogs = context.proc_QAExperimentReport
+                        //        .FromSql($"EXECUTE dbo.GetMostPopularBlogsForUser @filterByUser={user}")
+                        //        .ToList();
+                    }
+                    expando.One= calculateDict["1"];
+                    expando.A = calculateDict["A"];
+                    expando.B = calculateDict["B"];
+                    expando.C = calculateDict["C"];
+                    expando.D = calculateDict["D"];
+                    expando.Two = calculateDict["2"];
+                    expando.TestNo = testNo;
+                    expando.ProdNo = prodNo;
+                    reslut.Add(expando);
+                }
+            }
+            return reslut;
         }
 
 

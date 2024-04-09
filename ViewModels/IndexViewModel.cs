@@ -1,9 +1,11 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
+using SicoreQMS.Common.Models.Operation;
 using SicoreQMS.Common.Models.Report;
 using System;
 using System.Collections.ObjectModel;
+using System.Dynamic;
 using System.IO;
 using System.Windows;
 
@@ -25,6 +27,27 @@ namespace SicoreQMS.ViewModels
         public ObservableCollection<TestCountReport>  TestReportList { 
             get { return _testReportList; }
             set { _testReportList = value; RaisePropertyChanged(); } }
+
+
+        //private ObservableCollection<TestCount> newtest;
+
+        //public ObservableCollection<TestCount>  NewTest
+        //{
+        //    get { return newtest; }
+        //    set { newtest = value; RaisePropertyChanged(); }
+        //}
+
+
+
+        private ObservableCollection<TestCount> testItems;
+
+        public ObservableCollection<TestCount> TestItems
+        {
+            get { return testItems; }
+            set { testItems = value; RaisePropertyChanged(); }
+        }
+
+
 
         private string prodType;
 
@@ -90,7 +113,9 @@ namespace SicoreQMS.ViewModels
 
             _testReportList.Clear();
             TestReportList = Service.IndexService.GetTestCountReport(prodType:prodType,lot:Lot);
-
+            //TestItems = Service.IndexService.GetTestItems(prodType: prodType, lot: Lot);
+            TestItems = Service.IndexService.GetTestCounts(prodType: prodType, lot: Lot);
+        
         }
     }
 }
