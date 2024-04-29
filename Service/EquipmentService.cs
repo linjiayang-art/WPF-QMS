@@ -6,6 +6,7 @@ using SicoreQMS.Common.Server;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -210,8 +211,36 @@ namespace SicoreQMS.Service
               
             }
 
-
             return results;
+        }
+
+
+        public static List<UsageRecordDTO> getUseAgeRecord()
+        {
+            var list=new List<UsageRecordDTO>();
+            using (var context=new SicoreQMSEntities1())
+            {
+                var usages = from UsageRecord in context.UsageRecord
+                             join Equipment in context.Equipment on UsageRecord.EquipmentId equals Equipment.EquipmentID
+                             join Userinfo in context.UserInfo on UsageRecord.UseUser equals Userinfo.Id
+                             select new UsageRecordDTO
+                             {
+                                 //Id = UsageRecord.Id,
+                                 //EquipmentId = UsageRecord.EquipmentId,
+                                 StartDate = (DateTime)UsageRecord.StartDate,
+                                 EndDate = UsageRecord.EndDate,
+                                 UseType = UsageRecord.UseType,
+                                 UseProcess = UsageRecord.UseProcess,
+                                 UseUser = Userinfo.UserName,
+                                 EquipmentName = Equipment.EquipmentName,
+                                 EquipmentModel = Equipment.EquipmentModel,
+                                 EquipmentNo = Equipment.EquipmentNo
+                             };
+                list = usages.ToList();
+
+            }
+
+            return list;
         }
 
 

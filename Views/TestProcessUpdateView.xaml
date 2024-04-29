@@ -222,15 +222,26 @@
                     <DataGridTemplateColumn Width="100" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button
-                                    Width="90"
-                                    materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                                    Command="{Binding DataContext.BtnCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
-                                    CommandParameter="{Binding}"
-                                    Content="进度更新"
-                                    FontSize="13"
-                                    IsEnabled="{Binding IsButtonEnabled, Mode=OneWay}"
-                                    Style="{StaticResource MaterialDesignOutlinedButton}" />
+                                <StackPanel>
+                                    <Button
+                                        Width="90"
+                                        Margin="3"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Command="{Binding DataContext.BtnCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding}"
+                                        Content="进度更新"
+                                        FontSize="12"
+                                        IsEnabled="{Binding IsButtonEnabled, Mode=OneWay}" />
+                                    <Button
+                                        Width="90"
+                                        Margin="3"
+                                        Command="{Binding DataContext.BtnEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding}"
+                                        Content="修改"
+                                        FontSize="12"
+                                        IsEnabled="{Binding IsEditButtonEnabled, Mode=OneWay}" />
+                                </StackPanel>
+
                                 <!--<StackPanel Orientation="Horizontal">
                                     <Border Width="10" Height="10" Background="Aqua"/>
                                 </StackPanel>-->

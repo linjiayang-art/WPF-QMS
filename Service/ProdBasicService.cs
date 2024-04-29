@@ -195,7 +195,7 @@ namespace SicoreQMS.Service
                         return;
                     }
                     //直接用导入模板
-                    var items = context.TestModelItem.Where(p => p.ModelId == " modelId").OrderByDescending(p => p.ExperimentItemRank).ToList();
+                    var items = context.TestModelItem.Where(p => p.ModelId == modelId).OrderByDescending(p => p.ExperimentItemRank).ToList();
                     foreach (var item in items)
                     {
                         TestProcessItem testProcessitem = new TestProcessItem()

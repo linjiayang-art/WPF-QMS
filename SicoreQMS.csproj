@@ -29,7 +29,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>\\172.16.2.2\共享文件\IT部\软件\QMS\</InstallUrl>
-    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationRevision>12</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -279,7 +279,11 @@
     <Compile Include="Common\Events\MessageEvent.cs" />
     <Compile Include="Common\IConfigureService.cs" />
     <Compile Include="Common\Interface\IDialogHostAware.cs" />
+    <Compile Include="Common\Interface\INavigationMenuService.cs" />
+    <Compile Include="Common\Models\Basic\DialogViewModel.cs" />
     <Compile Include="Common\Models\Basic\MenuBar.cs" />
+    <Compile Include="Common\Models\Basic\NavigationItem.cs" />
+    <Compile Include="Common\Models\Basic\NavigationViewModel.cs" />
     <Compile Include="Common\Models\Basic\ResultInfo.cs" />
     <Compile Include="Common\Models\Basic\SelectBasic.cs" />
     <Compile Include="Common\Models\Basic\SpiltModel.cs" />
@@ -359,6 +363,7 @@
     <Compile Include="Common\Models\Report\EquipemntUsageReport.cs" />
     <Compile Include="Common\Models\Report\TestCount.cs" />
     <Compile Include="Common\Models\Report\TestCountReport.cs" />
+    <Compile Include="Common\Models\Report\UsageRecordDTO.cs" />
     <Compile Include="Common\Server\AppSession.cs" />
     <Compile Include="Common\Server\DeviceStatusToBackgroundColorConverter.cs" />
     <Compile Include="Common\Server\DialogHostService.cs" />
@@ -370,23 +375,28 @@
     <Compile Include="Extensions\WindowSizeExtensions.cs" />
     <Compile Include="Service\DocService.cs" />
     <Compile Include="Service\EquipmentService.cs" />
+    <Compile Include="Service\ExcelService.cs" />
     <Compile Include="Service\IndexService.cs" />
     <Compile Include="Service\LoginService.cs" />
     <Compile Include="Service\MenuService.cs" />
+    <Compile Include="Service\NavigationMenuService.cs" />
     <Compile Include="Service\PrintService.cs" />
     <Compile Include="Service\ProdBasicService.cs" />
     <Compile Include="Service\ProdProcessService.cs" />
     <Compile Include="Service\TestProcessService.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModels\DialogModels\EquipmentManagementViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\LotSplitViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessEditViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />
+    <Compile Include="ViewModels\DialogModels\TestEditViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestProcessItemUpdateViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TsetItemAddViewModel.cs" />
     <Compile Include="ViewModels\EquipemntUsageViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NewMainViewModel.cs" />
     <Compile Include="ViewModels\PrintModels\ProdProcessPrintViewModel.cs" />
     <Compile Include="ViewModels\ProdModelMaintainViewModel.cs" />
     <Compile Include="ViewModels\ProdProcessCreateViewModel.cs" />
@@ -395,6 +405,9 @@
     <Compile Include="ViewModels\TestModelMaintenanceViewModel.cs" />
     <Compile Include="ViewModels\TestProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\TestRequestViewModel.cs" />
+    <Compile Include="Views\Dialogs\EquipmentManagementView.xaml.cs">
+      <DependentUpon>EquipmentManagementView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\LotSplitView.xaml.cs">
       <DependentUpon>LotSplitView.xaml</DependentUpon>
     </Compile>
@@ -403,6 +416,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\ProcessUpdateView.xaml.cs">
       <DependentUpon>ProcessUpdateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\TestEditView.xaml.cs">
+      <DependentUpon>TestEditView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\TestProcessItemUpdateView.xaml.cs">
       <DependentUpon>TestProcessItemUpdateView.xaml</DependentUpon>
@@ -425,6 +441,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\NewMainView.xaml.cs">
+      <DependentUpon>NewMainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Prints\ProdProcessPrintView.xaml.cs">
       <DependentUpon>ProdProcessPrintView.xaml</DependentUpon>
@@ -450,6 +469,10 @@
     <Compile Include="Views\TestRequestView.xaml.cs">
       <DependentUpon>TestRequestView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Dialogs\EquipmentManagementView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Dialogs\LotSplitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -459,6 +482,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\ProcessUpdateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\TestEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -483,6 +510,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewMainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

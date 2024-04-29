@@ -15,12 +15,12 @@ namespace SicoreQMS.Common.Models.Operation
     public partial class LotRelation
     {
         public string Id { get; set; }
+        public string ProdId { get; set; }
         public string ParentId { get; set; }
         public string ChildrenId { get; set; }
         public string RelationType { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public string CreateUser { get; set; }
-        public string CreateDate { get; set; }
-        public string ProdId { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
     }
 }

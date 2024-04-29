@@ -88,17 +88,23 @@
                     Text="{Binding TestItem.ExperimentQty}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
-                <TextBox
+                <!--<TextBox
                     Margin="10"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.HelperText="试验开始时间"
                     materialDesign:HintAssist.Hint="试验开始时间"
                     AcceptsReturn="True"
-                    IsEnabled="False"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding TestItem.ExperimentSatrtTime, StringFormat=yyyy-MM-dd}"
+                    Text="{Binding StartTime, StringFormat=yyyy-MM-dd}"
                     TextWrapping="Wrap"
-                    VerticalScrollBarVisibility="Auto" />
+                    VerticalScrollBarVisibility="Auto" />-->
+
+                <DatePicker
+                    Margin="10"
+                    materialDesign:HintAssist.HelperText="试验开始时间"
+                    materialDesign:HintAssist.Hint="试验开始时间"
+                    SelectedDate="{Binding StartTime, StringFormat=yyyy-MM-dd}"
+                    Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
                 <TextBox
                     Margin="10"
                     VerticalAlignment="Center"

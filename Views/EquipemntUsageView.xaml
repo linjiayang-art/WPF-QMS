@@ -20,7 +20,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="60" />
             <RowDefinition />
 
         </Grid.RowDefinitions>
@@ -48,7 +48,16 @@
                         CommandParameter="查询" />
                 </TextBox.InputBindings>
             </TextBox>
-
+            <Button
+                Margin="10"
+                Command="{Binding ExecuteCommand}"
+                CommandParameter="导出"
+                Content="导出数据" />
+            <Button
+                Margin="10"
+                Command="{Binding ExecuteCommand}"
+                CommandParameter="Add"
+                Content="新增设备" />
 
         </StackPanel>
 

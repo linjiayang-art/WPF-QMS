@@ -12,8 +12,11 @@
           <Property Name="EquipmentID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="EquipmentName" Type="nvarchar" MaxLength="50" />
           <Property Name="EquipmentModel" Type="nvarchar" MaxLength="50" />
+          <Property Name="EquipmentType" Type="nvarchar" MaxLength="50" />
           <Property Name="EquipmentNo" Type="nvarchar" MaxLength="50" />
           <Property Name="OrginNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="Capacity" Type="int" />
+          <Property Name="AvailableCapacity" Type="int" />
           <Property Name="PurchaseDate" Type="datetime" />
           <Property Name="WarrantyPeriod" Type="datetime" />
           <Property Name="Remark" Type="nvarchar" MaxLength="50" />
@@ -45,7 +48,7 @@
           <Property Name="RelationType" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
-          <Property Name="CreateDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Menus">
           <Key>
@@ -150,6 +153,7 @@
           <Property Name="ParentId" Type="nvarchar" MaxLength="50" />
           <Property Name="TestNo" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="MoNo" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdName" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdStatus" Type="int" />
@@ -294,7 +298,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        
         <Function Name="proc_QAExperimentReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="lotNo" Type="nvarchar" Mode="In" />
         </Function>
@@ -329,7 +332,6 @@
           <EntitySet Name="ProdInfo" EntityType="SicoreQMSModel.ProdInfo" />
           <EntitySet Name="Prod_Process" EntityType="SicoreQMSModel.Prod_Process" />
           <EntitySet Name="Prod_ProcessItem" EntityType="SicoreQMSModel.Prod_ProcessItem" />
-          <EntitySet Name="LotRelation" EntityType="SicoreQMSModel.LotRelation" />
           <EntitySet Name="TestModelBasic" EntityType="SicoreQMSModel.TestModelBasic" />
           <EntitySet Name="TestProcess" EntityType="SicoreQMSModel.TestProcess" />
           <EntitySet Name="TestModelItem" EntityType="SicoreQMSModel.TestModelItem" />
@@ -346,6 +348,7 @@
             <End Role="EquipmentStatus" EntitySet="EquipmentStatus" />
           </AssociationSet>
           <EntitySet Name="Menus" EntityType="SicoreQMSModel.Menus" />
+          <EntitySet Name="LotRelation" EntityType="SicoreQMSModel.LotRelation" />
         </EntityContainer>
         <EntityType Name="Prod_ProcessModel">
           <Key>
@@ -400,6 +403,7 @@
           <Property Name="OriginQty" Type="Int32" />
           <Property Name="TestNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProdNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MoNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Prod_Process">
           <Key>
@@ -453,19 +457,6 @@
           <Property Name="OperatorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EquipmentId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="EquipmentList" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="LotRelation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ParentId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ChildrenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RelationType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TestModelBasic">
           <Key>
@@ -597,6 +588,9 @@
           <Property Name="LastModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="LastModifiedUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="EquipmentStatus" Relationship="SicoreQMSModel.FK_EquipmentStatus_Equipment" FromRole="Equipment" ToRole="EquipmentStatus" />
+          <Property Name="EquipmentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Capacity" Type="Int32" />
+          <Property Name="AvailableCapacity" Type="Int32" />
         </EntityType>
         <EntityType Name="EquipmentStatus">
           <Key>
@@ -648,6 +642,19 @@
           <Property Name="CreateDeta" Type="DateTime" Precision="3" />
           <Property Name="sort" Type="Int32" />
         </EntityType>
+        <EntityType Name="LotRelation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ChildrenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RelationType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -689,6 +696,7 @@
           <EntitySetMapping Name="ProdInfo">
             <EntityTypeMapping TypeName="SicoreQMSModel.ProdInfo">
               <MappingFragment StoreEntitySet="ProdInfo">
+                <ScalarProperty Name="MoNo" ColumnName="MoNo" />
                 <ScalarProperty Name="ProdNo" ColumnName="ProdNo" />
                 <ScalarProperty Name="TestNo" ColumnName="TestNo" />
                 <ScalarProperty Name="OriginQty" ColumnName="OriginQty" />
@@ -762,20 +770,6 @@
                 <ScalarProperty Name="ProdName" ColumnName="ProdName" />
                 <ScalarProperty Name="ProdProcessId" ColumnName="ProdProcessId" />
                 <ScalarProperty Name="ProdId" ColumnName="ProdId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LotRelation">
-            <EntityTypeMapping TypeName="SicoreQMSModel.LotRelation">
-              <MappingFragment StoreEntitySet="LotRelation">
-                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="RelationType" ColumnName="RelationType" />
-                <ScalarProperty Name="ChildrenId" ColumnName="ChildrenId" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -904,6 +898,9 @@
           <EntitySetMapping Name="Equipment">
             <EntityTypeMapping TypeName="SicoreQMSModel.Equipment">
               <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="AvailableCapacity" ColumnName="AvailableCapacity" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="EquipmentType" ColumnName="EquipmentType" />
                 <ScalarProperty Name="LastModifiedUser" ColumnName="LastModifiedUser" />
                 <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
@@ -957,6 +954,20 @@
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LotRelation">
+            <EntityTypeMapping TypeName="SicoreQMSModel.LotRelation">
+              <MappingFragment StoreEntitySet="LotRelation">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="RelationType" ColumnName="RelationType" />
+                <ScalarProperty Name="ChildrenId" ColumnName="ChildrenId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

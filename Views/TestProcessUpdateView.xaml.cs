@@ -43,7 +43,6 @@ namespace SicoreQMS.Views
             comModelType.IsDropDownOpen = true;
         }
 
-
      
     }
 }

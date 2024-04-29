@@ -233,6 +233,18 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ComboBox>
+            <TextBox
+                x:Name="MoNo"
+                Grid.Column="4"
+                Width="250"
+                MinWidth="150"
+                MaxWidth="5000"
+                Margin="10"
+                materialDesign:HintAssist.HelperText="工单号"
+                materialDesign:HintAssist.Hint="工单号"
+                BorderThickness="1"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding MoNo}" />
         </Grid>
 
         <Grid Grid.Row="5" Margin="10">

@@ -33,6 +33,9 @@ namespace SicoreQMS.Common.Models.Operation
         public Nullable<bool> IsDeleted { get; set; }
         public Nullable<System.DateTime> LastModifiedDate { get; set; }
         public string LastModifiedUser { get; set; }
+        public string EquipmentType { get; set; }
+        public Nullable<int> Capacity { get; set; }
+        public Nullable<int> AvailableCapacity { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EquipmentStatus> EquipmentStatus { get; set; }

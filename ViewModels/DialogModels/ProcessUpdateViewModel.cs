@@ -55,6 +55,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         private void SelectEquipment(string obj)
         {
+       
             aggregator.SendMessage(obj);
         }
 

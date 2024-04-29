@@ -32,13 +32,19 @@ namespace SicoreQMS.ViewModels
         public DelegateCommand<Prod_ProcessItem> UpdateProgressCommand { get; set; }
         public DelegateCommand<Prod_ProcessItem> EditProgressCommand { get; set; }
         public DelegateCommand<SelectBasic> SplitLotCommand { get; set; }
+
+        public DelegateCommand<SelectBasic> ExportCommand { get; set; }
+        public ObservableCollection<SelectBasic> SelectBasicItem { get; set; }
+
         private string _prodLot;
         private string _prodName;
         private string _qualitylevel;
-
-        public ObservableCollection<SelectBasic> SelectBasicItem { get; set; }
-
         private string searchText;
+        private string _prodType;
+        private string processId;
+        private string testNo;
+        private string prodNo;
+
 
         public string SearchText
         {
@@ -51,12 +57,6 @@ namespace SicoreQMS.ViewModels
             }
         }
 
-
-        private string _prodType;
-
-
-        private string processId;
-
         public string ProdProcessId
         {
             get { return processId; }
@@ -64,8 +64,6 @@ namespace SicoreQMS.ViewModels
         }
 
 
-
-      
         public string QualityLevel
         {
             get { return _qualitylevel; }
@@ -91,16 +89,12 @@ namespace SicoreQMS.ViewModels
             set { SetProperty(ref _prodName, value); }
         }
 
-        private string testNo;
-
         public string TestNo
         {
             get { return testNo; }
             set { SetProperty(ref testNo, value); }
         }
 
-
-        private string prodNo;
 
         public string ProdNo
         {
@@ -119,6 +113,7 @@ namespace SicoreQMS.ViewModels
             EditProgressCommand = new DelegateCommand<Prod_ProcessItem>(EditProgress);
             SplitLotCommand = new DelegateCommand<SelectBasic>(SpiltLot);
             SelectBasicItem = new ObservableCollection<SelectBasic>();
+            ExportCommand = new DelegateCommand<SelectBasic>(ExportFile);
             CreateProductSelection();
             ProductNameBasic = SelectBasicItem;
             ProcessItem = new ObservableCollection<Prod_ProcessItem>();
@@ -128,6 +123,14 @@ namespace SicoreQMS.ViewModels
             this.dialog = dialog;
             //var a = Service.EquipmentService.GetEquipmentBasic();
             Aggregator = aggregator;
+        }
+
+        private void ExportFile(SelectBasic basic)
+        {
+            var result=Service.ProdProcessService.GetProcessInfo(basic.Value);
+
+            Aggregator.SendMessage(result);
+
         }
 
         private void SearchTextList()
@@ -140,13 +143,13 @@ namespace SicoreQMS.ViewModels
             //转大写会造成逻辑重复调用，明确区分
             //var SearchTetxPar=SearchText.ToUpper();
             var searchList = SelectBasicItem.Where(b => b.Label.Contains(SearchText)).ToList();
-            ProductNameBasic  = new ObservableCollection<SelectBasic>(searchList);
+            ProductNameBasic = new ObservableCollection<SelectBasic>(searchList);
 
         }
 
         private void SpiltLot(SelectBasic obj)
         {
-          
+
             if (obj is null || string.IsNullOrEmpty(obj.Value))
             {
                 return;
@@ -229,40 +232,40 @@ namespace SicoreQMS.ViewModels
         private void GetInfo(object parameter)
         {
 
-        
+
             if (parameter == null)
             {
                 return;
             }
-            if (parameter.GetType().ToString()!= "System.String")
+            if (parameter.GetType().ToString() != "System.String")
             {
                 return;
             }
-           
+
             ProdProcessId = parameter.ToString();
 
             using (var context = new SicoreQMSEntities1())
             {
-                var productInfo = (from pd in context.ProdInfo 
-                                  join pp in context.Prod_Process on pd.Id equals pp.ProdId
-                                  where pp.Id == ProdProcessId
-                                  select new
-                                  {
-                                      pd.ProdNo,
-                                      pd.TestNo,
-                                      pp.ProdName,
-                                      pp.ProdLot,
-                                      pp.QualityLevel
+                var productInfo = (from pd in context.ProdInfo
+                                   join pp in context.Prod_Process on pd.Id equals pp.ProdId
+                                   where pp.Id == ProdProcessId
+                                   select new
+                                   {
+                                       pd.ProdNo,
+                                       pd.TestNo,
+                                       pp.ProdName,
+                                       pp.ProdLot,
+                                       pp.QualityLevel
 
-                                  }).FirstOrDefault();
+                                   }).FirstOrDefault();
 
-                    context.Prod_Process.SingleOrDefault(b => b.Id == ProdProcessId);
+                context.Prod_Process.SingleOrDefault(b => b.Id == ProdProcessId);
                 if (productInfo != null)
                 {
                     this.ProdName = productInfo.ProdName;
                     this.ProdLot = productInfo.ProdLot;
                     this.QualityLevel = productInfo.QualityLevel;
-                    this.ProdNo= productInfo.ProdNo;
+                    this.ProdNo = productInfo.ProdNo;
                     this.TestNo = productInfo.TestNo;
                 }
                 else

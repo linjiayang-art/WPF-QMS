@@ -348,7 +348,13 @@ namespace SicoreQMS.Service
             var prodType = testCountReport.ProdType;
             using (var context = new SicoreQMSEntities1())
             {
-                var prodProcess = context.Prod_Process.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).SingleOrDefault();
+                //通产品同批次可能多个,后续修复
+                var prodProcess = context.Prod_Process.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType&&p.IsDeleted==false).SingleOrDefault();
+                if (prodProcess == null)
+                {
+                    return;
+                    
+                }
 
                 prodProcess.IsDeleted = true;
 
@@ -358,6 +364,23 @@ namespace SicoreQMS.Service
                     item.IsDeleted = true;
                 }
                 context.SaveChanges();
+
+                var testProcess = context.TestProcess.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).SingleOrDefault();
+
+                if (testProcess == null)
+                {
+                    return;
+
+                }
+                testProcess.Isdeletd = true;
+
+                var testProcessItem = context.TestProcessItem.Where(p => p.TestProcessId == testProcess.Id).ToList();
+                foreach (var item in testProcessItem)
+                {
+                    item.IsDeleted= true;
+                }
+                context.SaveChanges();
+
             }
 
         }

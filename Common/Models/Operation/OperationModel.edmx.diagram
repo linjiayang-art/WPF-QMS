@@ -10,7 +10,6 @@
         <EntityTypeShape EntityType="SicoreQMSModel.ProdInfo" Width="2.5" PointX="5.25" PointY="0.875" />
         <EntityTypeShape EntityType="SicoreQMSModel.Prod_Process" Width="2.875" PointX="4.375" PointY="6.625" />
         <EntityTypeShape EntityType="SicoreQMSModel.Prod_ProcessItem" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="SicoreQMSModel.LotRelation" Width="2.25" PointX="0.75" PointY="7.75" />
         <EntityTypeShape EntityType="SicoreQMSModel.TestModelBasic" Width="1.5" PointX="8.375" PointY="7.75" />
         <EntityTypeShape EntityType="SicoreQMSModel.TestProcess" Width="1.5" PointX="6.375" PointY="10.75" />
         <EntityTypeShape EntityType="SicoreQMSModel.TestModelItem" Width="4" PointX="1.25" PointY="11.125" />
@@ -21,6 +20,7 @@
         <EntityTypeShape EntityType="SicoreQMSModel.UsageRecord" Width="1.5" PointX="14.375" PointY="8.75" />
         <AssociationConnector Association="SicoreQMSModel.FK_EquipmentStatus_Equipment" />
         <EntityTypeShape EntityType="SicoreQMSModel.Menus" Width="1.5" PointX="14.375" PointY="12.75" />
+        <EntityTypeShape EntityType="SicoreQMSModel.LotRelation" Width="1.5" PointX="6.375" PointY="15.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

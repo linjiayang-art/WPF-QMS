@@ -11,6 +11,7 @@ namespace SicoreQMS.Common.Models.Operation
     {
         public LotRelation()
         {
+            CreateDate= DateTime.Now;
           
         }
 

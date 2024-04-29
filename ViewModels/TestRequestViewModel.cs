@@ -123,10 +123,11 @@ namespace SicoreQMS.ViewModels
                 TestType = TestTypeStr,
                 TestNo = TestNo,
                 ProdNo = ProdNo,
+                MoNo = MoNo,
                 CreateUser = AppSession.UserID,
             };
 
-            bool result = ProdBasicService.CreateProdBasic(prodinfo);
+            bool result = ProdBasicService.CreateProdBasic(prodinfo, ModelId);
 
             if (result)
             {
@@ -156,6 +157,7 @@ namespace SicoreQMS.ViewModels
             TestNo = "";
             ProdNo = "";
             modelId = "";
+            MoNo = "";
             //清空checkbox
             foreach (var item in TestTypes)
             {
@@ -195,6 +197,15 @@ namespace SicoreQMS.ViewModels
             set { _testTypes = value; RaisePropertyChanged(); }
         }
 
+
+
+        private string moNo;
+
+        public string MoNo
+        {
+            get { return moNo; }
+            set { moNo = value;RaisePropertyChanged(); }
+        }
 
 
 

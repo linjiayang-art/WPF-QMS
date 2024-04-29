@@ -78,12 +78,11 @@ namespace SicoreQMS.Service
             }
         }
 
-        public static ResultInfo StartTset(string id, int passQty, string remark,string equipmentid=null,string equipmentList=null)
+        public static ResultInfo StartTset(string id, int passQty, string remark, DateTime startTime ,  string equipmentid=null,string equipmentList=null )
         {
             var resultInfo = new ResultInfo();
             using (var context = new SicoreQMSEntities1())
             {
-
 
                 var item = context.TestProcessItem.Find(id);
 
@@ -106,7 +105,7 @@ namespace SicoreQMS.Service
                 item.EquipmentList = equipmentList;
                 item.ExperimentStatus = 1;
                 item.Remark += remark;
-                item.ExperimentSatrtTime = DateTime.Now;
+                item.ExperimentSatrtTime = startTime;
                 item.StartUser = AppSession.UserID;
                 context.SaveChanges();
                 resultInfo.ResultStatus = true;

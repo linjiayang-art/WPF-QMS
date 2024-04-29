@@ -42,7 +42,10 @@ namespace SicoreQMS.ViewModels
 
         public DelegateCommand<TestProcessItem> BtnCommand { get; set; }
 
+        public DelegateCommand<TestProcessItem> BtnEditCommand { get; set; }
+
         private readonly IDialogService dialog;
+
         private IEventAggregator aggregator;
         private ObservableCollection<TestProcessItem> _testItems;
 
@@ -108,6 +111,7 @@ namespace SicoreQMS.ViewModels
             TestItems = new ObservableCollection<TestProcessItem>();
             HandlerPrint = new DelegateCommand(PrintModel);
             BtnCommand = new DelegateCommand<TestProcessItem>(ShowUpdateDiaLog);
+            BtnEditCommand= new DelegateCommand<TestProcessItem>(ShowEditDiaLog);
             CreateData();
             this.dialog = dialog;
             this.aggregator= aggregator;
@@ -125,6 +129,9 @@ namespace SicoreQMS.ViewModels
             SerachProductNameBasic = new ObservableCollection<SelectBasic>(searchList);
 
         }
+
+
+
 
 
 
@@ -166,6 +173,35 @@ namespace SicoreQMS.ViewModels
             //PrintService.ExportReportToWord("ProdProcess.rdlc", folderPath, dataTable, "Prod_ProcessSet");
         }
 
+
+
+        private void ShowEditDiaLog(TestProcessItem obj)
+        {
+            if (obj is null)
+            {
+                return;
+            }
+            DialogParameters dialogParameters = new DialogParameters
+            {
+                { "Id",obj.Id},
+            };
+
+            dialog.ShowDialog("TestEditView", dialogParameters, result =>
+            {
+                if (result.Result == ButtonResult.OK)
+                {
+                    var message = result.Parameters.GetValue<string>("key");
+
+                    // 处理 message
+                    GetTestItem(Id);
+                    //显示信息
+                    this.aggregator.SendMessage(message);
+                }
+            }
+            );
+
+        }
+
         private void ShowUpdateDiaLog(TestProcessItem obj)
         {
             if (obj is null)
@@ -195,7 +231,7 @@ namespace SicoreQMS.ViewModels
 
         private void GetTestItem(object obj)
         {
-
+            TestItems.Clear();
             if (obj == null)
             {
                 TestProcessInfo = null;

@@ -1,4 +1,5 @@
-﻿using ImTools;
+﻿using DocumentFormat.OpenXml.Drawing;
+using ImTools;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -37,10 +38,10 @@ namespace SicoreQMS.ViewModels.DialogModels
             DialogHostName = "Root";
             CheckCommand = new DelegateCommand<MultiSelectBasic>(CheckEquipment);
             UnCheckCommand = new DelegateCommand<MultiSelectBasic>(CheckEquipment);
-
+          
             BtnStart = new DelegateCommand(ProcessStart, CanStartExecute);
             BtnEnd = new DelegateCommand(ProcessEnd, CanEndExecute);
-
+            StartTime = DateTime.Now;
             Title = "试验流程卡进度更新";
             EquipemtList = Service.EquipmentService.GetMultiEquipmentBasic();
             FilterEquipmentList = EquipemtList;
@@ -141,7 +142,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 
 
      
-            var result_info = TestProcessService.StartTset(id: Id, passQty: PassQty, remark: Remark,   equipmentid: eqIdList, equipmentList: CheckEquipmentNo);
+            var result_info = TestProcessService.StartTset(id: Id, passQty: PassQty, remark: Remark,   equipmentid: eqIdList, equipmentList: CheckEquipmentNo,startTime: StartTime);
 
             if (result_info.ResultStatus == false)
             {
@@ -180,6 +181,17 @@ namespace SicoreQMS.ViewModels.DialogModels
         /// </summary>
         /// 
         #region EquipemtList
+
+
+
+        private DateTime startTime;
+
+        public DateTime StartTime
+        {
+            get { return startTime; }
+            set { startTime = value;RaisePropertyChanged(); }
+        }
+
         public ObservableCollection<MultiSelectBasic> _equipemtList { get; set; }
         public ObservableCollection<MultiSelectBasic> EquipemtList
         {
@@ -192,6 +204,8 @@ namespace SicoreQMS.ViewModels.DialogModels
                 RaisePropertyChanged();
             }
         }
+
+
 
         public string checkEquipmentNo;
         public string CheckEquipmentNo
@@ -421,6 +435,8 @@ namespace SicoreQMS.ViewModels.DialogModels
                 {
                     IsStartEnabled = true;
                     IsEndEnabled = false;
+
+                   
                     return;
                 }
                 if (TestItem.ExperimentStatus == 1)
@@ -428,9 +444,19 @@ namespace SicoreQMS.ViewModels.DialogModels
                     var eq = context.Equipment.SingleOrDefault(e => e.EquipmentID == TestItem.EquipmentId);
                     EquipmentNo = eq.EquipmentNo;
                     EquipmentId= eq.EquipmentID;
+                   
                     IsStartEnabled = false;
                     IsEndEnabled = true;
                     return;
+                }
+                if (TestItem.ExperimentSatrtTime!=null)
+                {
+                    StartTime =TestItem.ExperimentSatrtTime.Value;
+
+                }
+                else
+                {
+                    StartTime = DateTime.Now;
                 }
             }
         }
