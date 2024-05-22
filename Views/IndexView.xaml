@@ -16,6 +16,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <localex:WindowSizeExtensions x:Key="WindowSizeExtensions" />
+
     </UserControl.Resources>
 
     <Grid>
@@ -153,6 +154,7 @@
                                     <DataGridTextColumn Binding="{Binding XlineCount}" Header="X光投入数量" />
                                     <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
                                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
+                                    <DataGridTextColumn Binding="{Binding ScrapQty}" Header="报废入库数量" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Expander>
@@ -188,6 +190,9 @@
                     <DataGridTextColumn Binding="{Binding XlineCount}" Header="X光投入数量" />
                     <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
+                    <DataGridTextColumn Binding="{Binding ScrapQty}" Header="报废入库数量" />
+
+
                     <DataGridTemplateColumn Width="110" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -256,6 +261,50 @@
                         Width="120"
                         Binding="{Binding Two}"
                         Header="项目：2" />
+                    <DataGridTextColumn Binding="{Binding Remark}" Header="备注" />
+
+                    <DataGridTemplateColumn Width="110" Header="状态">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Button
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        materialDesign:ButtonAssist.CornerRadius="8"
+                                        Background="{Binding StatusDescColer}"
+                                        Content="{Binding StatusDesc}"
+                                        Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="300" Header="操作">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="10" Orientation="Horizontal">
+
+                                    <Button
+                                        Width="75"
+                                        Margin="10"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Command="{Binding DataContext.TestExecuetCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding}"
+                                        Content="删除"
+                                        FontSize="13"
+                                        Style="{StaticResource MaterialDesignOutlinedButton}" />
+                                    <Button
+                                        Width="75"
+                                        Margin="10"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Command="{Binding DataContext.TestEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding}"
+                                        Content="修改"
+                                        FontSize="13"
+                                        Style="{StaticResource MaterialDesignOutlinedButton}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
                 </DataGrid.Columns>
 

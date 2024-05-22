@@ -1,13 +1,17 @@
 ﻿using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using SicoreQMS.Common.Models.Operation;
 using SicoreQMS.Common.Models.Report;
+using SicoreQMS.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using System.Windows;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
 namespace SicoreQMS.ViewModels
@@ -16,11 +20,15 @@ namespace SicoreQMS.ViewModels
     {
 
         #region
+        private string lot;
 
+        private string prodType;
 
         public DelegateCommand<TestCountReport>  BtnCommand { get; private set; }
-
+        public DelegateCommand<TestCount> TestExecuetCommand { get; private set; }
+        public DelegateCommand<TestCount> TestEditCommand { get; private set; }
         public DelegateCommand<string> ExecuetCommand { get; private set; }
+     
 
         public ObservableCollection<TestCountReport> _testReportList { get; set; }
 
@@ -47,9 +55,7 @@ namespace SicoreQMS.ViewModels
             set { testItems = value; RaisePropertyChanged(); }
         }
 
-
-
-        private string prodType;
+    
 
         public string ProdType
         {
@@ -58,32 +64,72 @@ namespace SicoreQMS.ViewModels
         }
 
 
-        private string lot;
+        
 
         public string Lot
         {
             get { return lot; }
             set { SetProperty(ref lot, value); }
         }
+
+        public IDialogService Dialog { get; }
+        public IEventAggregator Aggregator { get; }
         #endregion
 
 
-        public IndexViewModel()
+        public IndexViewModel(IDialogService dialog,IEventAggregator aggregator)
         {
             ProdType = "";
             Lot = "";
             TestReportList = Service.IndexService.GetTestCountReport();
             ExecuetCommand=new DelegateCommand<string>(Execuet);
-            BtnCommand= new DelegateCommand<TestCountReport>(BtnExecuet);
+            BtnCommand= new DelegateCommand<TestCountReport>(BtnExecute);
+            TestExecuetCommand=new DelegateCommand<TestCount>(TestExecute);
+            TestEditCommand=new DelegateCommand<TestCount>(TestEdit);
+            Dialog = dialog;
+            Aggregator = aggregator;
         }
 
-        private void BtnExecuet(TestCountReport report)
+        private void TestEdit(TestCount count)
+        {
+
+            DialogParameters dialogParameters = new DialogParameters
+            {
+                { "Id", count.Id }
+
+            };
+
+            Dialog.ShowDialog("TestStatusEditView", dialogParameters, result =>
+            {
+                GetList();
+                //var newid = result.Parameters.GetValue<string>("NewId");
+                //Console.WriteLine(newid);
+
+            });
+        }
+
+        private void BtnExecute(TestCountReport report)
         {
             Service.IndexService.DelProd(report);
             TestReportList = Service.IndexService.GetTestCountReport();
             return;
-            throw new NotImplementedException();
+        
         }
+        private void TestExecute(TestCount report)
+        {
+          var a=   Service.IndexService.DelTestProcess(report.Id);
+            if (a==true)
+            {
+                Aggregator.SendMessage("删除成功");
+            }
+            else
+            {
+                Aggregator.SendMessage("删除失败");
+            }
+            return;
+
+        }
+
 
         private void Execuet(string obj)
         {

@@ -29,7 +29,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>\\172.16.2.2\共享文件\IT部\软件\QMS\</InstallUrl>
-    <ApplicationRevision>12</ApplicationRevision>
+    <ApplicationRevision>23</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -286,9 +286,11 @@
     <Compile Include="Common\Models\Basic\NavigationViewModel.cs" />
     <Compile Include="Common\Models\Basic\ResultInfo.cs" />
     <Compile Include="Common\Models\Basic\SelectBasic.cs" />
+    <Compile Include="Common\Models\Basic\SPEquipment.cs" />
     <Compile Include="Common\Models\Basic\SpiltModel.cs" />
     <Compile Include="Common\Interface\IDialogHostService.cs" />
     <Compile Include="Common\Interface\ISelectItem.cs" />
+    <Compile Include="Common\Models\OperationModels\Equipment.cs" />
     <Compile Include="Common\Models\OperationModels\LotRelation.cs" />
     <Compile Include="Common\Models\OperationModels\Proc_ProcessItem.cs" />
     <Compile Include="Common\Models\OperationModels\ProdInfo.cs" />
@@ -392,6 +394,7 @@
     <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestEditViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestProcessItemUpdateViewModel.cs" />
+    <Compile Include="ViewModels\DialogModels\TestStatusEditViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TsetItemAddViewModel.cs" />
     <Compile Include="ViewModels\EquipemntUsageViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
@@ -425,6 +428,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\TestItemAddView.xaml.cs">
       <DependentUpon>TestItemAddView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\TestStatusEditView.xaml.cs">
+      <DependentUpon>TestStatusEditView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EquipemntUsageView.xaml.cs">
       <DependentUpon>EquipemntUsageView.xaml</DependentUpon>
@@ -494,6 +500,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\TestItemAddView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\TestStatusEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

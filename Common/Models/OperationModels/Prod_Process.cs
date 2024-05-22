@@ -24,7 +24,7 @@ namespace SicoreQMS.Common.Models.Operation
         public SelectBasic ProductSelect()
         {
             string label = $" {ProdType} :{ProdLot} : {Qty}";
-            return new SelectBasic { Label = label, Value = Id };
+            return new SelectBasic { Label = label, Value = Id,DisplayValue= ProdType };
         }
 
 

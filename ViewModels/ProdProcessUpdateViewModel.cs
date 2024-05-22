@@ -127,7 +127,12 @@ namespace SicoreQMS.ViewModels
 
         private void ExportFile(SelectBasic basic)
         {
-            var result=Service.ProdProcessService.GetProcessInfo(basic.Value);
+            if (basic is null || string.IsNullOrEmpty(basic.Value))
+            {
+                Aggregator.SendMessage("请选择批次后再进行导出!");
+                return;
+            }
+            var result = Service.ProdProcessService.GetProcessInfo(basic.Value);
 
             Aggregator.SendMessage(result);
 
@@ -302,7 +307,9 @@ namespace SicoreQMS.ViewModels
             using (var context = new SicoreQMSEntities1())
             {
                 var productItem = context.Prod_Process
-                    .Where(b => b.ProdStatus == 0 || b.ProdStatus == 5 || b.ProdStatus == 1).ToList().OrderBy(x => x.CreateDate);
+                    .Where(b => (b.ProdStatus == 0 || b.ProdStatus == 5 || b.ProdStatus == 1) && b.IsDeleted == false)
+                    .OrderBy(x => x.CreateDate)
+                    .ToList();
                 foreach (var item in productItem)
                 {
                     SelectBasicItem.Add(item.ProductSelect());

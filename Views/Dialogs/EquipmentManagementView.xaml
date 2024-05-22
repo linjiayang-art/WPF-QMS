@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:SicoreQMS.Views.Dialogs"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,6 +12,10 @@
     d:DesignWidth="400"
     Background="White"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -51,6 +56,33 @@
                     Text="{Binding EquipmentModel}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
+                <ComboBox
+                    x:Name="comboBox"
+                    MinWidth="300"
+                    Margin="5"
+                    materialDesign:HintAssist.Hint="设备类型"
+                    DisplayMemberPath="Label"
+                    ItemsSource="{Binding EquipmentType}"
+                    Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding HandleSelectModel}" CommandParameter="{Binding SelectedItem, ElementName=comboBox}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <TextBox
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    MinWidth="300"
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="老炼板承载量"
+                    AcceptsReturn="True"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    Text="{Binding CapaCity}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding ShowCapaCity, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <TextBox
                     Grid.Row="0"
                     Grid.Column="0"

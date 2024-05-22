@@ -28,14 +28,66 @@ namespace SicoreQMS.ViewModels.DialogModels
             BtnEnd = new DelegateCommand(ProcessEnd, CanEndExecute);
             CheckCommand = new DelegateCommand<MultiSelectBasic>(CheckEquipment);
             UnCheckCommand = new DelegateCommand<MultiSelectBasic>(CheckEquipment);
+            SPUnCheckCommand= new DelegateCommand<MultiSelectBasic>(SPCheckEquipment);
+            SPCheckCommand = new DelegateCommand<MultiSelectBasic>(SPCheckEquipment);
             IsStartEnabled = false;
             IsEndEnabled = false;
             this.aggregator = aggregator;
             EquipemtList = Service.EquipmentService.GetMultiEquipmentBasic();
+            SpEquipmentList = Service.EquipmentService.GetMultiSpEquipmentBasic();
+            ChoseSpEquipment=new ObservableCollection<SPEquipment>();
             FilterEquipmentList = EquipemtList;
-            StartTime=DateTime.Now;
-            EndTime= DateTime.Now;
+            StartTime = DateTime.Now;
+            EndTime = DateTime.Now;
+            
         }
+
+        private void SPCheckEquipment(MultiSelectBasic basic)
+        {
+            var spId = basic.Value;
+            using (var context = new SicoreQMSEntities1())
+            {
+                var spEquipment = context.Equipment.Where(p => p.EquipmentID== spId && p.IsDeleted == false ).SingleOrDefault();
+
+                if (spEquipment is null)
+                {
+                    return;
+                }
+
+                if (basic.IsCheck)
+                {
+                    if (ChoseSpEquipment.Any(p=>p.EquipmentID==spId) )
+                    {
+                        return;
+
+                    }
+                    ChoseSpEquipment.Add(new SPEquipment(spEquipment));
+
+
+                }
+                else
+                {
+                    ChoseSpEquipment.Remove(ChoseSpEquipment.SingleOrDefault(x => x.EquipmentID == spId));
+
+
+                }
+
+            }
+
+        }
+
+        private void getProductSPNo()
+        {
+
+            var indesx=prodType.ToLower().IndexOf("sp");
+            if (indesx > 0)
+            {
+                SPNo = prodType.Substring(indesx,3);
+                
+            }
+            SPEquipmentList = Service.EquipmentService.GetSPEquipment(SPNo);
+        }
+
 
         private void CheckEquipment(MultiSelectBasic obj)
         {
@@ -55,7 +107,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         private void SelectEquipment(string obj)
         {
-       
+
             aggregator.SendMessage(obj);
         }
 
@@ -85,14 +137,79 @@ namespace SicoreQMS.ViewModels.DialogModels
         #region  属性
 
         private DateTime staretime;
+        private DateTime endTime;
+        private string equipmentNo;
+        private string _equipmentId;
+        private string searchText;
+        public string checkEquipmentNo;
+        private string _beginRemark;
+        private string _endRemark;
+        private string _id;
+        private bool _isStartEnabled;
+        private string prodType;
+        public string SPNo { get; set; }
+        private bool isUseSP;
+
+        public bool IsUseSP
+        {
+            get { return isUseSP; }
+            set { isUseSP = value; RaisePropertyChanged(); }
+        }
+
+
+
+        private ObservableCollection<SPEquipment> spEquipmentList;
+
+        public ObservableCollection<SPEquipment> SPEquipmentList
+        {
+            get { return spEquipmentList; }
+            set { spEquipmentList = value; RaisePropertyChanged(); }
+        }
+
+
+        //老炼板
+        private ObservableCollection<MultiSelectBasic> _spEquipmentList;
+
+        public ObservableCollection<MultiSelectBasic> SpEquipmentList
+        {
+            get => _spEquipmentList;
+            set => SetProperty(ref _spEquipmentList, value);
+
+        }
+
+        private ObservableCollection<SPEquipment> _choseSpEquipment;
+
+        public ObservableCollection<SPEquipment> ChoseSpEquipment
+        {
+            get => _choseSpEquipment;
+            set => SetProperty(ref _choseSpEquipment, value);
+
+        }
+
+
+        private string _spSerchText;
+
+        public DelegateCommand<MultiSelectBasic> SPCheckCommand { get; set; }
+        public DelegateCommand<MultiSelectBasic> SPUnCheckCommand { get; set; }
+
+        public string SpSerchText
+        {
+            get => _spSerchText;
+            set => SetProperty(ref _spSerchText, value);
+
+        }
+
+
+
+
 
         public DateTime StartTime
         {
             get { return staretime; }
-           set { SetProperty(ref staretime, value); }
+            set { SetProperty(ref staretime, value); }
         }
 
-        private DateTime endTime;
+
 
         public DateTime EndTime
         {
@@ -105,7 +222,7 @@ namespace SicoreQMS.ViewModels.DialogModels
         public DelegateCommand<MultiSelectBasic> CheckCommand { get; set; }
         public DelegateCommand<MultiSelectBasic> UnCheckCommand { get; set; }
 
-        private string equipmentNo;
+
 
         public string EquipmentNo
         {
@@ -114,9 +231,7 @@ namespace SicoreQMS.ViewModels.DialogModels
         }
 
 
-        private string _equipmentId;
 
-        public string checkEquipmentNo;
         public string CheckEquipmentNo
         {
             get { return checkEquipmentNo; }
@@ -153,8 +268,6 @@ namespace SicoreQMS.ViewModels.DialogModels
             set { filterEquipmentlist = value; RaisePropertyChanged(); }
         }
 
-        private string searchText;
-
         public string SearchText
         {
             get { return searchText; }
@@ -165,18 +278,11 @@ namespace SicoreQMS.ViewModels.DialogModels
             }
         }
 
-
-
-        private string _beginRemark;
-
         public string BeginRemark
         {
             get { return _beginRemark; }
             set { SetProperty(ref _beginRemark, value); }
         }
-
-
-        private string _endRemark;
 
         public string EndRemark
         {
@@ -184,7 +290,6 @@ namespace SicoreQMS.ViewModels.DialogModels
             set { SetProperty(ref _endRemark, value); }
         }
 
-        private bool _isStartEnabled;
         public bool IsStartEnabled
         {
             get { return _isStartEnabled; }
@@ -207,7 +312,7 @@ namespace SicoreQMS.ViewModels.DialogModels
         }
 
         private IEventAggregator aggregator;
-        private string _id;
+
         public string Id
         {
             get { return _id; }
@@ -239,7 +344,7 @@ namespace SicoreQMS.ViewModels.DialogModels
         public int InputQty
         {
             get { return _inputQty; }
-            set { SetProperty(ref _inputQty, value); }
+            set { SetProperty(ref _inputQty, value) ;RaisePropertyChanged(); }
         }
         private string _prodStandard;
 
@@ -282,9 +387,9 @@ namespace SicoreQMS.ViewModels.DialogModels
         }
         private void ProcessEnd()
         {
-         
 
-            var result = ProdProcessService.EndProcess(id: Id, qty: OutQty, remark: EndRemark ,endTime:EndTime);
+
+            var result = ProdProcessService.EndProcess(id: Id, qty: OutQty, remark: EndRemark, endTime: EndTime);
 
             if (result.ResultStatus == false)
             {
@@ -304,7 +409,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                 if (orginEqIdList != null)
                 {
                     var eqList = orginEqIdList.Split(';');
-                   
+
                     foreach (var item in eqList)
                     {
                         if (string.IsNullOrEmpty(item))
@@ -319,8 +424,10 @@ namespace SicoreQMS.ViewModels.DialogModels
 
                 }
 
-
             }
+
+            //更新老炼板记录
+           Service.EquipmentService.EndSPEquipment(Id);
 
             ButtonResult btnResult = ButtonResult.None;
 
@@ -335,11 +442,40 @@ namespace SicoreQMS.ViewModels.DialogModels
         private void ProcessStart()
         {
 
-       
-
-            var eqList = CheckEquipmentNo?.Split(';')??new string[0];
+            var eqList = CheckEquipmentNo?.Split(';') ?? new string[0];
 
             var eqIdList = "";
+
+            if (IsUseSP)
+            {
+                var spCount = 0;
+                foreach (var item in SPEquipmentList)
+                {
+                    spCount += item.UseQty;
+                    if (item.Capacity < item.UseQty)
+                    {
+                        aggregator.SendMessage("老炼投入数量大于设备总容量!");
+                        return;
+                    }
+                    if (item.AvailableCapacity<item.UseQty)
+                    {
+                        aggregator.SendMessage("老炼投入数量大于当前设备容量!");
+                        return;
+                    }
+                }
+
+                if (spCount != InputQty)
+                {
+                    aggregator.SendMessage("老炼数量不等于投入数量!");
+                    return;
+                }
+
+
+                foreach (var item in SPEquipmentList)
+                {
+                    item.AddSpUsage("生产流程卡", ProcessType,Id);
+                }
+            }
 
             foreach (var item in eqList)
             {
@@ -355,7 +491,7 @@ namespace SicoreQMS.ViewModels.DialogModels
             }
 
 
-            var result = ProdProcessService.BeginProcess(id: Id, qty: InputQty, equipmentList: CheckEquipmentNo, equipmentId: eqIdList, remark: BeginRemark,startTime:StartTime);
+            var result = ProdProcessService.BeginProcess(id: Id, qty: InputQty, equipmentList: CheckEquipmentNo, equipmentId: eqIdList, remark: BeginRemark, startTime: StartTime);
 
             if (result.ResultStatus == false)
             {
@@ -375,6 +511,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 
             }
             //设备记录
+
 
 
             ButtonResult btnResult = ButtonResult.None;
@@ -407,6 +544,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                 var prodProcessItem = context.Prod_ProcessItem.SingleOrDefault(b => b.Id == Id);
                 if (prodProcessItem != null)
                 {
+                    prodType= prodProcessItem.ProdType;
                     ProdProcessCard = prodProcessItem.ProdProcessCard;
                     ProcessType = prodProcessItem.ProcessType;
                     OutQty = prodProcessItem.OutQty ?? 0;
@@ -414,10 +552,21 @@ namespace SicoreQMS.ViewModels.DialogModels
                     ProdStandard = prodProcessItem.ProdStandard;
 
                 }
+
+              
+
                 else
                 {
                     MessageBox.Show("未查询到该产品");
                 }
+
+                if (InputQty == 0)
+                {
+                    var prodprocess = context.Prod_Process.Find(prodProcessItem.ProdProcessId);
+                    InputQty = (int)prodprocess.Qty;
+                }
+
+                getProductSPNo();
                 if (prodProcessItem.ItemStatus == 0)
                 {
                     IsStartEnabled = true;
@@ -443,7 +592,11 @@ namespace SicoreQMS.ViewModels.DialogModels
                     return;
                 }
 
+            
+
             }
+
+           
         }
 
 

@@ -15,6 +15,7 @@ namespace SicoreQMS.Common.Models.Report
         {
 
         }
+        public string Id { get; set; }
 
         public string ProdNo { get; set; }
         public string TestNo { get; set; }
@@ -27,6 +28,10 @@ namespace SicoreQMS.Common.Models.Report
         public string C { get; set; }
         public string D { get; set; }
 
+        public string StatusDesc { get; set; }
+
+        public string StatusDescColer { get; set; }
+        public string Remark { get; set; }
         static void SetProperty(object obj, string propertyName, object value)
         {
             // 获取obj对象的类型

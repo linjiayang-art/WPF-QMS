@@ -100,6 +100,7 @@ namespace SicoreQMS.Service
                             orderby pP.ProdLot, pPI.ModelSort
                             select new
                             {
+                                pP.Id,
                                 pP.ProdName,
                                 pP.ProdType,
                                 pP.ProdLot,
@@ -110,7 +111,7 @@ namespace SicoreQMS.Service
                                 pPI.OutQty,
                                 pP.Qty,
                                 pP.OriginQty,
-
+                                pPI.IsComplete
 
                             };
                 var resultList = query.ToList();
@@ -122,18 +123,53 @@ namespace SicoreQMS.Service
 
                     testCountReport.ProdName = resultList[newI].ProdName;
 
-                    testCountReport.Qty = (int)resultList[newI].Qty;
-                    testCountReport.OriginQty = (int)resultList[newI].OriginQty;
-                    testCountReport.ProdType = resultList[newI].ProdType;
-                    testCountReport.ProdLot = resultList[newI].ProdLot;
-                    testCountReport.TestType = resultList[newI].TestType;
-
-                    testCountReport.AgingCount = (int)resultList[newI].InputQty;
                     testCountReport.XlineCount = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString()) ? 0 : (int)resultList[newI + 1].InputQty;
                     //testCountReport.AgingCountOut = string.IsNullOrEmpty(resultList[newI].OutQty.ToString()) ? 0 : (int)resultList[newI].OutQty;
                     testCountReport.UltrasonicTesting = string.IsNullOrEmpty(resultList[newI + 2].InputQty.ToString()) ? 0 : (int)resultList[newI + 2].InputQty;
                     //testCountReport.UltrasonicTestingOut = string.IsNullOrEmpty(resultList[newI + 1].OutQty.ToString()) ? 0 : (int)resultList[newI + 1].OutQty;
                     testCountReport.StockIn = string.IsNullOrEmpty(resultList[newI + 3].InputQty.ToString()) ? 0 : (int)resultList[newI + 3].InputQty;
+
+
+                    testCountReport.ProdType = resultList[newI].ProdType;
+                    testCountReport.ProdLot = resultList[newI].ProdLot;
+                    testCountReport.TestType = resultList[newI].TestType;
+                    testCountReport.Qty = (int)resultList[newI].Qty;
+                    testCountReport.OriginQty = (int)resultList[newI].OriginQty;
+                    testCountReport.AgingCount = (int)resultList[newI].InputQty;
+
+
+                    if (resultList[newI].IsComplete == true)
+                    {
+                        testCountReport.AgingCount = 0;
+
+                    }
+
+                    if (resultList[newI + 1].IsComplete == true)
+                    {
+                        testCountReport.XlineCount = 0;
+
+                    }
+                    if (resultList[newI + 2].IsComplete == true)
+                    {
+                        testCountReport.UltrasonicTesting = 0;
+
+                    }
+
+                    var id = resultList[newI].Id;
+                    string sqlQuery = $"SELECT SUM(InputQty)-SUM( OutQty)  FROM Prod_ProcessItem  WHERE ProdProcessId='{id}' AND IsComplete=1";
+
+                    var scrapQty = context.Database.SqlQuery<int?>(sqlQuery, id).FirstOrDefault();
+                    if (scrapQty is null)
+                    {
+                        testCountReport.ScrapQty = 0;
+
+                    }
+                    else
+                    {
+                        testCountReport.ScrapQty = (int)scrapQty;
+                    }
+
+
                     results.Add(testCountReport);
 
                 }
@@ -159,6 +195,7 @@ namespace SicoreQMS.Service
                             orderby pP.ProdLot, pPI.ModelSort
                             select new
                             {
+                                pP.Id,
                                 pP.ProdName,
                                 pP.ProdType,
                                 pP.ProdLot,
@@ -169,8 +206,12 @@ namespace SicoreQMS.Service
                                 pPI.OutQty,
                                 pP.Qty,
                                 pP.OriginQty,
+                                pPI.IsComplete
                             };
+
+
                 var resultList = query.ToList();
+
                 var listCount = resultList.Count() / 4;
                 for (int i = 0; i < listCount; i++)
                 {
@@ -181,13 +222,55 @@ namespace SicoreQMS.Service
                     testCountReport.OriginQty = (int)resultList[newI].OriginQty;
                     testCountReport.ProdType = resultList[newI].ProdType;
                     testCountReport.ProdLot = resultList[newI].ProdLot;
-                    testCountReport.TestType = resultList[newI].TestType;
-                    testCountReport.AgingCount = (int)resultList[newI].InputQty;
+
+
+                    testCountReport.XlineCount = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString()) ? 0 : (int)resultList[newI + 1].InputQty;
                     //testCountReport.AgingCountOut = string.IsNullOrEmpty(resultList[newI].OutQty.ToString()) ? 0 : (int)resultList[newI].OutQty;
                     testCountReport.UltrasonicTesting = string.IsNullOrEmpty(resultList[newI + 2].InputQty.ToString()) ? 0 : (int)resultList[newI + 2].InputQty;
-                    testCountReport.XlineCount = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString()) ? 0 : (int)resultList[newI + 1].InputQty;
                     //testCountReport.UltrasonicTestingOut = string.IsNullOrEmpty(resultList[newI + 1].OutQty.ToString()) ? 0 : (int)resultList[newI + 1].OutQty;
                     testCountReport.StockIn = string.IsNullOrEmpty(resultList[newI + 3].InputQty.ToString()) ? 0 : (int)resultList[newI + 3].InputQty;
+
+
+                    testCountReport.TestType = resultList[newI].TestType;
+                    testCountReport.AgingCount = (int)resultList[newI].InputQty;
+                    ////testCountReport.AgingCountOut = string.IsNullOrEmpty(resultList[newI].OutQty.ToString()) ? 0 : (int)resultList[newI].OutQty;
+                    //testCountReport.UltrasonicTesting = string.IsNullOrEmpty(resultList[newI + 2].InputQty.ToString()) ? 0 : (int)resultList[newI + 2].InputQty;
+                    //testCountReport.XlineCount = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString()) ? 0 : (int)resultList[newI + 1].InputQty;
+                    ////testCountReport.UltrasonicTestingOut = string.IsNullOrEmpty(resultList[newI + 1].OutQty.ToString()) ? 0 : (int)resultList[newI + 1].OutQty;
+                    //testCountReport.StockIn = string.IsNullOrEmpty(resultList[newI + 3].InputQty.ToString()) ? 0 : (int)resultList[newI + 3].InputQty;
+
+                    if (resultList[newI].IsComplete == true)
+                    {
+                        testCountReport.AgingCount = 0;
+
+                    }
+
+                    if (resultList[newI + 1].IsComplete == true)
+                    {
+                        testCountReport.XlineCount = 0;
+
+                    }
+                    if (resultList[newI + 2].IsComplete == true)
+                    {
+                        testCountReport.UltrasonicTesting = 0;
+
+                    }
+
+                    var id = resultList[newI].Id;
+                    string sqlQuery = $"SELECT SUM(InputQty)-SUM( OutQty)  FROM Prod_ProcessItem  WHERE ProdProcessId='{id}' AND IsComplete=1";
+
+                    var scrapQty = context.Database.SqlQuery<int?>(sqlQuery, id).FirstOrDefault();
+                    if (scrapQty is null)
+                    {
+                        testCountReport.ScrapQty = 0;
+
+                    }
+                    else
+                    {
+                        testCountReport.ScrapQty = (int)scrapQty;
+                    }
+
+
                     results.Add(testCountReport);
                 }
             }
@@ -202,7 +285,7 @@ namespace SicoreQMS.Service
         public static ObservableCollection<TestProcessItem> GetTestItems(string prodType, string lot)
         {
 
-      
+
             var reslut = new ObservableCollection<TestProcessItem>();
             using (var context = new SicoreQMSEntities1())
             {
@@ -239,7 +322,7 @@ namespace SicoreQMS.Service
         public static ObservableCollection<TestCount> GetTestCounts(string prodType, string lot)
         {
 
-            var checklist = new List<string> { "1", "A", "B", "C","D","2" };
+            var checklist = new List<string> { "1", "A", "B", "C", "D", "2" };
             var reslut = new ObservableCollection<TestCount>();
             using (var context = new SicoreQMSEntities1())
             {
@@ -247,6 +330,7 @@ namespace SicoreQMS.Service
                 var testProcess = context.TestProcess.Where(p =>
                 (!String.IsNullOrEmpty(p.ProdType) && p.ProdType.Contains(prodType))
                 && (!String.IsNullOrEmpty(p.ProdLot) && p.ProdLot.Contains(lot))
+                &&(p.Isdeletd==false)
                                                         ).ToList();
                 if (testProcess.Count == 0)
                 {
@@ -254,17 +338,17 @@ namespace SicoreQMS.Service
                 }
                 foreach (var item in testProcess)
                 {
-                
-                    var calculateDict =new Dictionary<string, string>();
 
-                    var testProcessItem = context.TestProcessItem.Where(p => p.TestProcessId == item.Id).ToList();
+                    var calculateDict = new Dictionary<string, string>();
+
+                    var testProcessItem = context.TestProcessItem.Where(p => p.TestProcessId == item.Id&&p.IsDeleted==false ).ToList();
                     if (testProcessItem.Count == 0)
                     {
                         continue;
                     }
                     var expando = new TestCount();
 
-                    expando.TestLot =item.TestLot;
+                    expando.TestLot = item.TestLot;
                     string testNo = "";
                     string prodNo = "";
 
@@ -282,14 +366,14 @@ namespace SicoreQMS.Service
                         DataTable dataTable = ds.Tables[0];
                         var testCount = dataTable.Rows[0][1].ToString();
                         var yield = dataTable.Rows[0][0].ToString();
-                        testNo= dataTable.Rows[0][2].ToString();
+                        testNo = dataTable.Rows[0][2].ToString();
                         prodNo = dataTable.Rows[0][3].ToString();
                         calculateDict.Add(testCount, yield);
                         //var blogs = context.proc_QAExperimentReport
                         //        .FromSql($"EXECUTE dbo.GetMostPopularBlogsForUser @filterByUser={user}")
                         //        .ToList();
                     }
-                    expando.One= calculateDict["1"];
+                    expando.One = calculateDict["1"];
                     expando.A = calculateDict["A"];
                     expando.B = calculateDict["B"];
                     expando.C = calculateDict["C"];
@@ -297,6 +381,29 @@ namespace SicoreQMS.Service
                     expando.Two = calculateDict["2"];
                     expando.TestNo = testNo;
                     expando.ProdNo = prodNo;
+                    expando.Id= item.Id;
+                    expando.Remark = item.Remark;
+                    switch (item.StatusDesc)
+                    {
+                        case 0:
+                            expando.StatusDescColer = "Red";
+                            expando.StatusDesc= "未开始";
+                            break;
+                        case 1:
+                            expando.StatusDescColer = "Yellow";
+                            expando.StatusDesc = "进行中";
+                            break;
+                        case 2:
+                            expando.StatusDescColer = "Green";
+                            expando.StatusDesc = "已完成";
+                            break;
+                        case 3:
+                            expando.StatusDescColer = "Gray";
+                            expando.StatusDesc = "中止";
+                            break;
+                        default:
+                            break;
+                    };
                     reslut.Add(expando);
                 }
             }
@@ -326,6 +433,7 @@ namespace SicoreQMS.Service
                         itemToUpdate.XlineCount += item.XlineCount;
                         //itemToUpdate.AgingCountOut += item.AgingCountOut;
                         itemToUpdate.UltrasonicTesting += item.UltrasonicTesting;
+                        itemToUpdate.ScrapQty += item.ScrapQty;
                         //itemToUpdate.UltrasonicTestingOut += item.UltrasonicTestingOut;
                         itemToUpdate.StockIn += item.StockIn;
 
@@ -349,22 +457,23 @@ namespace SicoreQMS.Service
             using (var context = new SicoreQMSEntities1())
             {
                 //通产品同批次可能多个,后续修复
-                var prodProcess = context.Prod_Process.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType&&p.IsDeleted==false).SingleOrDefault();
+                var prodProcess = context.Prod_Process.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType && p.IsDeleted == false).SingleOrDefault();
                 if (prodProcess == null)
                 {
                     return;
-                    
+
                 }
 
                 prodProcess.IsDeleted = true;
 
-                var prodProcessItem = context.Prod_ProcessItem.Where(p => p.ProdProcessId == prodProcess.Id).ToList();
+                var prodProcessItem = context.Prod_ProcessItem.Where(p => p.ProdProcessId == prodProcess.Id && p.IsDeleted == false).ToList();
                 foreach (var item in prodProcessItem)
                 {
                     item.IsDeleted = true;
                 }
                 context.SaveChanges();
 
+                //删除试验流程
                 var testProcess = context.TestProcess.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).SingleOrDefault();
 
                 if (testProcess == null)
@@ -377,14 +486,53 @@ namespace SicoreQMS.Service
                 var testProcessItem = context.TestProcessItem.Where(p => p.TestProcessId == testProcess.Id).ToList();
                 foreach (var item in testProcessItem)
                 {
-                    item.IsDeleted= true;
+                    item.IsDeleted = true;
                 }
                 context.SaveChanges();
+
+       
+
+
 
             }
 
         }
 
+        public static bool DelTestProcess(string testid)
+        {
+            try
+            {
+                using (var context = new SicoreQMSEntities1())
+                {
+                    var testProcess = context.TestProcess.Where(p => p.Id == testid).SingleOrDefault();
+                    if (testProcess == null)
+                    {
+                        return false;
+
+                    }
+                    testProcess.Isdeletd = true;
+                    var testProcessItem = context.TestProcessItem.Where(p => p.TestProcessId == testid).ToList();
+                    if (testProcessItem.Count == 0)
+                    {
+                        return false;
+                    }
+                    foreach (var item in testProcessItem)
+                    {
+                        item.IsDeleted = true;
+                    }
+                    context.SaveChanges();
+                }
+                return true;
+
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+            return true;
+           
+        }
 
         public static void ExportTestCountReportListToExcel(IEnumerable<TestCountReport> oldreports, string filePath)
         {

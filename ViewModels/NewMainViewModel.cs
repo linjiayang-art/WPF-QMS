@@ -21,7 +21,7 @@ namespace SicoreQMS.ViewModels
             get { return isTopDrawerOpen; }
             set { isTopDrawerOpen = value; RaisePropertyChanged(); }
         }
-
+  
 
 
         public DelegateCommand<NavigationItem> NavigateCommand { get; set;}

@@ -99,7 +99,7 @@
                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                     TextInput="comProductName_TextInput"
-                    TextSearch.TextPath="Label">
+                    TextSearch.TextPath="DisplayValue">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <prism:InvokeCommandAction Command="{Binding HandelSelect}" CommandParameter="{Binding SelectedValue, ElementName=comProductName}" />

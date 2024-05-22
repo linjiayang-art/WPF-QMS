@@ -16,6 +16,7 @@ namespace SicoreQMS.Common.Models.Operation
             CompleteStatus = false;
             Isdeletd = false;
             AuditStatus = false;
+            StatusDesc = 0;
         }
 
      
@@ -23,7 +24,8 @@ namespace SicoreQMS.Common.Models.Operation
         {
             return new SelectBasic()
             {
-                Label = $" 产品型号: {ProdType} 批次号: {ProdLot} 试验类别:{TestType}",
+                Label = $" {ProdType} {ProdLot}{TestType}",
+                //Label = $" 产品型号: {ProdType} 批次号: {ProdLot} 试验类别:{TestType}",
                 Value = Id
             };
           

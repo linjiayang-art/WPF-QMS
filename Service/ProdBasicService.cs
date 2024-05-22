@@ -69,7 +69,7 @@ namespace SicoreQMS.Service
 
                 #endregion
                 var productItem = context.TestProcess
-                    .Where(B => B.AuditStatus == false)
+                    .Where(B =>( B.AuditStatus == false)&&B.Isdeletd==false)
                     //.Where(b => b.ProdStatus == 0 || b.ProdStatus == 5 || b.ProdStatus == 1)
                     .ToList().OrderBy(x => x.CreateDate);
 

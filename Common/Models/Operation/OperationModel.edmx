@@ -219,6 +219,8 @@
           <Property Name="TestType" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="CompleteStatus" Type="bit" />
+          <Property Name="StatusDesc" Type="int" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="255" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
           <Property Name="Isdeletd" Type="bit" />
@@ -270,6 +272,7 @@
           <Property Name="ProcessId" Type="nvarchar" MaxLength="50" />
           <Property Name="UseType" Type="nvarchar" MaxLength="50" />
           <Property Name="UseProcess" Type="nvarchar" MaxLength="50" />
+          <Property Name="Qty" Type="int" />
           <Property Name="UseUser" Type="nvarchar" MaxLength="50" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="EndDate" Type="datetime" />
@@ -488,6 +491,8 @@
           <Property Name="CompleteStatus" Type="Boolean" />
           <Property Name="ProdId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AuditStatus" Type="Boolean" />
+          <Property Name="StatusDesc" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TestModelItem">
           <Key>
@@ -617,6 +622,7 @@
           <Property Name="EndDate" Type="DateTime" Precision="3" />
           <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ProcessId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Int32" />
         </EntityType>
         <Association Name="FK_EquipmentStatus_Equipment">
           <End Type="SicoreQMSModel.Equipment" Role="Equipment" Multiplicity="0..1" />
@@ -789,6 +795,8 @@
           <EntitySetMapping Name="TestProcess">
             <EntityTypeMapping TypeName="SicoreQMSModel.TestProcess">
               <MappingFragment StoreEntitySet="TestProcess">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="StatusDesc" ColumnName="StatusDesc" />
                 <ScalarProperty Name="AuditStatus" ColumnName="AuditStatus" />
                 <ScalarProperty Name="ProdId" ColumnName="ProdId" />
                 <ScalarProperty Name="CompleteStatus" ColumnName="CompleteStatus" />
@@ -932,6 +940,7 @@
           <EntitySetMapping Name="UsageRecord">
             <EntityTypeMapping TypeName="SicoreQMSModel.UsageRecord">
               <MappingFragment StoreEntitySet="UsageRecord">
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
                 <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />

@@ -29,5 +29,7 @@ namespace SicoreQMS.Common.Models.Operation
         public Nullable<bool> CompleteStatus { get; set; }
         public string ProdId { get; set; }
         public Nullable<bool> AuditStatus { get; set; }
+        public Nullable<int> StatusDesc { get; set; }
+        public string Remark { get; set; }
     }
 }

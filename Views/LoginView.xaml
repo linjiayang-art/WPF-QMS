@@ -54,8 +54,9 @@
                 pass:PassWordExtensions.PassWord="{Binding PassWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 DockPanel.Dock="Top">
                 <i:Interaction.Behaviors>
-                    <pass:PasswordBehavior />
+                    <pass:PasswordBehavior Command="{Binding ExecuteCommand}" CommandParameter="Login" />
                 </i:Interaction.Behaviors>
+
             </PasswordBox>
             <Button
                 Command="{Binding ExecuteCommand}"

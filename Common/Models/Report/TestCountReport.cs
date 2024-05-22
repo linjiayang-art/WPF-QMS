@@ -34,6 +34,8 @@ namespace SicoreQMS.Common.Models.Report
         public int UltrasonicTesting { get; set; }
         //public int UltrasonicTestingOut { get; set; }
         public int StockIn { get; set; }
+
+        public int ScrapQty { get; set; }
         public List<TestCountReport> ChildItems { get; set; }
     }
 

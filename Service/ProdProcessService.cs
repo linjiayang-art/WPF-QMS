@@ -203,8 +203,9 @@ namespace SicoreQMS.Service
             string fullPath = Path.Combine(desktopPath, $"{result[0][0].ProdType}生产流程卡.xlsx");
             using (var workbook = new XLWorkbook())
             {
+                //var worksheet = workbook.Worksheets.Add("Sheet1");
                 foreach (var item in result)
-                {
+                {   //分开的，需求展示不需要
                     var worksheet = workbook.Worksheets.Add(item[0].Lot);
                     worksheet.Cell(1, 1).Value = "序号";
                     worksheet.Cell(1, 2).Value = "生产流程卡";
@@ -249,6 +250,15 @@ namespace SicoreQMS.Service
                         }
 
                     }
+
+                    // 获取一个范围（这里选择了A1到B3）
+                    var range = worksheet.Range($"A1:L{item.Count}");
+
+                    // 为范围内的每个单元格添加边框
+                    range.Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin);
+                    range.Style.Border.SetInsideBorder(XLBorderStyleValues.Thin);
+                    worksheet.Columns().AdjustToContents();
+
                     //worksheet.Columns().AdjustToContents();
                     worksheet.Columns().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                 }
