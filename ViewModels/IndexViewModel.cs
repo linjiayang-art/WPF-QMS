@@ -21,7 +21,7 @@ namespace SicoreQMS.ViewModels
 
         #region
         private string lot;
-
+        private string _prodNo;
         private string prodType;
 
         public DelegateCommand<TestCountReport>  BtnCommand { get; private set; }
@@ -55,7 +55,16 @@ namespace SicoreQMS.ViewModels
             set { testItems = value; RaisePropertyChanged(); }
         }
 
-    
+
+      
+
+        public string ProdNo
+        {
+            get => _prodNo;
+            set => SetProperty(ref _prodNo, value);
+
+        }
+
 
         public string ProdType
         {
@@ -80,6 +89,7 @@ namespace SicoreQMS.ViewModels
         public IndexViewModel(IDialogService dialog,IEventAggregator aggregator)
         {
             ProdType = "";
+            ProdNo = "";
             Lot = "";
             TestReportList = Service.IndexService.GetTestCountReport();
             ExecuetCommand=new DelegateCommand<string>(Execuet);
@@ -158,7 +168,7 @@ namespace SicoreQMS.ViewModels
         {
 
             _testReportList.Clear();
-            TestReportList = Service.IndexService.GetTestCountReport(prodType:prodType,lot:Lot);
+            TestReportList = Service.IndexService.GetTestCountReport(prodType:prodType,lot:Lot,prodNo:ProdNo);
             //TestItems = Service.IndexService.GetTestItems(prodType: prodType, lot: Lot);
             TestItems = Service.IndexService.GetTestCounts(prodType: prodType, lot: Lot);
         

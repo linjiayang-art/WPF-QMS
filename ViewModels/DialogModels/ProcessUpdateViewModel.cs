@@ -177,16 +177,10 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         }
 
-        private ObservableCollection<SPEquipment> _choseSpEquipment;
+       
 
-        public ObservableCollection<SPEquipment> ChoseSpEquipment
-        {
-            get => _choseSpEquipment;
-            set => SetProperty(ref _choseSpEquipment, value);
-
-        }
-
-
+        public ObservableCollection<SPEquipment> ChoseSpEquipment { get; set; }
+     
         private string _spSerchText;
 
         public DelegateCommand<MultiSelectBasic> SPCheckCommand { get; set; }
@@ -449,7 +443,7 @@ namespace SicoreQMS.ViewModels.DialogModels
             if (IsUseSP)
             {
                 var spCount = 0;
-                foreach (var item in SPEquipmentList)
+                foreach (var item in ChoseSpEquipment)
                 {
                     spCount += item.UseQty;
                     if (item.Capacity < item.UseQty)
@@ -463,15 +457,13 @@ namespace SicoreQMS.ViewModels.DialogModels
                         return;
                     }
                 }
-
                 if (spCount != InputQty)
                 {
                     aggregator.SendMessage("老炼数量不等于投入数量!");
                     return;
                 }
-
-
-                foreach (var item in SPEquipmentList)
+  
+                foreach (var item in ChoseSpEquipment)
                 {
                     item.AddSpUsage("生产流程卡", ProcessType,Id);
                 }

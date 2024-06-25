@@ -8,10 +8,14 @@ using Prism.Services.Dialogs;
 using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
 using SicoreQMS.Extensions;
+using SicoreQMS.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +38,7 @@ namespace SicoreQMS.ViewModels
         public DelegateCommand<SelectBasic> SplitLotCommand { get; set; }
 
         public DelegateCommand<SelectBasic> ExportCommand { get; set; }
+        public DelegateCommand<SelectBasic> ReportCommand{ get; set; }
         public ObservableCollection<SelectBasic> SelectBasicItem { get; set; }
 
         private string _prodLot;
@@ -114,6 +119,7 @@ namespace SicoreQMS.ViewModels
             SplitLotCommand = new DelegateCommand<SelectBasic>(SpiltLot);
             SelectBasicItem = new ObservableCollection<SelectBasic>();
             ExportCommand = new DelegateCommand<SelectBasic>(ExportFile);
+            ReportCommand= new DelegateCommand<SelectBasic>(ExportReportFile);
             CreateProductSelection();
             ProductNameBasic = SelectBasicItem;
             ProcessItem = new ObservableCollection<Prod_ProcessItem>();
@@ -135,6 +141,41 @@ namespace SicoreQMS.ViewModels
             var result = Service.ProdProcessService.GetProcessInfo(basic.Value);
 
             Aggregator.SendMessage(result);
+
+        }
+
+        private void ExportReportFile(SelectBasic basic)
+        {
+            if (basic is null || string.IsNullOrEmpty(basic.Value))
+            {
+                Aggregator.SendMessage("请选择批次后再进行导出!");
+                return;
+            }
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //增加个时间轴
+            var time = DateTime.Now.ToString("yyyyMMddHHmmss");
+
+  
+           // 使用 Path.Combine 构建完整的文件路径
+
+           var prodName = basic.Label.Split(':')[0];
+
+
+            string folderPath = Path.Combine(desktopPath, $"{prodName}-筛选报告{time}.docx");
+
+            var rdlcPath = @"\\Sx-fj-221\共享文件\IT部\PrintModel\Scanning\ProdProcessMain.rdlc";
+            try
+            {
+                PrintService.ExportScreeningReportToWord(basic.Value, rdlcPath, folderPath);
+            }
+            catch (FileNotFoundException f)
+            {
+                Aggregator.SendMessage(f.Message.ToString());
+                return;
+            }
+         
+    
+            Aggregator.SendMessage("打印成功");
 
         }
 

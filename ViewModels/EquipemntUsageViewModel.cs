@@ -64,12 +64,29 @@ namespace SicoreQMS.ViewModels
                 case "查询": GetDataAsync(); break;
                 case "导出": ExportData(); break;
                 case "Add": AddNewEquipment();break;
+               default:
+                    EditEquipment(obj);
+                    break;
+                
+
             }
         }
 
-        private void AddNewEquipment()
+        private void AddNewEquipment(string status=null)
         {
             dialogService.ShowDialog("EquipmentManagementView", result =>
+            {
+                GetDataAsync();
+            });
+        }
+
+
+        private void EditEquipment(string equipmentNo)
+        {
+            var parameters = new DialogParameters();
+            parameters.Add("equipmentNo", equipmentNo);
+
+            dialogService.ShowDialog("EquipmentManagementView", parameters, result =>
             {
                 GetDataAsync();
             });

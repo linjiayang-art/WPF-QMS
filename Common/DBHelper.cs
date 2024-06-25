@@ -126,8 +126,8 @@ namespace SicoreQMS.Common
                     }
                     SqlDataAdapter dp = new SqlDataAdapter(cmd);
                     dp.Fill(dst);
-                    //测试记录日志
-                    string result = Get_sql_query(cmd);
+                   // //测试记录日志
+                   // string result = Get_sql_query(cmd);
                     //SimpleLoger.Instance.Info(result);
 
                 }
@@ -160,7 +160,7 @@ namespace SicoreQMS.Common
                         cmd.Parameters.AddRange(param);
                     }
                     //测试记录日志
-                    string result = Get_sql_query(cmd);
+                    //string result = Get_sql_query(cmd);
                     //SimpleLoger.Instance.Info(result);
 
                     SqlDataAdapter dp = new SqlDataAdapter(cmd);

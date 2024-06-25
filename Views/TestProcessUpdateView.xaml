@@ -83,79 +83,105 @@
                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                     TextInput="comModelType_TextInput"
-                    TextSearch.TextPath="Label">
+                    TextSearch.TextPath="DisplayValue">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <prism:InvokeCommandAction Command="{Binding HandleSelect}" CommandParameter="{Binding SelectedValue, ElementName=comModelType}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ComboBox>
-                <TextBox
-                    x:Name="txtProdType"
+                <StackPanel
                     Grid.Row="0"
                     Grid.Column="1"
-                    Width="150"
-                    Margin="10"
-                    HorizontalContentAlignment="Left"
-                    materialDesign:HintAssist.HelperText="产品型号"
-                    materialDesign:HintAssist.Hint="产品型号"
-                    BorderThickness="1"
-                    IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding TestProcessInfo.ProdType}" />
-                <TextBox
-                    x:Name="txtProdLot"
+                    Margin="0,10"
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Horizontal">
+
+
+                    <TextBox
+                        x:Name="txtProdType"
+                        Width="250"
+                        Margin="10"
+                        HorizontalContentAlignment="Left"
+                        materialDesign:HintAssist.HelperText="产品型号"
+                        materialDesign:HintAssist.Hint="产品型号"
+                        BorderThickness="1"
+                        IsReadOnly="True"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        Text="{Binding TestProcessInfo.ProdType}" />
+                </StackPanel>
+                <StackPanel
                     Grid.Row="0"
                     Grid.Column="2"
-                    MinWidth="150"
-                    MaxWidth="5000"
-                    Margin="10"
-                    HorizontalContentAlignment="Left"
-                    materialDesign:HintAssist.HelperText="生产批次"
-                    materialDesign:HintAssist.Hint="生产批次"
-                    BorderThickness="1"
-                    IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding TestProcessInfo.ProdLot}" />
-
-                <TextBox
-                    x:Name="txtProdTestSta"
+                    Margin="0,10"
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Horizontal">
+                    <TextBox
+                        x:Name="txtProdLot"
+                        MinWidth="150"
+                        MaxWidth="5000"
+                        Margin="10"
+                        HorizontalContentAlignment="Left"
+                        materialDesign:HintAssist.HelperText="生产批次"
+                        materialDesign:HintAssist.Hint="生产批次"
+                        BorderThickness="1"
+                        IsReadOnly="True"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        Text="{Binding TestProcessInfo.ProdLot}" />
+                </StackPanel>
+                <StackPanel
                     Grid.Row="0"
                     Grid.Column="3"
-                    MinWidth="150"
-                    Margin="10"
-                    HorizontalContentAlignment="Left"
-                    materialDesign:HintAssist.HelperText="试验依据"
-                    materialDesign:HintAssist.Hint="试验依据"
-                    BorderThickness="1"
-                    IsReadOnly="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding TestProcessInfo.Prodstandard}" />
+                    Margin="0,10"
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Horizontal">
+                    <TextBox
+                        x:Name="txtProdTestSta"
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        MinWidth="150"
+                        Margin="10"
+                        HorizontalContentAlignment="Left"
+                        materialDesign:HintAssist.HelperText="试验依据"
+                        materialDesign:HintAssist.Hint="试验依据"
+                        BorderThickness="1"
+                        IsReadOnly="True"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        Text="{Binding TestProcessInfo.Prodstandard}" />
+                </StackPanel>
+
 
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25*" />
-                    <ColumnDefinition Width="50*" />
                     <ColumnDefinition Width="25*" />
-                    <ColumnDefinition Width="15*" />
+                    <ColumnDefinition Width="25*" />
+                    <ColumnDefinition Width="25*" />
                 </Grid.ColumnDefinitions>
 
                 <TextBox
                     Margin="10"
                     HorizontalContentAlignment="Left"
-                    materialDesign:HintAssist.HelperText="检验批次"
-                    materialDesign:HintAssist.Hint="检验批次"
+                    materialDesign:HintAssist.HelperText="试验流水号"
+                    materialDesign:HintAssist.Hint="试验流水号"
                     BorderThickness="1"
                     IsReadOnly="True"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    Text="{Binding TestProcessInfo.TestLot}" />
+                    Text="{Binding TestProcessInfo.TestNo}" />
                 <StackPanel
                     Grid.Column="1"
                     Margin="0,10"
-                    DockPanel.Dock="Top">
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Vertical">
+                    <TextBlock Text="试验类别" />
                     <TextBlock
                         Margin="0,5,0,5"
+                        HorizontalAlignment="Center"
                         materialDesign:HintAssist.HelperText="试验类别"
                         materialDesign:HintAssist.Hint="试验类别">
                         <ItemsControl x:Name="cbt" ItemsSource="{Binding TestTypes}">

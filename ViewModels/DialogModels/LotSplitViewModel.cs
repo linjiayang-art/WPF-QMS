@@ -204,7 +204,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 
                     Id = Guid.NewGuid().ToString(),
                     
-                    ParentId = Processes.Id,
+                    ParentId = Processes.ProdId,
                     ProdName = Processes.ProdName,
                     ProdType = Processes.ProdType,
                     ProdLot = childNumber,
@@ -213,6 +213,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                     Qty = qty,
                     ProdNo=parentProd.ProdNo,
                     TestNo=parentProd.TestNo,
+                    TestType=parentProd.TestType,
 
                 };
 

@@ -115,6 +115,13 @@
                     CommandParameter="{Binding SelectedItem, ElementName=comProductName}"
                     Content="导出数据"
                     FontSize="15" />
+                <Button
+                    Width="150"
+                    Margin="10,10"
+                    Command="{Binding ReportCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=comProductName}"
+                    Content="生成试验报告"
+                    FontSize="15" />
             </DockPanel>
             <!--<ComboBox
                 x:Name="comProductName"

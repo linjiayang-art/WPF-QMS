@@ -56,8 +56,15 @@
                 materialDesign:HintAssist.HelperText="产品型号"
                 materialDesign:HintAssist.Hint="产品型号"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                Text="{Binding ProdType}"
-                TextWrapping="Wrap" />
+                Text="{Binding ProdType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap">
+                <TextBox.InputBindings>
+                    <KeyBinding
+                        Key="Enter"
+                        Command="{Binding ExecuetCommand}"
+                        CommandParameter="查询" />
+                </TextBox.InputBindings>
+            </TextBox>
             <TextBox
                 Grid.Column="1"
                 MinWidth="155"
@@ -66,17 +73,32 @@
                 materialDesign:HintAssist.HelperText="生产批次"
                 materialDesign:HintAssist.Hint="生产批次"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                Text="{Binding Lot}"
-                TextWrapping="Wrap" />
+                Text="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap">
+                <TextBox.InputBindings>
+                    <KeyBinding
+                        Key="Enter"
+                        Command="{Binding ExecuetCommand}"
+                        CommandParameter="查询" />
+                </TextBox.InputBindings>
+            </TextBox>
             <TextBox
                 Grid.Column="2"
                 MinWidth="155"
                 Margin="5"
                 VerticalAlignment="Top"
-                materialDesign:HintAssist.HelperText="试验类别"
-                materialDesign:HintAssist.Hint="试验类别"
+                materialDesign:HintAssist.HelperText="生产流水号"
+                materialDesign:HintAssist.Hint="生产流水号"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                TextWrapping="Wrap" />
+                Text="{Binding ProdNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap">
+                <TextBox.InputBindings>
+                    <KeyBinding
+                        Key="Enter"
+                        Command="{Binding ExecuetCommand}"
+                        CommandParameter="查询" />
+                </TextBox.InputBindings>
+            </TextBox>
             <StackPanel
                 Grid.Column="3"
                 HorizontalAlignment="Center"
@@ -131,8 +153,8 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn
                                         Width="120"
-                                        Binding="{Binding ProdName}"
-                                        Header="产品名称" />
+                                        Binding="{Binding ProdNo}"
+                                        Header="生产流水号" />
                                     <DataGridTextColumn
                                         Width="120"
                                         Binding="{Binding ProdType}"
@@ -148,13 +170,17 @@
                                     <DataGridTextColumn
                                         Width="120"
                                         Binding="{Binding OriginQty}"
-                                        Header="原始总数量" />
-                                    <DataGridTextColumn Binding="{Binding Qty}" Header="总数量" />
-                                    <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼投入数量" />
-                                    <DataGridTextColumn Binding="{Binding XlineCount}" Header="X光投入数量" />
-                                    <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
+                                        Header="分单数量" />
+                                    <!--<DataGridTextColumn Binding="{Binding Qty}" Header="/" />-->
+                                    <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼中数量" />
+                                    <DataGridTextColumn Binding="{Binding BeforAgingTemperatureCount}" Header="老炼后电测" />
+
+                                    <DataGridTextColumn Binding="{Binding XlineCount}" Header="待X光数量" />
+                                    <DataGridTextColumn Binding="{Binding AfterAgingTemperatureCount}" Header="声扫后电测后" />
+                                    <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="待超声检测数量" />
                                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
-                                    <DataGridTextColumn Binding="{Binding ScrapQty}" Header="报废入库数量" />
+                                    <DataGridTextColumn Binding="{Binding ScrapQty}" Header="不合格品数量" />
+                                    <DataGridTextColumn Binding="{Binding ProcessStatus}" Header="当前状态" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Expander>
@@ -167,8 +193,8 @@
 
                     <DataGridTextColumn
                         Width="120"
-                        Binding="{Binding ProdName}"
-                        Header="产品名称" />
+                        Binding="{Binding ProdNo}"
+                        Header="生产流水号" />
                     <DataGridTextColumn
                         Width="120"
                         Binding="{Binding ProdType}"
@@ -184,14 +210,16 @@
                     <DataGridTextColumn
                         Width="120"
                         Binding="{Binding OriginQty}"
-                        Header="原始总数量" />
-                    <DataGridTextColumn Binding="{Binding Qty}" Header="总数量" />
-                    <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼投入数量" />
-                    <DataGridTextColumn Binding="{Binding XlineCount}" Header="X光投入数量" />
-                    <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="超声检测投入数量" />
+                        Header="领料数量" />
+                    <DataGridTextColumn Binding="{Binding Qty}" Header="待老炼数量" />
+                    <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼中数量" />
+                    <DataGridTextColumn Binding="{Binding BeforAgingTemperatureCount}" Header="老炼后电测" />
+                    <DataGridTextColumn Binding="{Binding XlineCount}" Header="待X光数量" />
+                    <DataGridTextColumn Binding="{Binding AfterAgingTemperatureCount}" Header="声扫后电测" />
+                    <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="待超声检测数量" />
                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
-                    <DataGridTextColumn Binding="{Binding ScrapQty}" Header="报废入库数量" />
-
+                    <DataGridTextColumn Binding="{Binding ScrapQty}" Header="不合格品数量" />
+                    <DataGridTextColumn Binding="{Binding ProcessStatus}" Header="当前状态" />
 
                     <DataGridTemplateColumn Width="110" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>

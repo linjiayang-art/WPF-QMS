@@ -17,6 +17,8 @@ using ClosedXML;
 using System.Data.SqlClient;
 using System.Data;
 using System.Dynamic;
+using DocumentFormat.OpenXml.Spreadsheet;
+using SicoreQMS.Common.Models.Basic;
 
 
 namespace SicoreQMS.Service
@@ -24,80 +26,31 @@ namespace SicoreQMS.Service
     public class IndexService : BindableBase
     {
 
-        //public static ObservableCollection<TestCountReport> OldGetTestCountReport()
-        //{
-        //    var testCountReportList = new ObservableCollection<TestCountReport>();
-
-        //    using (var context= new SicoreQMSEntities1())
-        //    {
 
 
-        //       var testProecess= context.TestProcess.Where(p => p.Isdeletd == false).ToList();
+        public static List<TestCountReport> GetTestReportData(List<object> list)
+        {
 
-        //        foreach (var testProeceeItem in testProecess)
-        //        {
-        //            //            public string NowProcess { get; set; }
-
-        //            //public string Completeness { get; set; }
-
-        //            var completeness=context.TestProcessItem .Where(p => p.TestProcessId == testProeceeItem.Id && p.ExperimentStatus==1 ).OrderBy(P=>P.ExperimentItemNo).FirstOrDefault();
+         
 
 
-        //            var groupedData = context.TestProcessItem
-        //                .GroupBy(item => item.TestProcessId)
-        //                .Select(group => new
-        //                {
-        //                    TestProcessId = group.Key,
-        //                    TotalCount = group.Count(),
-        //                    Status1Count = group.Count(item => item.ExperimentStatus == 1),
-        //                    Status1Percentage = (double)group.Count(item => item.ExperimentStatus == 2) / group.Count()
-        //                }).Where(p=>p.TestProcessId== testProeceeItem.Id)
-        //                .SingleOrDefault();
-
-        //            int Completeness = (int)(groupedData.Status1Percentage * 100);
-
-        //            var testCountReport = new TestCountReport();
-        //            testCountReport.ProdName = testProeceeItem.ProdName;
-        //            testCountReport.ProdType = testProeceeItem.ProdType;
-        //            testCountReport.ProdLot = testProeceeItem.ProdLot;
-        //            testCountReport.TestTpye = testProeceeItem.TestType;
-        //            if (completeness == null)
-        //            {
-        //                testCountReport.NowProcess = "未开始";
-
-        //            }
-        //            else
-        //            {
-        //                testCountReport.NowProcess = completeness.ExperimentName;
-        //            }
-
-
-
-        //            testCountReport.Completeness = Completeness;
-
-        //            testCountReportList.Add(testCountReport);
-
-        //        }
-
-
-        //    }
-
-        //    return testCountReportList;
-        //}
-
+            var result = new List<TestCountReport>();
+            return result;
+        }
 
         public static ObservableCollection<TestCountReport> GetTestCountReport()
         {
             var results = new ObservableCollection<TestCountReport>();
-            var cardList = new List<string> { "老炼", "超声扫描", "X光检测", "入库（筛选品）" };
+            var cardList = new List<string> { "老炼", "超声扫描", "X光检测", "入库（筛选品）","老炼后常温电测","电性能测试"};
 
             using (var context = new SicoreQMSEntities1())
             {
-                var query = from pP in context.Prod_Process
+                var query =( from pP in context.Prod_Process
                             join pPI in context.Prod_ProcessItem on pP.Id equals pPI.ProdProcessId
                             join prod in context.ProdInfo on pP.ProdId equals prod.Id
-                            where cardList.Any(card => pPI.ProdProcessCard == (card) && pP.IsDeleted == false)
+                            where cardList.Any(card => pPI.ProdProcessCard == (card) && pP.IsDeleted == false && prod.TestType.Contains("筛选"))
                             orderby pP.ProdLot, pPI.ModelSort
+                  
                             select new
                             {
                                 pP.Id,
@@ -111,51 +64,36 @@ namespace SicoreQMS.Service
                                 pPI.OutQty,
                                 pP.Qty,
                                 pP.OriginQty,
-                                pPI.IsComplete
+                                pPI.IsComplete,
+                                prod.ProdNo,
+                                pP.ProdStatus,
+                                pPI.ModelSort
 
-                            };
-                var resultList = query.ToList();
-                var listCount = resultList.Count() / 4;
-                for (int i = 0; i < listCount; i++)
+                            }).Take(100);
+
+                var oldresultList = query.ToList();
+                //重排序   4个一组
+                var resultList = oldresultList
+                .OrderBy(item => item.ProdLot)
+                .ThenBy(item => item.ModelSort)
+                .ToList();
+
+                var singerList = resultList.Where(p => p.ProdProcessCard == "老炼").OrderBy(p => p.ProdLot).ToList();
+                foreach (var singerItem in singerList)
                 {
-                    var newI = i * 4;
                     var testCountReport = new TestCountReport();
-
-                    testCountReport.ProdName = resultList[newI].ProdName;
-
-                    testCountReport.XlineCount = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString()) ? 0 : (int)resultList[newI + 1].InputQty;
-                    //testCountReport.AgingCountOut = string.IsNullOrEmpty(resultList[newI].OutQty.ToString()) ? 0 : (int)resultList[newI].OutQty;
-                    testCountReport.UltrasonicTesting = string.IsNullOrEmpty(resultList[newI + 2].InputQty.ToString()) ? 0 : (int)resultList[newI + 2].InputQty;
-                    //testCountReport.UltrasonicTestingOut = string.IsNullOrEmpty(resultList[newI + 1].OutQty.ToString()) ? 0 : (int)resultList[newI + 1].OutQty;
-                    testCountReport.StockIn = string.IsNullOrEmpty(resultList[newI + 3].InputQty.ToString()) ? 0 : (int)resultList[newI + 3].InputQty;
-
-
-                    testCountReport.ProdType = resultList[newI].ProdType;
-                    testCountReport.ProdLot = resultList[newI].ProdLot;
-                    testCountReport.TestType = resultList[newI].TestType;
-                    testCountReport.Qty = (int)resultList[newI].Qty;
-                    testCountReport.OriginQty = (int)resultList[newI].OriginQty;
-                    testCountReport.AgingCount = (int)resultList[newI].InputQty;
-
-
-                    if (resultList[newI].IsComplete == true)
-                    {
-                        testCountReport.AgingCount = 0;
-
-                    }
-
-                    if (resultList[newI + 1].IsComplete == true)
-                    {
-                        testCountReport.XlineCount = 0;
-
-                    }
-                    if (resultList[newI + 2].IsComplete == true)
-                    {
-                        testCountReport.UltrasonicTesting = 0;
-
-                    }
-
-                    var id = resultList[newI].Id;
+                    //获取该产品的所有工序
+                    var singerResult = resultList.Where(p => p.Id == singerItem.Id).ToList();
+                    testCountReport.ProdName = singerItem.ProdName;
+                    testCountReport.ProdType = singerItem.ProdType;
+                    testCountReport.ProdLot = singerItem.ProdLot;
+                    testCountReport.TestType = singerItem.TestType;
+                    testCountReport.Qty = (int)singerItem.Qty;
+                    testCountReport.OriginQty = (int)singerItem.OriginQty;
+                    testCountReport.AgingCount = (int)singerItem.InputQty;
+                    testCountReport.ProdNo = singerItem.ProdNo;
+                    testCountReport.ProcessStatus = singerItem.ProdStatus.ToString();
+                    var id = singerItem.Id;
                     string sqlQuery = $"SELECT SUM(InputQty)-SUM( OutQty)  FROM Prod_ProcessItem  WHERE ProdProcessId='{id}' AND IsComplete=1";
 
                     var scrapQty = context.Database.SqlQuery<int?>(sqlQuery, id).FirstOrDefault();
@@ -169,94 +107,133 @@ namespace SicoreQMS.Service
                         testCountReport.ScrapQty = (int)scrapQty;
                     }
 
+                    //根据cardList 加工其它项
+                    foreach (var singerChilditem in cardList)
+                    {
+                        var itemResult = singerResult.Where(p => p.ProdProcessCard == singerChilditem).FirstOrDefault();
+                        if (itemResult != null)
+                        {
+                            switch (singerChilditem)
+                            {
+                                case "老炼":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.AgingCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
+                                    break;
+                                case "X光检测":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.XlineCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
 
+                                    break;
+                                case "超声扫描":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.UltrasonicTesting = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
+                                    break;
+                                case "入库（筛选品）":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.StockIn = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
+                                    break;
+                                case "老炼后常温电测":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.BeforAgingTemperatureCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
+                                    break;
+                                case "电性能测试":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.AfterAgingTemperatureCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
                     results.Add(testCountReport);
 
                 }
-            }
-            var newResults = testCountFactory(results);
+                var newResults = testCountFactory(results);
 
-            return newResults;
+                return newResults;
+
+
+            }
         }
-        public static ObservableCollection<TestCountReport> GetTestCountReport(string prodType, string lot, string testType = null)
+
+
+        public static ObservableCollection<TestCountReport> GetTestCountReport(string prodType, string lot, string prodNo = null)
         {
             var results = new ObservableCollection<TestCountReport>();
-            var cardList = new List<string> { "老炼", "超声扫描", "X光检测", "入库（筛选品）" };
+            var cardList = new List<string> { "老炼", "超声扫描", "X光检测", "入库（筛选品）", "老炼后常温电测", "电性能测试" };
 
             using (var context = new SicoreQMSEntities1())
             {
-                var query = from pP in context.Prod_Process
-                            join pPI in context.Prod_ProcessItem on pP.Id equals pPI.ProdProcessId
-                            join prod in context.ProdInfo on pP.ProdId equals prod.Id
-                            where cardList.Any(card => pPI.ProdProcessCard == card)
-              && (!String.IsNullOrEmpty(pP.ProdType) && pP.ProdType.Contains(prodType))
-              && (!String.IsNullOrEmpty(pP.ProdLot) && pP.ProdLot.Contains(lot)
-              && pP.IsDeleted == false)
-                            orderby pP.ProdLot, pPI.ModelSort
-                            select new
-                            {
-                                pP.Id,
-                                pP.ProdName,
-                                pP.ProdType,
-                                pP.ProdLot,
-                                pPI.ProcessType,
-                                prod.TestType,
-                                pPI.ProdProcessCard,
-                                pPI.InputQty,
-                                pPI.OutQty,
-                                pP.Qty,
-                                pP.OriginQty,
-                                pPI.IsComplete
-                            };
-
-
+                var query = (from pP in context.Prod_Process
+                             join pPI in context.Prod_ProcessItem on pP.Id equals pPI.ProdProcessId
+                             join prod in context.ProdInfo on pP.ProdId equals prod.Id
+                             where cardList.Any(card => pPI.ProdProcessCard == card)
+               && (!String.IsNullOrEmpty(pP.ProdType) && pP.ProdType.Contains(prodType))
+                   && (!String.IsNullOrEmpty(prod.ProdNo) && prod.ProdNo.Contains(prodNo))
+               && (!String.IsNullOrEmpty(pP.ProdLot) && pP.ProdLot.Contains(lot)
+               && prod.TestType.Contains("筛选")
+               && pP.IsDeleted == false)
+                             orderby prod.ProdNo, pPI.ModelSort, pPI.Lot
+                             select new
+                             {
+                                 pP.Id,
+                                 pP.ProdName,
+                                 pP.ProdType,
+                                 pP.ProdLot,
+                                 pPI.ProcessType,
+                                 prod.TestType,
+                                 pPI.ProdProcessCard,
+                                 pPI.InputQty,
+                                 pPI.OutQty,
+                                 pP.Qty,
+                                 pP.OriginQty,
+                                 pPI.IsComplete,
+                                 prod.ProdNo,
+                                 pP.ProdStatus,
+                                 pPI.ModelSort
+                             }).Take(100);
                 var resultList = query.ToList();
-
-                var listCount = resultList.Count() / 4;
-                for (int i = 0; i < listCount; i++)
+                var singerList = resultList.Where(p => p.ProdProcessCard == "老炼").OrderBy(p => p.ProdLot).ToList();
+                
+                foreach (var singerItem in singerList)
                 {
-                    var newI = i * 4;
                     var testCountReport = new TestCountReport();
-                    testCountReport.ProdName = resultList[newI].ProdName;
-                    testCountReport.Qty = (int)resultList[newI].Qty;
-                    testCountReport.OriginQty = (int)resultList[newI].OriginQty;
-                    testCountReport.ProdType = resultList[newI].ProdType;
-                    testCountReport.ProdLot = resultList[newI].ProdLot;
-
-
-                    testCountReport.XlineCount = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString()) ? 0 : (int)resultList[newI + 1].InputQty;
-                    //testCountReport.AgingCountOut = string.IsNullOrEmpty(resultList[newI].OutQty.ToString()) ? 0 : (int)resultList[newI].OutQty;
-                    testCountReport.UltrasonicTesting = string.IsNullOrEmpty(resultList[newI + 2].InputQty.ToString()) ? 0 : (int)resultList[newI + 2].InputQty;
-                    //testCountReport.UltrasonicTestingOut = string.IsNullOrEmpty(resultList[newI + 1].OutQty.ToString()) ? 0 : (int)resultList[newI + 1].OutQty;
-                    testCountReport.StockIn = string.IsNullOrEmpty(resultList[newI + 3].InputQty.ToString()) ? 0 : (int)resultList[newI + 3].InputQty;
-
-
-                    testCountReport.TestType = resultList[newI].TestType;
-                    testCountReport.AgingCount = (int)resultList[newI].InputQty;
-                    ////testCountReport.AgingCountOut = string.IsNullOrEmpty(resultList[newI].OutQty.ToString()) ? 0 : (int)resultList[newI].OutQty;
-                    //testCountReport.UltrasonicTesting = string.IsNullOrEmpty(resultList[newI + 2].InputQty.ToString()) ? 0 : (int)resultList[newI + 2].InputQty;
-                    //testCountReport.XlineCount = string.IsNullOrEmpty(resultList[newI + 1].InputQty.ToString()) ? 0 : (int)resultList[newI + 1].InputQty;
-                    ////testCountReport.UltrasonicTestingOut = string.IsNullOrEmpty(resultList[newI + 1].OutQty.ToString()) ? 0 : (int)resultList[newI + 1].OutQty;
-                    //testCountReport.StockIn = string.IsNullOrEmpty(resultList[newI + 3].InputQty.ToString()) ? 0 : (int)resultList[newI + 3].InputQty;
-
-                    if (resultList[newI].IsComplete == true)
-                    {
-                        testCountReport.AgingCount = 0;
-
-                    }
-
-                    if (resultList[newI + 1].IsComplete == true)
-                    {
-                        testCountReport.XlineCount = 0;
-
-                    }
-                    if (resultList[newI + 2].IsComplete == true)
-                    {
-                        testCountReport.UltrasonicTesting = 0;
-
-                    }
-
-                    var id = resultList[newI].Id;
+                    //获取该产品的所有工序
+                    var singerResult = resultList.Where(p => p.Id == singerItem.Id).ToList();
+                    testCountReport.ProdName = singerItem.ProdName;
+                    testCountReport.ProdType = singerItem.ProdType;
+                    testCountReport.ProdLot = singerItem.ProdLot;
+                    testCountReport.TestType = singerItem.TestType;
+                    testCountReport.Qty = (int)singerItem.Qty;
+                    testCountReport.OriginQty = (int)singerItem.OriginQty;
+                    testCountReport.AgingCount = (int)singerItem.InputQty;
+                    testCountReport.ProdNo = singerItem.ProdNo;
+                    testCountReport.ProcessStatus = singerItem.ProdStatus.ToString();
+                    var id = singerItem.Id;
                     string sqlQuery = $"SELECT SUM(InputQty)-SUM( OutQty)  FROM Prod_ProcessItem  WHERE ProdProcessId='{id}' AND IsComplete=1";
 
                     var scrapQty = context.Database.SqlQuery<int?>(sqlQuery, id).FirstOrDefault();
@@ -270,15 +247,77 @@ namespace SicoreQMS.Service
                         testCountReport.ScrapQty = (int)scrapQty;
                     }
 
+                    //根据cardList 加工其它项
+                    foreach (var singerChilditem in cardList)
+                    {
+                        var itemResult = singerResult.Where(p => p.ProdProcessCard == singerChilditem).FirstOrDefault();
+                        if (itemResult != null)
+                        {
+                            switch (singerChilditem)
+                            {
+                                case "老炼":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.AgingCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
+                                    break;
+                                case "X光检测":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.XlineCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
 
+                                    break;
+                                case "超声扫描":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.UltrasonicTesting = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
+                                    break;
+                                case "入库（筛选品）":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.StockIn = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
+                                    break;
+                                case "老炼后常温电测":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.BeforAgingTemperatureCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
+                                    break;
+                                case "电性能测试":
+                                    if (itemResult.IsComplete == true)
+                                    {
+                                        testCountReport.AgingCount = 0;
+                                        break;
+                                    }
+                                    testCountReport.AfterAgingTemperatureCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
                     results.Add(testCountReport);
+
                 }
+                var newResults = testCountFactory(results);
+
+                return newResults;
+
+
             }
-            //return results;
-
-            var newResults = testCountFactory(results);
-
-            return newResults;
         }
 
 
@@ -331,7 +370,7 @@ namespace SicoreQMS.Service
                 (!String.IsNullOrEmpty(p.ProdType) && p.ProdType.Contains(prodType))
                 && (!String.IsNullOrEmpty(p.ProdLot) && p.ProdLot.Contains(lot))
                 &&(p.Isdeletd==false)
-                                                        ).ToList();
+                                                        ). OrderBy(p=>p.ProdId).Take(20). ToList();
                 if (testProcess.Count == 0)
                 {
                     return reslut;
@@ -415,17 +454,22 @@ namespace SicoreQMS.Service
         public static ObservableCollection<TestCountReport> testCountFactory(ObservableCollection<TestCountReport> testCountReports)
         {
             var resluts = new ObservableCollection<TestCountReport>();
-            var testProdTypeCount = new List<string>();
+            var testProdTypeCount = new List<ProdStructureModel>();
             var testLotCount = new List<string>();
+
             foreach (var item in testCountReports)
             {
+                //if (testProdTypeCount.Contains(item.ProdType) &&
+                //    testLotCount.Any(i => item.ProdLot.ToLower().Contains(i.ToLower()))
+                //                        )
+
 
                 //存在就更新子批
-                if (testProdTypeCount.Contains(item.ProdType) &&
-                    testLotCount.Any(i => item.ProdLot.ToLower().Contains(i.ToLower())))
+                if (testProdTypeCount.Any(i=>i.ProdType== item.ProdType&& i.ProdNo==item.ProdNo))
+              
                 {
                     //找到父级
-                    var itemToUpdate = resluts.FirstOrDefault(newItem => newItem.ProdType == item.ProdType);
+                    var itemToUpdate = resluts.FirstOrDefault(newItem => newItem.ProdType == item.ProdType&&newItem.ProdNo==item.ProdNo);
                     if (itemToUpdate != null)
                     {
                         //更新下后续数量
@@ -436,14 +480,17 @@ namespace SicoreQMS.Service
                         itemToUpdate.ScrapQty += item.ScrapQty;
                         //itemToUpdate.UltrasonicTestingOut += item.UltrasonicTestingOut;
                         itemToUpdate.StockIn += item.StockIn;
-
+                        //新增的电测
+                        itemToUpdate.BeforAgingTemperatureCount += item.BeforAgingTemperatureCount;
+                        itemToUpdate.AfterAgingTemperatureCount += item.AfterAgingTemperatureCount;
                         itemToUpdate.ChildItems.Add(item);
                     }
                 }
                 else
                 {
                     resluts.Add(item);
-                    testProdTypeCount.Add(item.ProdType);
+                    var prodStructureModel = new ProdStructureModel(item.ProdType, item.ProdNo);
+                    testProdTypeCount.Add(prodStructureModel);
                     testLotCount.Add(item.ProdLot);
                 }
             }

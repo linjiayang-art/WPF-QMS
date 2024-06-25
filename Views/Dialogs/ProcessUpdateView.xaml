@@ -270,7 +270,7 @@
                             Header="可用量"
                             IsReadOnly="True" />
                         <DataGridTextColumn
-                            Binding="{Binding useQty}"
+                            Binding="{Binding UseQty}"
                             Header="分配量"
                             IsReadOnly="False" />
                     </DataGrid.Columns>

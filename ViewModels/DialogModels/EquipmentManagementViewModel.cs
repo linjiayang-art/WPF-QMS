@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace SicoreQMS.ViewModels.DialogModels
@@ -27,7 +28,7 @@ namespace SicoreQMS.ViewModels.DialogModels
         private string eqRemark;
         private bool showCapaCity;
         private int capaCity;
-       
+
 
 
         public DelegateCommand<SelectBasic> HandleSelectModel { get; private set; }
@@ -100,6 +101,26 @@ namespace SicoreQMS.ViewModels.DialogModels
             set { eqRemark = value; RaisePropertyChanged(); }
         }
 
+        private bool _havingEdit;
+
+        public bool HavingEdit
+        {
+            get => _havingEdit;
+            set => SetProperty(ref _havingEdit, value);
+
+        }
+
+        private bool _havingAdd;
+
+        public bool HavingAdd
+        {
+            get => _havingAdd;
+            set => SetProperty(ref _havingAdd, value);
+
+        }
+
+        private string _equipmentId { get; set; }
+
 
 
 
@@ -110,6 +131,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 
 
         public string Title { get; set; } = "设备管理";
+
 
 
         #endregion
@@ -136,10 +158,10 @@ namespace SicoreQMS.ViewModels.DialogModels
             {
                 return;
             }
-            ChoseEquipment = basic.Value ;
+            ChoseEquipment = basic.Value;
             if (basic.Value == "1")
             {
-              
+
                 ShowCapaCity = true;
             }
             else
@@ -157,10 +179,32 @@ namespace SicoreQMS.ViewModels.DialogModels
                 case "Add":
                     AddNewEquipment();
                     break;
+                case "Edit":
+                    EditEquipment();
+                    break;
                 case "Cancel":
                     RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(ButtonResult.Cancel));
                     break;
             }
+        }
+
+        private void EditEquipment()
+        {
+            var result = Service.EquipmentService.EditEquipment(equipmentid: _equipmentId, equipmentNo: EquipmentNo, equipmentName: EquipmentName, remark: Remark,equipmentModel:EquipmentModel);
+            if (result.ResultStatus)
+            {
+                this.eventAggregator.SendMessage(result.ResultMessage.ToString());
+                ButtonResult btnResult = ButtonResult.None;
+                RaiseRequestClose(new Prism.Services.Dialogs.DialogResult(btnResult));
+
+            }
+            else
+            {
+                this.eventAggregator.SendMessage(result.ResultMessage.ToString());
+                return;
+
+            }
+
         }
 
         public virtual void RaiseRequestClose(IDialogResult dialogResult)
@@ -196,7 +240,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                     EquipmentModel = EquipmentModel,
                     EquipmentType = choseEquipment,
                     Capacity = CapaCity,
-                    AvailableCapacity=capaCity,
+                    AvailableCapacity = capaCity,
                     Remark = Remark
                 };
                 if (EquipmentName.ToString().Contains("老炼板"))
@@ -237,6 +281,33 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
+            if (parameters.ContainsKey("equipmentNo"))
+            {
+                var eqNo = parameters.GetValue<string>("equipmentNo");
+                var eq = Service.EquipmentService.GetSingelEquipment(eqNo);
+                _equipmentId = eq.EquipmentID;
+                EquipmentNo = eq.EquipmentNo;
+                EquipmentName = eq.EquipmentName;
+                EquipmentModel = eq.EquipmentModel;
+                Remark = eq.Remark;
+                CapaCity = (int)eq.Capacity;
+                ChoseEquipment = eq.EquipmentType;
+                if (eq.EquipmentType == "1")
+                {
+                    ShowCapaCity = true;
+                }
+                else
+                {
+                    ShowCapaCity = false;
+                }
+                HavingAdd = false;
+                HavingEdit = true;
+            }
+            else
+            {
+                HavingAdd = true;
+                HavingEdit = false;
+            }
 
         }
     }

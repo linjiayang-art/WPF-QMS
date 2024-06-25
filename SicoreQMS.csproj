@@ -29,8 +29,8 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>\\172.16.2.2\共享文件\IT部\软件\QMS\</InstallUrl>
-    <ApplicationRevision>23</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -284,6 +284,7 @@
     <Compile Include="Common\Models\Basic\MenuBar.cs" />
     <Compile Include="Common\Models\Basic\NavigationItem.cs" />
     <Compile Include="Common\Models\Basic\NavigationViewModel.cs" />
+    <Compile Include="Common\Models\Basic\ProdStructureModel.cs" />
     <Compile Include="Common\Models\Basic\ResultInfo.cs" />
     <Compile Include="Common\Models\Basic\SelectBasic.cs" />
     <Compile Include="Common\Models\Basic\SPEquipment.cs" />
@@ -386,6 +387,14 @@
     <Compile Include="Service\ProdBasicService.cs" />
     <Compile Include="Service\ProdProcessService.cs" />
     <Compile Include="Service\TestProcessService.cs" />
+    <Compile Include="SicoreQMSDataSet.cs">
+      <DependentUpon>SicoreQMSDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SicoreQMSDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SicoreQMSDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewModels\DialogModels\EquipmentManagementViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\LoginViewModel.cs" />
@@ -574,7 +583,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Prints\InternalVisualInspection.rdlc" />
     <EmbeddedResource Include="Prints\ProdProcess.rdlc" />
+    <EmbeddedResource Include="Prints\ProdProcessMain.rdlc" />
+    <EmbeddedResource Include="Prints\ScreeningReport.rdlc" />
     <EmbeddedResource Include="Prints\TestProcess.rdlc" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -594,6 +606,17 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SicoreQMSDataSet.xsc">
+      <DependentUpon>SicoreQMSDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="SicoreQMSDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SicoreQMSDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SicoreQMSDataSet.xss">
+      <DependentUpon>SicoreQMSDataSet.xsd</DependentUpon>
     </None>
     <None Include="SicoreQMS_TemporaryKey.pfx" />
   </ItemGroup>

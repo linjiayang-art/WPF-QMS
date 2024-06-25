@@ -1,4 +1,5 @@
-﻿using SicoreQMS.Common.Models.Basic;
+﻿using Prism.Mvvm;
+using SicoreQMS.Common.Models.Basic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SicoreQMS.Common.Models.Operation
 {
-    public partial class Prod_Process
+    public partial class Prod_Process:BindableBase
     {
         public Prod_Process()
 
@@ -26,6 +27,8 @@ namespace SicoreQMS.Common.Models.Operation
             string label = $" {ProdType} :{ProdLot} : {Qty}";
             return new SelectBasic { Label = label, Value = Id,DisplayValue= ProdType };
         }
+
+
 
 
     }

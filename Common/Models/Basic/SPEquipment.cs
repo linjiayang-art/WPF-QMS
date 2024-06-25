@@ -33,7 +33,7 @@ namespace SicoreQMS.Common.Models.Basic
             get { return useQty; } 
             set
             {
-                UseQty = value;
+                useQty = value;
                 RaisePropertyChanged();
             }
         }

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -18,6 +19,57 @@ namespace SicoreQMS.Service
 {
     public class EquipmentService
     {
+        public static Equipment GetSingelEquipment(string equipmentNo)
+        {
+            using(var context=new SicoreQMSEntities1())
+            {
+                var eq=context.Equipment.SingleOrDefault(e => e.EquipmentNo == equipmentNo);
+                if (eq == null)
+                {
+                    return new Equipment();
+                }
+                return eq;
+            }
+            
+        }
+
+        public static ResultInfo EditEquipment(string equipmentid,string equipmentNo=null, string equipmentName=null,string remark=null,string equipmentModel=null)
+        {
+            if (string.IsNullOrEmpty(equipmentid))
+            {
+                return new ResultInfo { ResultStatus = false, ResultMessage = "设备ID不能为空" };
+            }
+            if (string.IsNullOrEmpty(equipmentNo))
+            {
+                return new ResultInfo { ResultStatus = false, ResultMessage = "设备编号不能为空" };
+            }
+            if (string.IsNullOrEmpty(equipmentName))
+            {
+                return new ResultInfo { ResultStatus = false, ResultMessage = "设备名称不能为空" };
+            }
+           if (string.IsNullOrEmpty(equipmentModel))
+            {
+                return new ResultInfo { ResultStatus = false, ResultMessage = "设备型号不能为空" };
+            }
+
+            using (var context=new SicoreQMSEntities1())
+            {
+                var eq = context.Equipment.SingleOrDefault(e => e.EquipmentID == equipmentid);
+                if (eq == null)
+                {
+                    return new ResultInfo { ResultStatus = false, ResultMessage = "设备不存在" };
+                }
+                eq.EquipmentNo = equipmentNo;
+                eq.EquipmentName = equipmentName;
+                eq.Remark = remark;
+                eq.EquipmentModel=equipmentModel;
+                context.SaveChanges();
+                return new ResultInfo { ResultStatus = true, ResultMessage = "设备信息更新成功" };
+
+            }
+
+        }
+
 
 
         public static ObservableCollection<string> GetEquipmentList()

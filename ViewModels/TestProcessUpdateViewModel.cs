@@ -256,6 +256,10 @@ namespace SicoreQMS.ViewModels
 
                 TestProcessInfo = context.TestProcess.Find(Id);
                 TestTypes = TestProcessService.GetTestTypeList(TestProcessInfo.Id);
+                var prodId= TestProcessInfo.ProdId;
+                var prodInfo=context.ProdInfo.Find(prodId);
+                _testProcessInfo.TestNo = prodInfo.TestNo;
+
                 var result = context.TestProcessItem.Where(p => p.TestProcessId == Id&&p.IsDeleted==false).OrderBy(p=>p.ExperimentItemNo).ToList();
                 if (result.Count == 0)
                 {
