@@ -56,30 +56,30 @@ namespace SicoreQMS
         protected override void OnInitialized()
         {
 
-            var dialog = Container.Resolve<IDialogService>();
+            //var dialog = Container.Resolve<IDialogService>();
 
-            dialog.ShowDialog("LoginView", callback =>
-            {
-                if (callback.Result != ButtonResult.OK)
-                {
-                    Application.Current.Shutdown();
-                    return;
-                }
-
-                var service = App.Current.MainWindow.DataContext as IConfigureService;
-                if (service != null)
-                    service.Configure();
-                base.OnInitialized();
-
-
-            });
-
-            //var service = App.Current.MainWindow.DataContext as IConfigureService;
-            //if (service != null)
+            //dialog.ShowDialog("LoginView", callback =>
             //{
-            //    service.Configure();
-            //}
-            //base.OnInitialized();
+            //    if (callback.Result != ButtonResult.OK)
+            //    {
+            //        Application.Current.Shutdown();
+            //        return;
+            //    }
+
+            //    var service = App.Current.MainWindow.DataContext as IConfigureService;
+            //    if (service != null)
+            //        service.Configure();
+            //    base.OnInitialized();
+
+
+            //});
+
+            var service = App.Current.MainWindow.DataContext as IConfigureService;
+            if (service != null)
+            {
+                service.Configure();
+            }
+            base.OnInitialized();
         }
         protected override void RegisterTypes(IContainerRegistry servicees)
         {
@@ -104,6 +104,7 @@ namespace SicoreQMS
 
             //containerRegistry.Register<IDialogHostService, DialogHostService>();
 
+            servicees.RegisterForNavigation<EquipmentReportView, EquipmentReportViewModel>();
             servicees.RegisterForNavigation<TestModelMaintenanceView, TestModelMaintenanceViewModel>();
             servicees.RegisterForNavigation<EquipemntUsageView, EquipemntUsageViewModel>();
 

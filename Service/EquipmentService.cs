@@ -1,7 +1,10 @@
-﻿using SicoreQMS.Common.Models.Basic;
+﻿using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Spreadsheet;
+using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
 using SicoreQMS.Common.Models.Report;
 using SicoreQMS.Common.Server;
+using Syncfusion.XlsIO;
 using Syncfusion.XlsIO.Parser.Biff_Records;
 using System;
 using System.Collections.Generic;
@@ -422,6 +425,148 @@ namespace SicoreQMS.Service
 
             return list;
         }
+
+
+        public static ObservableCollection<EquipmentDateModel> GetEquipmentReport(DateTime startDate, DateTime endDate)
+        {
+            var results = new ObservableCollection<EquipmentDateModel>();
+            using (var context = new SicoreQMSEntities1())
+            {
+
+                var equipmentListQuery = from Equipment in context.Equipment
+                                         join EquipmentStatus in context.EquipmentStatus on Equipment.EquipmentID equals EquipmentStatus.EquipmentID
+                                         select new
+                                         {
+                                             Equipment.EquipmentID,
+                                             Equipment.EquipmentName,
+                                             Equipment.EquipmentNo,
+                                             Equipment.EquipmentModel,
+                                             EquipmentStatus.EquipmentStatus1
+
+                                         };
+                var equipmentList = equipmentListQuery.ToList();
+                foreach (var equipmentItem in equipmentList)
+                {
+                    var model = new EquipmentDateModel
+                    {
+                        Equipment = equipmentItem.EquipmentName,
+                        Model = equipmentItem.EquipmentModel,
+                        EquipmentNo = equipmentItem.EquipmentNo,
+
+                    };
+                    if (equipmentItem.EquipmentStatus1 == 0)
+                    {
+                        model.Status = "Active";
+
+                    }
+                    else
+                    {
+                        model.Status = "Inactive";
+                    }
+                    var useageList = context.UsageRecord.Where(e => e.EquipmentId == equipmentItem.EquipmentID&&e.StartDate<=startDate).OrderBy(p => p.StartDate).ToList();
+                    if (useageList.Count == 0)
+                    {
+                        for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                        {
+                                model.DailyData.Add(date, "stop");
+                            model.ColorData.Add(date, "LightCoral");
+                        }
+                    }
+                    else
+                    {
+                        foreach (var usageItem in useageList)
+                        {
+                            //if (usageItem.EndDate==null)
+                            //{
+                            //    usageItem.EndDate = DateTime.Today;
+
+                            //}
+                            //for (DateTime date = (DateTime)usageItem.StartDate; date <= (DateTime)usageItem.EndDate; date = date.AddDays(1))
+                            //{
+                            //    model.DailyData.Add(date, "run");
+                            //}
+                            //剩余时间默认为stop
+                            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                            {
+                                if (model.DailyData.ContainsKey(date))
+                                {
+                                    continue;
+                                }
+                                if ((DateTime)usageItem.StartDate <= date && (usageItem.EndDate == null || usageItem.EndDate >= date))
+                                {
+                                    model.DailyData.Add(date, "run");
+                                    model.ColorData.Add(date, "LightGreen");
+                                }
+                                else
+                                {
+                                    model.DailyData.Add(date, "stop");
+                                    model.ColorData.Add(date, "LightCoral");
+                                }
+                            }
+
+                        }
+
+                    }
+                  
+                    results.Add(model);
+
+                }
+
+                return results;
+            }
+        }
+
+        //    var equipmentUsageReport = from UsageRecord in context.UsageRecord
+        //                               join Equipment in context.Equipment on UsageRecord.EquipmentId equals Equipment.EquipmentID
+        //                               join EquipmentStatus in context.EquipmentStatus on Equipment.EquipmentID equals EquipmentStatus.EquipmentID
+
+        //                               select new
+        //                               {
+        //                                   Equipment.EquipmentName,
+        //                                   Equipment.EquipmentNo,
+        //                                   Equipment.EquipmentModel,
+        //                                   UsageRecord.StartDate,
+        //                                   UsageRecord.EndDate,
+        //                                   EquipmentStatus.EquipmentStatus1
+        //                               };
+        //var list = equipmentUsageReport.ToList();
+
+        //    foreach (var item in list)
+        //    {
+        //    var model = new EquipmentDateModel
+        //    {
+        //        Equipment = item.EquipmentName,
+        //        Model = item.EquipmentModel,
+        //        EquipmentNo = item.EquipmentNo,
+
+        //    };
+        //        if (item.EquipmentStatus1==0)
+        //        {
+        //            model.Status = "Active";
+
+        //        }
+        //        else
+        //        {
+        //            model.Status = "Inactive";
+        //        }
+        //    for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+        //        {
+        //        if (item.StartDate <= date && (item.EndDate == null || item.EndDate >= date))
+        //            {
+        //            model.DailyData.Add(date, "run");
+        //        }
+        //        else
+        //            {
+        //            model.DailyData.Add(date, "stop");
+        //        }
+        //    }
+        //    results.Add(model); 
+        //    }
+
+        //}
+        //return results;
+
+
 
 
         //public static ObservableCollection<EquipemntUsageReport> GetEquipmentStatus1()

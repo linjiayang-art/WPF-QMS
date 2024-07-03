@@ -94,7 +94,7 @@ namespace SicoreQMS.Service
                     testCountReport.ProdNo = singerItem.ProdNo;
                     testCountReport.ProcessStatus = singerItem.ProdStatus.ToString();
                     var id = singerItem.Id;
-                    string sqlQuery = $"SELECT SUM(InputQty)-SUM( OutQty)  FROM Prod_ProcessItem  WHERE ProdProcessId='{id}' AND IsComplete=1";
+                    string sqlQuery = $"SELECT MAX(InputQty)-MIN( OutQty)  FROM Prod_ProcessItem  WHERE ProdProcessId='{id}' AND IsComplete=1";
 
                     var scrapQty = context.Database.SqlQuery<int?>(sqlQuery, id).FirstOrDefault();
                     if (scrapQty is null)
@@ -126,7 +126,7 @@ namespace SicoreQMS.Service
                                 case "X光检测":
                                     if (itemResult.IsComplete == true)
                                     {
-                                        testCountReport.AgingCount = 0;
+                                        testCountReport.XlineCount = 0;
                                         break;
                                     }
                                     testCountReport.XlineCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
@@ -135,23 +135,23 @@ namespace SicoreQMS.Service
                                 case "超声扫描":
                                     if (itemResult.IsComplete == true)
                                     {
-                                        testCountReport.AgingCount = 0;
+                                        testCountReport.UltrasonicTesting = 0;
                                         break;
                                     }
                                     testCountReport.UltrasonicTesting = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
                                     break;
                                 case "入库（筛选品）":
-                                    if (itemResult.IsComplete == true)
-                                    {
-                                        testCountReport.AgingCount = 0;
-                                        break;
-                                    }
+                                    //if (itemResult.IsComplete == true)
+                                    //{
+                                    //    testCountReport.AgingCount = 0;
+                                    //    break;
+                                    //}
                                     testCountReport.StockIn = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
                                     break;
                                 case "老炼后常温电测":
                                     if (itemResult.IsComplete == true)
                                     {
-                                        testCountReport.AgingCount = 0;
+                                        testCountReport.BeforAgingTemperatureCount = 0;
                                         break;
                                     }
                                     testCountReport.BeforAgingTemperatureCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
@@ -159,7 +159,7 @@ namespace SicoreQMS.Service
                                 case "电性能测试":
                                     if (itemResult.IsComplete == true)
                                     {
-                                        testCountReport.AgingCount = 0;
+                                        testCountReport.AfterAgingTemperatureCount = 0;
                                         break;
                                     }
                                     testCountReport.AfterAgingTemperatureCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
@@ -234,7 +234,7 @@ namespace SicoreQMS.Service
                     testCountReport.ProdNo = singerItem.ProdNo;
                     testCountReport.ProcessStatus = singerItem.ProdStatus.ToString();
                     var id = singerItem.Id;
-                    string sqlQuery = $"SELECT SUM(InputQty)-SUM( OutQty)  FROM Prod_ProcessItem  WHERE ProdProcessId='{id}' AND IsComplete=1";
+                    string sqlQuery = $"SELECT Max(InputQty)-min( OutQty)  FROM Prod_ProcessItem  WHERE ProdProcessId='{id}' AND IsComplete=1";
 
                     var scrapQty = context.Database.SqlQuery<int?>(sqlQuery, id).FirstOrDefault();
                     if (scrapQty is null)
@@ -266,7 +266,7 @@ namespace SicoreQMS.Service
                                 case "X光检测":
                                     if (itemResult.IsComplete == true)
                                     {
-                                        testCountReport.AgingCount = 0;
+                                        testCountReport.XlineCount = 0;
                                         break;
                                     }
                                     testCountReport.XlineCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
@@ -275,23 +275,23 @@ namespace SicoreQMS.Service
                                 case "超声扫描":
                                     if (itemResult.IsComplete == true)
                                     {
-                                        testCountReport.AgingCount = 0;
+                                        testCountReport.UltrasonicTesting = 0;
                                         break;
                                     }
                                     testCountReport.UltrasonicTesting = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
                                     break;
                                 case "入库（筛选品）":
-                                    if (itemResult.IsComplete == true)
-                                    {
-                                        testCountReport.AgingCount = 0;
-                                        break;
-                                    }
+                                    //if (itemResult.IsComplete == true)
+                                    //{
+                                    //    testCountReport.AgingCount = 0;
+                                    //    break;
+                                    //}
                                     testCountReport.StockIn = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
                                     break;
                                 case "老炼后常温电测":
                                     if (itemResult.IsComplete == true)
                                     {
-                                        testCountReport.AgingCount = 0;
+                                        testCountReport.BeforAgingTemperatureCount = 0;
                                         break;
                                     }
                                     testCountReport.BeforAgingTemperatureCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
@@ -299,7 +299,7 @@ namespace SicoreQMS.Service
                                 case "电性能测试":
                                     if (itemResult.IsComplete == true)
                                     {
-                                        testCountReport.AgingCount = 0;
+                                        testCountReport.AfterAgingTemperatureCount = 0;
                                         break;
                                     }
                                     testCountReport.AfterAgingTemperatureCount = string.IsNullOrEmpty(itemResult.InputQty.ToString()) ? 0 : (int)itemResult.InputQty;
