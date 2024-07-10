@@ -115,7 +115,7 @@ namespace SicoreQMS.Service
 
         }
 
-        public static ResultInfo EndTest(string id, int passQty, string remark)
+        public static ResultInfo EndTest(string id, int passQty, string remark, DateTime endTime)
         {
             var resultInfo = new ResultInfo();
             using (var context = new SicoreQMSEntities1())
@@ -141,8 +141,8 @@ namespace SicoreQMS.Service
                 item.ExperimentStatus = 2;
                 item.Remark += "完成时备注:" + remark;
                 item.EndUser = AppSession.UserID;
-                item.ExperimentEndTime = DateTime.Now;
-                item.EstimatedCompletionTime = DateTime.Now;
+                item.ExperimentEndTime = endTime;
+                item.EstimatedCompletionTime = endTime;
                 context.SaveChanges();
                 resultInfo.ResultStatus = true;
                 resultInfo.ResultMessage = "完成成功!";

@@ -214,6 +214,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                     ProdNo=parentProd.ProdNo,
                     TestNo=parentProd.TestNo,
                     TestType=parentProd.TestType,
+                   
 
                 };
 
@@ -257,6 +258,8 @@ namespace SicoreQMS.ViewModels.DialogModels
                     QualityLevel = newProdInfo.QualityLevel,
                     ProdType = newProdInfo.ProdType,
                     ModelName = "军工",
+                    ProdNo=newProdInfo.ProdNo,
+                    TestNo=newProdInfo.TestNo,
                 };
 
                 // 将新的 ProdInfo 对象添加到数据库

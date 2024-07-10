@@ -16,7 +16,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SicoreQMS.Common.Models.Basic;
-
+using DocumentFormat.OpenXml;
+using Prism.Services.Dialogs;
+using Prism.Ioc;
 namespace SicoreQMS.Views
 {
     /// <summary>
@@ -24,10 +26,14 @@ namespace SicoreQMS.Views
     /// </summary>
     public partial class EquipmentReportView : System.Windows.Controls.UserControl
     {
-      public  EquipmentReportViewModel viewModel=new EquipmentReportViewModel();
+
+        public bool isCheck { get; set; } = false;
+       
+        public  EquipmentReportViewModel viewModel=new EquipmentReportViewModel();
         public EquipmentReportView()
         {
             InitializeComponent();
+            this.startDate.SelectedDate = DateTime.Today;
             //var viewModel = new EquipmentReportViewModel();  // 创建 ViewModel
             this.DataContext = this.viewModel;               // 设置 DataContext
             dataGrid.ItemsSource = viewModel.ReportData; // 绑定 DataGrid 的 ItemsSource
@@ -40,10 +46,19 @@ namespace SicoreQMS.Views
             this.DataContext = this.viewModel;               // 设置 DataContext
             this.viewModel.LoadTestData( startDate,  endDate);
             dataGrid.ItemsSource = this.viewModel.ReportData; // 绑定 DataGrid 的 ItemsSource
+            var fixedColumns = dataGrid.Columns.Take(4).ToList(); // 假设前4列是固定列
             dataGrid.Columns.Clear();
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "设备",Binding = new System.Windows.Data.Binding("Equipment")});
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "型号", Binding = new System.Windows.Data.Binding("Model") });
-            dataGrid.Columns.Add(new DataGridTextColumn { Header = "产品编号", Binding = new System.Windows.Data.Binding("EquipmentNo") });
+
+            // 重新添加固定的列
+            foreach (var column in fixedColumns)
+            {
+                dataGrid.Columns.Add(column);
+            }
+            //dataGrid.Columns.Clear();
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "设备",Binding = new System.Windows.Data.Binding("Equipment")});
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "型号", Binding = new System.Windows.Data.Binding("Model") });
+            //dataGrid.Columns.Add(new DataGridTextColumn { Header = "产品编号", Binding = new System.Windows.Data.Binding("EquipmentNo") });
+
             for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
             {
                 var column = new DataGridTextColumn
@@ -60,7 +75,27 @@ namespace SicoreQMS.Views
                 dataGrid.Columns.Add(column);
             }
         }
+        //private void Item_GotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    var item = (DataGridRow)sender;
+        //    FrameworkElement objElement = dataGrid.Columns[2].GetCellContent(item);
+        //    if (objElement != null)
+        //    {
+        //        if(objElement.GetType() == typeof(System.Windows.Controls.TextBox))
+        //        {
+        //            return;
+        //        }
+        //        if (isCheck)
+        //        {
+        //            isCheck = false;
+        //            return;
+        //        }
+        //        System.Windows.Controls.TextBlock text = (System.Windows.Controls.TextBlock)objElement;
 
+        //        System.Windows.MessageBox.Show(text.Text);
+        //        isCheck=true;
+        //    }
+        //}
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var startDate = this.startDate.SelectedDate ?? DateTime.Today;

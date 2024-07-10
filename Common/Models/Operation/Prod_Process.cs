@@ -28,5 +28,7 @@ namespace SicoreQMS.Common.Models.Operation
         public string QualityLevel { get; set; }
         public Nullable<int> Qty { get; set; }
         public Nullable<int> OriginQty { get; set; }
+        public string TestNo { get; set; }
+        public string ProdNo { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Irony;
 using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
 using SicoreQMS.Common.Models.Report;
@@ -427,14 +428,17 @@ namespace SicoreQMS.Service
         }
 
 
-        public static ObservableCollection<EquipmentDateModel> GetEquipmentReport(DateTime startDate, DateTime endDate)
+        public static ObservableCollection<EquipmentDateModel> GetEquipmentReport(DateTime startDate, DateTime endDate,string equipmentName="",string equipmentNo="")
         {
+            
             var results = new ObservableCollection<EquipmentDateModel>();
             using (var context = new SicoreQMSEntities1())
             {
 
                 var equipmentListQuery = from Equipment in context.Equipment
                                          join EquipmentStatus in context.EquipmentStatus on Equipment.EquipmentID equals EquipmentStatus.EquipmentID
+                                         where   (!String.IsNullOrEmpty(Equipment.EquipmentName) && Equipment.EquipmentName.Contains(equipmentName))
+                                         && (!String.IsNullOrEmpty(Equipment.EquipmentNo) && Equipment.EquipmentNo.Contains(equipmentNo))
                                          select new
                                          {
                                              Equipment.EquipmentID,
@@ -463,7 +467,7 @@ namespace SicoreQMS.Service
                     {
                         model.Status = "Inactive";
                     }
-                    var useageList = context.UsageRecord.Where(e => e.EquipmentId == equipmentItem.EquipmentID&&e.StartDate<=startDate).OrderBy(p => p.StartDate).ToList();
+                    var useageList = context.UsageRecord.Where(e => e.EquipmentId == equipmentItem.EquipmentID&&e.StartDate>=startDate).OrderBy(p => p.StartDate).ToList();
                     if (useageList.Count == 0)
                     {
                         for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
@@ -476,15 +480,9 @@ namespace SicoreQMS.Service
                     {
                         foreach (var usageItem in useageList)
                         {
-                            //if (usageItem.EndDate==null)
-                            //{
-                            //    usageItem.EndDate = DateTime.Today;
-
-                            //}
-                            //for (DateTime date = (DateTime)usageItem.StartDate; date <= (DateTime)usageItem.EndDate; date = date.AddDays(1))
-                            //{
-                            //    model.DailyData.Add(date, "run");
-                            //}
+                            
+                            var usageEnddate= usageItem.EndDate ?? DateTime.Now;
+                   
                             //剩余时间默认为stop
                             for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
                             {
@@ -492,18 +490,32 @@ namespace SicoreQMS.Service
                                 {
                                     continue;
                                 }
-                                if ((DateTime)usageItem.StartDate <= date && (usageItem.EndDate == null || usageItem.EndDate >= date))
-                                {
-                                    model.DailyData.Add(date, "run");
-                                    model.ColorData.Add(date, "LightGreen");
-                                }
-                                else
-                                {
-                                    model.DailyData.Add(date, "stop");
-                                    model.ColorData.Add(date, "LightCoral");
-                                }
+                                model.DailyData.Add(date, "stop");
+                                model.ColorData.Add(date, "LightCoral");
                             }
+                            //先把时间设置为0点0分
+                            var usageStartDate = (DateTime)usageItem.StartDate;
+                            usageStartDate = new DateTime(usageStartDate.Year, usageStartDate.Month, usageStartDate.Day, 0, 0, 0);
+                            usageEnddate =  new DateTime(usageEnddate.Year, usageEnddate.Month, usageEnddate.Day, 23, 59, 59);
+                           
 
+                            //反向更新
+                            for (DateTime date = usageStartDate; date <= usageEnddate; date = date.AddDays(1))
+                            {
+                                if (model.DailyData.ContainsKey(date))
+                                {
+                                    //更新DailyData
+
+                                    model.DailyData[date]= "run";
+                                    model.ColorData[date] = "LightGreen";
+                                   
+
+                                    continue;
+                                }
+                                //比较日期在同一天即可,不对比具体时刻
+                                model.DailyData.Add(date, "run");
+                                model.ColorData.Add(date, "LightGreen");
+                            }
                         }
 
                     }
@@ -516,98 +528,12 @@ namespace SicoreQMS.Service
             }
         }
 
-        //    var equipmentUsageReport = from UsageRecord in context.UsageRecord
-        //                               join Equipment in context.Equipment on UsageRecord.EquipmentId equals Equipment.EquipmentID
-        //                               join EquipmentStatus in context.EquipmentStatus on Equipment.EquipmentID equals EquipmentStatus.EquipmentID
 
-        //                               select new
-        //                               {
-        //                                   Equipment.EquipmentName,
-        //                                   Equipment.EquipmentNo,
-        //                                   Equipment.EquipmentModel,
-        //                                   UsageRecord.StartDate,
-        //                                   UsageRecord.EndDate,
-        //                                   EquipmentStatus.EquipmentStatus1
-        //                               };
-        //var list = equipmentUsageReport.ToList();
-
-        //    foreach (var item in list)
-        //    {
-        //    var model = new EquipmentDateModel
-        //    {
-        //        Equipment = item.EquipmentName,
-        //        Model = item.EquipmentModel,
-        //        EquipmentNo = item.EquipmentNo,
-
-        //    };
-        //        if (item.EquipmentStatus1==0)
-        //        {
-        //            model.Status = "Active";
-
-        //        }
-        //        else
-        //        {
-        //            model.Status = "Inactive";
-        //        }
-        //    for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
-        //        {
-        //        if (item.StartDate <= date && (item.EndDate == null || item.EndDate >= date))
-        //            {
-        //            model.DailyData.Add(date, "run");
-        //        }
-        //        else
-        //            {
-        //            model.DailyData.Add(date, "stop");
-        //        }
-        //    }
-        //    results.Add(model); 
-        //    }
-
-        //}
-        //return results;
-
-
-
-
-        //public static ObservableCollection<EquipemntUsageReport> GetEquipmentStatus1()
-        //{
-        //    var results = new ObservableCollection<EquipemntUsageReport>();
-        //    using (var context = new SicoreQMSEntities1())
-        //    {
-        //        var endDate = DateTime.Now;
-        //        var usageSummary = context.UsageRecord
-        //            .GroupBy(u => u.EquipmentId)
-        //            .Select(group => new
-        //            {
-        //                EquipmentId = group.Key,
-        //                TotalDays = group.Sum(g => (g.EndDate ?? endDate).Subtract(g.StartDate ?? default(DateTime)).Days + 1)
-        //            })
-        //            .ToDictionary(u => u.EquipmentId, u => u.TotalDays);//转换为字典，方便后续查询
-
-        //        var query = from e in context.Equipment
-        //                    join eStatus in context.EquipmentStatus on e.EquipmentID equals eStatus.EquipmentID
-        //                    join u in usageSummary on e.EquipmentID equals u.Key into usageJoin
-        //                    from uj in usageJoin.DefaultIfEmpty()
-        //                    select new EquipemntUsageReport
-        //                    {
-        //                        EquipmentName = e.EquipmentName,
-        //                        EquipmentModel = e.EquipmentModel,
-        //                        EquipmentID = e.EquipmentID,
-        //                        EquipmentNo = e.EquipmentNo,
-        //                        EquipmentStatus1 = (int)eStatus.EquipmentStatus1,
-        //                        StatusDesc = eStatus.StatusDesc,
-        //                        TotalUsageDays = usageSummary.ContainsKey(e.EquipmentID) ? usageSummary[e.EquipmentID] : 0
-
-        //                    };
-        //        foreach (var equipemntUsageReport in query)
-        //        {
-        //            results.Add(equipemntUsageReport);
-        //        }
-        //    }
-
-
-        //    return results;
-        //}
+        public static ObservableCollection<EquipmentUsageDetailModel> GetEquipmentUsageDetails()
+        {
+            var result=new ObservableCollection<EquipmentUsageDetailModel>();
+            return result;
+        }
 
 
     }

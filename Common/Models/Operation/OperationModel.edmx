@@ -70,6 +70,8 @@
           <Property Name="ProdId" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdType" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdLot" Type="nvarchar" MaxLength="50" />
+          <Property Name="TestNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdNo" Type="nvarchar" MaxLength="50" />
           <Property Name="OriginQty" Type="int" />
           <Property Name="Qty" Type="int" />
           <Property Name="QualityLevel" Type="nvarchar" MaxLength="50" />
@@ -426,6 +428,8 @@
           <Property Name="QualityLevel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Qty" Type="Int32" />
           <Property Name="OriginQty" Type="Int32" />
+          <Property Name="TestNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Prod_ProcessItem">
           <Key>
@@ -728,6 +732,8 @@
           <EntitySetMapping Name="Prod_Process">
             <EntityTypeMapping TypeName="SicoreQMSModel.Prod_Process">
               <MappingFragment StoreEntitySet="Prod_Process">
+                <ScalarProperty Name="ProdNo" ColumnName="ProdNo" />
+                <ScalarProperty Name="TestNo" ColumnName="TestNo" />
                 <ScalarProperty Name="OriginQty" ColumnName="OriginQty" />
                 <ScalarProperty Name="Qty" ColumnName="Qty" />
                 <ScalarProperty Name="QualityLevel" ColumnName="QualityLevel" />

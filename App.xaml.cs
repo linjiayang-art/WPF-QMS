@@ -15,7 +15,10 @@ using SicoreQMS.Views.Dialogs;
 using SicoreQMS.Views.Prints;
 using System;
 using System.ComponentModel;
+using System.Globalization;
+using System.Threading;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace SicoreQMS
 {
@@ -56,6 +59,8 @@ namespace SicoreQMS
         protected override void OnInitialized()
         {
 
+
+
             //var dialog = Container.Resolve<IDialogService>();
 
             //dialog.ShowDialog("LoginView", callback =>
@@ -69,6 +74,10 @@ namespace SicoreQMS
             //    var service = App.Current.MainWindow.DataContext as IConfigureService;
             //    if (service != null)
             //        service.Configure();
+            //    // 设置应用程序的全局文化信息为中文
+            //        CultureInfo culture = new CultureInfo("zh-CN");
+            //        Thread.CurrentThread.CurrentCulture = culture;
+            //        Thread.CurrentThread.CurrentUICulture = culture;
             //    base.OnInitialized();
 
 
@@ -103,6 +112,7 @@ namespace SicoreQMS
             //containerRegistry.RegisterForNavigation<ProcessUpdateView, ProcessUpdateViewModel>();
 
             //containerRegistry.Register<IDialogHostService, DialogHostService>();
+            servicees.RegisterDialog<EquipmentUsageDetailView, EquipmentUsageDetailViewModel>();
 
             servicees.RegisterForNavigation<EquipmentReportView, EquipmentReportViewModel>();
             servicees.RegisterForNavigation<TestModelMaintenanceView, TestModelMaintenanceViewModel>();

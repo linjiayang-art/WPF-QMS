@@ -42,6 +42,7 @@ namespace SicoreQMS.ViewModels.DialogModels
             BtnStart = new DelegateCommand(ProcessStart, CanStartExecute);
             BtnEnd = new DelegateCommand(ProcessEnd, CanEndExecute);
             StartTime = DateTime.Now;
+            EndTime = DateTime.Now;
             Title = "试验流程卡进度更新";
             EquipemtList = Service.EquipmentService.GetMultiEquipmentBasic();
             FilterEquipmentList = EquipemtList;
@@ -77,7 +78,7 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         private void ProcessEnd()
         {
-            var result_info = TestProcessService.EndTest(id: Id, passQty: PassQty, remark: Remark);
+            var result_info = TestProcessService.EndTest(id: Id, passQty: PassQty, remark: Remark,endTime:EndTime);
             if (result_info.ResultStatus == false)
             {
                 System.Windows.Forms.MessageBox.Show(result_info.ResultMessage);
@@ -190,6 +191,15 @@ namespace SicoreQMS.ViewModels.DialogModels
         {
             get { return startTime; }
             set { startTime = value;RaisePropertyChanged(); }
+        }
+
+        private DateTime _endTime;
+
+        public DateTime EndTime
+        {
+            get => _endTime;
+            set => SetProperty(ref _endTime, value);
+
         }
 
         public ObservableCollection<MultiSelectBasic> _equipemtList { get; set; }

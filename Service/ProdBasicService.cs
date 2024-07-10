@@ -134,6 +134,8 @@ namespace SicoreQMS.Service
                     Qty = prodInfo.Qty,
                     OriginQty = prodInfo.Qty,
                     CreateUser = AppSession.UserID,
+                    ProdNo=prodInfo.ProdNo,
+                    TestNo=prodInfo.TestNo,
                 };
 
                 // 将新的 ProdInfo 对象添加到数据库

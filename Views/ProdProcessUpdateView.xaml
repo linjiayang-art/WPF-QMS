@@ -94,7 +94,7 @@
                     IsTextSearchEnabled="True"
                     ItemsSource="{Binding Path=ProductNameBasic}"
                     KeyUp="comProductName_KeyUp"
-                    SelectedValue="{Binding ProdProcessId, Mode=TwoWay}"
+                    SelectedValue="{Binding ProdProcessId, Mode=OneWay}"
                     SelectedValuePath="Value"
                     Style="{StaticResource MaterialDesignOutlinedComboBox}"
                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"

@@ -16,6 +16,10 @@ using System.Windows.Forms;
 using SicoreQMS.Common.Models.Report;
 using Prism.Commands;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
+using Prism.Regions;
+using SicoreQMS.Extensions;
+using Prism.Services.Dialogs;
+using Prism.Ioc;
 
 
 namespace SicoreQMS.ViewModels
@@ -25,6 +29,9 @@ namespace SicoreQMS.ViewModels
         private readonly IEventAggregator aggregator;
 
         #region 属性
+
+
+        public DelegateCommand<EquipmentDateModel> RowClickCommand { get; private set; }
      
         private DateTime _startDate;
 
@@ -35,6 +42,8 @@ namespace SicoreQMS.ViewModels
 
         }
         private DateTime _endDate;
+
+
 
         public DateTime EndDate
         {
@@ -52,6 +61,16 @@ namespace SicoreQMS.ViewModels
 
         }
 
+        private string _equipmentNo;
+
+        public string EquipmentNo
+        {
+            get => _equipmentNo;
+            set => SetProperty(ref _equipmentNo, value);
+
+        }
+
+
 
         public class ReportDataItem
         {
@@ -66,22 +85,46 @@ namespace SicoreQMS.ViewModels
         }
 
         public DelegateCommand<string> BtnExecute { get; private set; }
+        public IDialogService dialogService { get; set; }
+
 
         #endregion
 
-        public EquipmentReportViewModel()
+        public EquipmentReportViewModel(IDialogService dialogService=null)
         {
+         
             ReportData = new ObservableCollection<EquipmentDateModel>();
             BtnExecute=new DelegateCommand<string>(Execute);
             this.StartDate = DateTime.Today.AddDays(-30); ;
+            RowClickCommand = new DelegateCommand<EquipmentDateModel>(ExecuteCommand);
             //往前30天
             this.EndDate=DateTime.Today;
+            this.EquipmentNo = "";
+            this.EquipmentType = "";
             //this.aggregator = aggregator;
             LoadTestData(this.StartDate, this.EndDate);  // 加载1月份的数据
+            this.dialogService = dialogService;
+
             //GenerateColumnsAndLoadData(DateTime.Today.AddDays(-7), DateTime.Today);
             //GenerateColumnsAndLoadData(DateTime.Today.AddDays(-7), DateTime.Today);
         }
 
+        private void ExecuteCommand(EquipmentDateModel model)
+        {
+            if (this.dialogService is null)
+            {
+                this.dialogService = ContainerLocator.Current.Resolve<IDialogService>();
+
+
+            }
+            dialogService.ShowDialog("EquipmentUsageDetailView", result =>
+                    {
+                       
+                    });
+   
+        }
+
+   
         private void Execute(string obj)
         {
             switch (obj)
@@ -96,26 +139,10 @@ namespace SicoreQMS.ViewModels
 
         public void LoadTestData(DateTime startDate, DateTime endDate)
         {
-            
-            ReportData=Service.EquipmentService.GetEquipmentReport(startDate, endDate);
+       
+            ReportData =Service.EquipmentService.GetEquipmentReport(startDate, endDate, this.EquipmentType, this.EquipmentNo);
       
-            //Random random = new Random();
-            //EquipmentDateModel model = new EquipmentDateModel
-            //{
-            //    Equipment = "测试设备",
-            //    Model = "型号X"
-            //};
-
-            //for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
-            //{
-            //    // 假设每天的数据是随机的一个值
-            //    if (!model.DailyData.ContainsKey(date))
-            //    {
-            //        model.DailyData.Add(date, random.Next(0, 100).ToString());
-            //    }
-            //}
-
-            //ReportData.Add(model);
+           
         }
 
 

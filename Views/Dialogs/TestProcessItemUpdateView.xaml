@@ -7,8 +7,8 @@
     xmlns:local="clr-namespace:SicoreQMS.Views.Dialogs"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Width="450"
-    Height="700"
+    Width="600"
+    Height="800"
     Background="White"
     mc:Ignorable="d">
 
@@ -104,7 +104,16 @@
                     materialDesign:HintAssist.HelperText="试验开始时间"
                     materialDesign:HintAssist.Hint="试验开始时间"
                     SelectedDate="{Binding StartTime, StringFormat=yyyy-MM-dd}"
-                    Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
+                    Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                    Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                <DatePicker
+                    Margin="10"
+                    materialDesign:HintAssist.HelperText="试验结束时间"
+                    materialDesign:HintAssist.Hint="试验结束时间"
+                    SelectedDate="{Binding EndTime, StringFormat=yyyy-MM-dd}"
+                    Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                    Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <TextBox
                     Margin="10"
                     VerticalAlignment="Center"

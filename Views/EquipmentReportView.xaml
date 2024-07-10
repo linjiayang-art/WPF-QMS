@@ -32,9 +32,10 @@
                 <ColumnDefinition Width="20*" />
             </Grid.ColumnDefinitions>
             <TextBox
+                x:Name="EquipmentType"
                 Grid.Column="0"
                 Margin="5"
-                materialDesign:HintAssist.Hint="设备类型-暂不可用"
+                materialDesign:HintAssist.Hint="设备类型"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding EquipmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 TextWrapping="Wrap">
@@ -45,23 +46,38 @@
                         CommandParameter="query" />
                 </TextBox.InputBindings>
             </TextBox>
+            <TextBox
+                x:Name="EquipmentNo"
+                Grid.Column="1"
+                Margin="5"
+                materialDesign:HintAssist.Hint="设备编号"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding EquipmentNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap">
+                <TextBox.InputBindings>
+                    <KeyBinding
+                        Key="Enter"
+                        Command="{Binding BtnExecute}"
+                        CommandParameter="query" />
+                </TextBox.InputBindings>
+            </TextBox>
             <DatePicker
                 x:Name="startDate"
-                Grid.Column="1"
+                Grid.Column="2"
                 Margin="5"
                 materialDesign:HintAssist.Hint="选择开始日期"
                 SelectedDate="{Binding StartDate}"
                 Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
             <DatePicker
                 x:Name="endDate"
-                Grid.Column="2"
+                Grid.Column="3"
                 Margin="5"
                 materialDesign:HintAssist.Hint="选择结束日期"
                 SelectedDate="{Binding EndDate}"
                 Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
             <Grid Grid.Column="2" />
             <Button
-                Grid.Column="3"
+                Grid.Column="4"
                 Width="125"
                 Margin="5"
                 Click="Button_Click"
@@ -86,8 +102,29 @@
                 x:Name="dataGrid"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
-                IsReadOnly="True"
                 ItemsSource="{Binding ReportData, Mode=OneWay}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Equipment}" Header="设备" />
+                    <DataGridTextColumn Binding="{Binding Model}" Header="型号" />
+                    <DataGridTextColumn Binding="{Binding EquipmentNo}" Header="产品编号" />
+                    <DataGridTemplateColumn Header="操作">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Command="{Binding DataContext.RowClickCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                    CommandParameter="{Binding}"
+                                    Content="显示明细" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+
+
+                <!--<DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <EventSetter Event="GotFocus" Handler="Item_GotFocus" />
+                    </Style>
+                </DataGrid.RowStyle>-->
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Style.Triggers>
