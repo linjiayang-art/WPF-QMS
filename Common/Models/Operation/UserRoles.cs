@@ -12,13 +12,12 @@ namespace SicoreQMS.Common.Models.Operation
     using System;
     using System.Collections.Generic;
     
-    public partial class UserInfo
+    public partial class UserRoles
     {
-        public string Id { get; set; }
-        public string UserName { get; set; }
-        public string UserNo { get; set; }
-        public string PassWord { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public string ID { get; set; }
+        public string UserId { get; set; }
+        public string RoleId { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     }
 }

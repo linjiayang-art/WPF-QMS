@@ -283,7 +283,13 @@ namespace SicoreQMS.ViewModels
 
             using (var context = new SicoreQMSEntities1())
             {
-                var result = context.TestProcess.Where(p => p.Isdeletd == false && p.CompleteStatus == false).ToList();
+                var result = context.TestProcess
+                        .Where(tp => context.TestProcessItem
+                                           .Select(tpi => tpi.TestProcessId)
+                                           .Distinct()
+                                           .Contains(tp.Id)&& tp.Isdeletd == false && tp.CompleteStatus == false)
+                        .ToList();
+           
                 foreach (var item in result)
                 {
                     AllTestProcess.Add(item.GetSelection());

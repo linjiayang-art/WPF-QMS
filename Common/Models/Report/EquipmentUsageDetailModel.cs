@@ -16,6 +16,10 @@ namespace SicoreQMS.Common.Models.Report
         public string ProdType { get; set; }
         public int UseCount { get; set; }
         public int Qty { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string ProcessId { get; set; }
+
     }
 }
 

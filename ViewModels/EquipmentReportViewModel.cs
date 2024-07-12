@@ -117,14 +117,24 @@ namespace SicoreQMS.ViewModels
 
 
             }
-            dialogService.ShowDialog("EquipmentUsageDetailView", result =>
+
+            var parameters = new DialogParameters();
+            parameters.Add("equipmentNo", model.EquipmentNo);
+            parameters.Add("startDate", StartDate);
+            parameters.Add("endDate", this.EndDate);
+            var Resultlist= Service.EquipmentService.GetEquipmentUsageDetails(model.EquipmentNo, StartDate, EndDate);
+            if (Resultlist.Count==0)
+            {
+                MessageBox.Show("无设备运行数据！");
+                return;
+            }
+            dialogService.ShowDialog("EquipmentUsageDetailView",parameters,result =>
                     {
                        
                     });
    
         }
 
-   
         private void Execute(string obj)
         {
             switch (obj)

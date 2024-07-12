@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Irony;
 using SicoreQMS.Common.Models.Basic;
@@ -11,8 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Diagnostics;
 using System.Diagnostics.SymbolStore;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,7 +86,8 @@ namespace SicoreQMS.Service
             {
                 var query = from e in context.Equipment
                             join eStatus in context.EquipmentStatus on e.EquipmentID equals eStatus.EquipmentID
-                            where eStatus.EquipmentStatus1 == 0
+                            ///设备可通用，不需要判断设备状态
+                            //where eStatus.EquipmentStatus1 == 0
                             select new
                             {
                                 e.EquipmentName,
@@ -110,7 +114,8 @@ namespace SicoreQMS.Service
 
                 var query = from e in context.Equipment
                             join eStatus in context.EquipmentStatus on e.EquipmentID equals eStatus.EquipmentID
-                            where eStatus.EquipmentStatus1 == 0
+                            ///设备可通用，不需要判断设备状态
+                            //where eStatus.EquipmentStatus1 == 0
                             select new
                             {
                                 e.EquipmentName,
@@ -137,7 +142,8 @@ namespace SicoreQMS.Service
 
                 var query = from e in context.Equipment
                             join eStatus in context.EquipmentStatus on e.EquipmentID equals eStatus.EquipmentID
-                            where eStatus.EquipmentStatus1 == 0
+                            ///设备可通用，不需要判断设备状态
+                            //where eStatus.EquipmentStatus1 == 0
                             select new
                             {
                                 e.EquipmentName,
@@ -184,28 +190,31 @@ namespace SicoreQMS.Service
         }
 
 
-        public static ResultInfo RecordEquipmentLog(string equipmentId,string useType,string useProcess,string processId=null)
+        public static ResultInfo RecordEquipmentLog(string equipmentId, string useType, string useProcess, string processId = null)
         {
-            using (var context=new SicoreQMSEntities1())
+            using (var context = new SicoreQMSEntities1())
             {
+
+
                 var equipment = context.Equipment.SingleOrDefault(e => e.EquipmentID == equipmentId);
                 if (equipment == null)
                 {
                     return new ResultInfo { ResultStatus = false, ResultMessage = "设备不存在" };
                 }
                 var equipmentStatus = context.EquipmentStatus.SingleOrDefault(e => e.EquipmentID == equipmentId);
-                //如果设备为0则表示设备空闲,更新为1,新增设备使用记录
-                if (equipmentStatus.EquipmentStatus1 == 0)
+                var havingUsageRecord = context.UsageRecord.SingleOrDefault(u => u.EquipmentId == equipmentId && u.EndDate == null && u.UseProcess == useProcess&&u.ProcessId==processId);
+                //没有使用记录则新增使用记录
+                if (havingUsageRecord == null)
                 {
                     var usageRecord = new UsageRecord
                     {
                         Id = Guid.NewGuid().ToString(),
-                        ProcessId=processId,
+                        ProcessId = processId,
                         EquipmentId = equipmentId,
                         StartDate = DateTime.Now,
                         UseType = useType,
                         UseProcess = useProcess,
-                        UseUser= AppSession.UserID
+                        UseUser = AppSession.UserID
                     };
                     context.UsageRecord.Add(usageRecord);
                     equipmentStatus.EquipmentStatus1 = 1;
@@ -214,10 +223,10 @@ namespace SicoreQMS.Service
                     return new ResultInfo()
                     { ResultStatus = true, ResultMessage = "设备状态更新成功" };
                 }
-
-                if (equipmentStatus.EquipmentStatus1 == 1)
+                //有使用记录则更新使用记录
+                else
                 {
-                    var usageRecord = context.UsageRecord.SingleOrDefault(u => u.EquipmentId == equipmentId && u.EndDate == null&&u.UseProcess==useProcess );
+                    var usageRecord = context.UsageRecord.SingleOrDefault(u => u.EquipmentId == equipmentId && u.EndDate == null && u.UseProcess == useProcess);
                     if (usageRecord == null)
                     {
                         return new ResultInfo { ResultStatus = false, ResultMessage = "设备使用记录不存在" };
@@ -227,12 +236,60 @@ namespace SicoreQMS.Service
                     equipmentStatus.StatusDesc = "待机";
                     context.SaveChanges();
                 }
-        
             }
 
             return new ResultInfo()
-             { ResultStatus = true, ResultMessage = "设备状态更新成功" };
+            { ResultStatus = true, ResultMessage = "设备状态更新成功" };
         }
+        //public static ResultInfo RecordEquipmentLog(string equipmentId,string useType,string useProcess,string processId=null)
+        //{
+        //    using (var context=new SicoreQMSEntities1())
+        //    {
+        //        var equipment = context.Equipment.SingleOrDefault(e => e.EquipmentID == equipmentId);
+        //        if (equipment == null)
+        //        {
+        //            return new ResultInfo { ResultStatus = false, ResultMessage = "设备不存在" };
+        //        }
+        //        var equipmentStatus = context.EquipmentStatus.SingleOrDefault(e => e.EquipmentID == equipmentId);
+        //        //如果设备为0则表示设备空闲,更新为1,新增设备使用记录
+        //        if (equipmentStatus.EquipmentStatus1 == 0)
+        //        {
+        //            var usageRecord = new UsageRecord
+        //            {
+        //                Id = Guid.NewGuid().ToString(),
+        //                ProcessId=processId,
+        //                EquipmentId = equipmentId,
+        //                StartDate = DateTime.Now,
+        //                UseType = useType,
+        //                UseProcess = useProcess,
+        //                UseUser= AppSession.UserID
+        //            };
+        //            context.UsageRecord.Add(usageRecord);
+        //            equipmentStatus.EquipmentStatus1 = 1;
+        //            equipmentStatus.StatusDesc = "运行中";
+        //            context.SaveChanges();
+        //            return new ResultInfo()
+        //            { ResultStatus = true, ResultMessage = "设备状态更新成功" };
+        //        }
+
+        //        if (equipmentStatus.EquipmentStatus1 == 1)
+        //        {
+        //            var usageRecord = context.UsageRecord.SingleOrDefault(u => u.EquipmentId == equipmentId && u.EndDate == null&&u.UseProcess==useProcess );
+        //            if (usageRecord == null)
+        //            {
+        //                return new ResultInfo { ResultStatus = false, ResultMessage = "设备使用记录不存在" };
+        //            }
+        //            usageRecord.EndDate = DateTime.Now;
+        //            equipmentStatus.EquipmentStatus1 = 0;
+        //            equipmentStatus.StatusDesc = "待机";
+        //            context.SaveChanges();
+        //        }
+
+        //    }
+
+        //    return new ResultInfo()
+        //     { ResultStatus = true, ResultMessage = "设备状态更新成功" };
+        //}
 
         public static ResultInfo RecordSPEquipmentLog(string equipmentId, string useType, string useProcess, int qty=0,string processId = null)
         {
@@ -430,6 +487,7 @@ namespace SicoreQMS.Service
 
         public static ObservableCollection<EquipmentDateModel> GetEquipmentReport(DateTime startDate, DateTime endDate,string equipmentName="",string equipmentNo="")
         {
+
             
             var results = new ObservableCollection<EquipmentDateModel>();
             using (var context = new SicoreQMSEntities1())
@@ -521,7 +579,7 @@ namespace SicoreQMS.Service
                     }
                   
                     results.Add(model);
-
+              
                 }
 
                 return results;
@@ -529,12 +587,83 @@ namespace SicoreQMS.Service
         }
 
 
-        public static ObservableCollection<EquipmentUsageDetailModel> GetEquipmentUsageDetails()
+        public static ObservableCollection<EquipmentUsageDetailModel> GetEquipmentUsageDetails(string equipmentNo,DateTime startDate,DateTime endDate)
         {
+            ///设备结束时间可能为空值，需要处理
             var result=new ObservableCollection<EquipmentUsageDetailModel>();
-            return result;
+            var count = 0;
+            using ( var context =new SicoreQMSEntities1())
+            {
+                var usageRecords = from UsageRecord in context.UsageRecord
+                                   join Equipment in context.Equipment on UsageRecord.EquipmentId equals Equipment.EquipmentID
+                                   join Userinfo in context.UserInfo on UsageRecord.UseUser equals Userinfo.Id
+                                   where Equipment.EquipmentNo.Contains(equipmentNo) && UsageRecord.StartDate >= startDate && UsageRecord.StartDate <= endDate
+                                   select new EquipmentUsageDetailModel
+                                   {
+                                       StartDate = (DateTime)UsageRecord.StartDate,
+                                       EndDate = UsageRecord.EndDate ??DateTime.Today,
+                                       UseType = UsageRecord.UseType,
+                                       UseProcess = UsageRecord.UseProcess,
+                                       UseUser = Userinfo.UserName,
+                                       ProcessId=UsageRecord.ProcessId
+                                   };
+                var records = usageRecords.ToList();
+                if (records.Count==0)
+                {
+                    return result;
+                }
+                foreach (var item in records)
+                {
+                    //if (item.EndDate is null)
+                    //{
+                    //    i
+                    //}
+                    var useType=item.UseType;
+                    if (useType=="试验流程卡")
+                    {
+                        var testItem =from TestProcessItem in context.TestProcessItem
+                                      join TestProcess in context.TestProcess on TestProcessItem.TestProcessId equals TestProcess.Id
+                                      where TestProcessItem.Id==item.ProcessId
+                                      select new
+                                      {
+                                       TestProcessItem.Id,
+                                       TestProcess.ProdType,
+                                        TestProcess.ProdLot,
+                                        };
+
+                        var testInfo = testItem.FirstOrDefault();
+                        if (testInfo is null)
+                        {
+                            continue;
+                        }
+                        item.ProdLot = testInfo.ProdLot;
+                        item.ProdType= testInfo.ProdType;
+
+                    }
+                    if (useType == "生产流程卡")
+                    {
+                        var testItem = context.Prod_ProcessItem.Where(p => p.Id == item.ProcessId).SingleOrDefault();
+
+                     
+                        if (testItem is null)
+                        {
+                            continue;
+                        }
+                        item.ProdLot = testItem.Lot;
+                        item.ProdType = testItem.ProdType;
+
+                    }
+                   
+                    TimeSpan timeDifference = (TimeSpan)((DateTime)item.EndDate - item.StartDate);
+
+                    item.Sort=count++;
+                    item.UseCount= timeDifference.Hours;
+                    result.Add(item);
+                }
+            }
+                return result;
         }
 
-
+       
     }
 }

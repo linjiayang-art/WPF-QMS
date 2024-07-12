@@ -37,6 +37,14 @@
           <Property Name="LastStatusChange" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6013: 表/视图“SicoreQMS.dbo.InspectionResultsCache”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="InspectionResultsCache">
+          <Property Name="DefectType" Type="nvarchar" MaxLength="255" />
+          <Property Name="DefectCount" Type="nvarchar" MaxLength="255" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="255" />
+          <Property Name="deleted" Type="bit" />
+        </EntityType>-->
         <EntityType Name="LotRelation">
           <Key>
             <PropertyRef Name="Id" />
@@ -172,6 +180,23 @@
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
+        <EntityType Name="RoleMenus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MenuId" Type="nvarchar" MaxLength="50" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="TestModelBasic">
           <Key>
             <PropertyRef Name="ModelId" />
@@ -288,8 +313,18 @@
           <Property Name="UserName" Type="nvarchar" MaxLength="50" />
           <Property Name="UserNo" Type="nvarchar" MaxLength="50" />
           <Property Name="PassWord" Type="nvarchar" MaxLength="50" />
-          <Property Name="IsDeleted" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="50" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <Association Name="FK_EquipmentStatus_Equipment">
           <End Role="Equipment" Type="Self.Equipment" Multiplicity="0..1" />
@@ -316,12 +351,15 @@
           <EntitySet Name="Prod_ProcessItem" EntityType="Self.Prod_ProcessItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prod_ProcessModel" EntityType="Self.Prod_ProcessModel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProdInfo" EntityType="Self.ProdInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleMenus" EntityType="Self.RoleMenus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestModelBasic" EntityType="Self.TestModelBasic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestModelItem" EntityType="Self.TestModelItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestProcess" EntityType="Self.TestProcess" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TestProcessItem" EntityType="Self.TestProcessItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsageRecord" EntityType="Self.UsageRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_EquipmentStatus_Equipment" Association="Self.FK_EquipmentStatus_Equipment">
             <End Role="Equipment" EntitySet="Equipment" />
             <End Role="EquipmentStatus" EntitySet="EquipmentStatus" />
@@ -341,7 +379,6 @@
           <EntitySet Name="TestProcess" EntityType="SicoreQMSModel.TestProcess" />
           <EntitySet Name="TestModelItem" EntityType="SicoreQMSModel.TestModelItem" />
           <EntitySet Name="TestProcessItem" EntityType="SicoreQMSModel.TestProcessItem" />
-          <EntitySet Name="UserInfo" EntityType="SicoreQMSModel.UserInfo" />
           <FunctionImport Name="proc_QAExperimentReport" ReturnType="Collection(SicoreQMSModel.proc_QAExperimentReport_Result)">
           <Parameter Name="lotNo" Mode="In" Type="String" />
           </FunctionImport>
@@ -354,6 +391,10 @@
           </AssociationSet>
           <EntitySet Name="Menus" EntityType="SicoreQMSModel.Menus" />
           <EntitySet Name="LotRelation" EntityType="SicoreQMSModel.LotRelation" />
+          <EntitySet Name="Roles" EntityType="SicoreQMSModel.Roles" />
+          <EntitySet Name="UserInfo" EntityType="SicoreQMSModel.UserInfo" />
+          <EntitySet Name="UserRoles" EntityType="SicoreQMSModel.UserRoles" />
+          <EntitySet Name="RoleMenus" EntityType="SicoreQMSModel.RoleMenus" />
         </EntityContainer>
         <EntityType Name="Prod_ProcessModel">
           <Key>
@@ -558,17 +599,6 @@
           <Property Name="ItemDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EquipmentList" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="UserInfo">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="UserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PassWord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-        </EntityType>
         <ComplexType Name="proc_QAExperimentReport_Result">
           <Property Type="String" Name="序号" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="试验依据" Nullable="false" MaxLength="1" />
@@ -664,6 +694,44 @@
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PassWord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoleId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="RoleMenus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MenuId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoleId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -883,18 +951,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserInfo">
-            <EntityTypeMapping TypeName="SicoreQMSModel.UserInfo">
-              <MappingFragment StoreEntitySet="UserInfo">
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
-                <ScalarProperty Name="UserNo" ColumnName="UserNo" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="proc_QAExperimentReport" FunctionName="SicoreQMSModel.Store.proc_QAExperimentReport">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SicoreQMSModel.proc_QAExperimentReport_Result">
@@ -982,6 +1038,48 @@
                 <ScalarProperty Name="ChildrenId" ColumnName="ChildrenId" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="ProdId" ColumnName="ProdId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="SicoreQMSModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserInfo">
+            <EntityTypeMapping TypeName="SicoreQMSModel.UserInfo">
+              <MappingFragment StoreEntitySet="UserInfo">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
+                <ScalarProperty Name="UserNo" ColumnName="UserNo" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="SicoreQMSModel.UserRoles">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleMenus">
+            <EntityTypeMapping TypeName="SicoreQMSModel.RoleMenus">
+              <MappingFragment StoreEntitySet="RoleMenus">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="MenuId" ColumnName="MenuId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

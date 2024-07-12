@@ -22,18 +22,24 @@
             FontWeight="Bold"
             Text="设备使用明细" />
         <Grid Grid.Row="1">
-            <Button Content="导出数据" />
+            <!--<Button Content="导出数据" />-->
         </Grid>
 
         <Grid Grid.Row="2">
-            <DataGrid ItemsSource="{Binding EquipmentUsages}">
+            <DataGrid
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding EquipmentUsages}">
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Sort}" Header="序号" />
                     <DataGridTextColumn Binding="{Binding ProdType}" Header="产品编号" />
                     <DataGridTextColumn Binding="{Binding ProdLot}" Header="批次号" />
+                    <DataGridTextColumn Binding="{Binding StartDate, StringFormat=\{0:yyyy-MM-dd\}}" Header="开始时间" />
+                    <DataGridTextColumn Binding="{Binding EndDate, StringFormat=\{0:yyyy-MM-dd\}}" Header="结束时间" />
                     <DataGridTextColumn Binding="{Binding UseCount}" Header="使用时长" />
-                    <DataGridTextColumn Binding="{Binding UsageType}" Header="使用类型" />
+                    <DataGridTextColumn Binding="{Binding UseType}" Header="使用类型" />
                     <DataGridTextColumn Binding="{Binding UseUser}" Header="使用人" />
                     <DataGridTextColumn Binding="{Binding UseProcess}" Header="使用流程" />
                     <!--<DataGridTextColumn Binding="{Binding UsageDate}" Header="使用日期" />

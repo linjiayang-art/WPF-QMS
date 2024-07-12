@@ -19,7 +19,10 @@ using System.Globalization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
-
+using NLog;
+using Microsoft.Extensions.DependencyInjection;
+using NLog.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 namespace SicoreQMS
 {
     /// <summary>
@@ -27,6 +30,8 @@ namespace SicoreQMS
     /// </summary>
     public partial class App : PrismApplication
     {
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         protected override Window CreateShell()
         {
             //return Container.Resolve<MainView>();
@@ -56,13 +61,11 @@ namespace SicoreQMS
         // base.OnInitialized();
         //}
 
+     
+
         protected override void OnInitialized()
         {
-
-
-
             //var dialog = Container.Resolve<IDialogService>();
-
             //dialog.ShowDialog("LoginView", callback =>
             //{
             //    if (callback.Result != ButtonResult.OK)
@@ -75,12 +78,10 @@ namespace SicoreQMS
             //    if (service != null)
             //        service.Configure();
             //    // 设置应用程序的全局文化信息为中文
-            //        CultureInfo culture = new CultureInfo("zh-CN");
-            //        Thread.CurrentThread.CurrentCulture = culture;
-            //        Thread.CurrentThread.CurrentUICulture = culture;
+            //    CultureInfo culture = new CultureInfo("zh-CN");
+            //    Thread.CurrentThread.CurrentCulture = culture;
+            //    Thread.CurrentThread.CurrentUICulture = culture;
             //    base.OnInitialized();
-
-
             //});
 
             var service = App.Current.MainWindow.DataContext as IConfigureService;
@@ -111,9 +112,10 @@ namespace SicoreQMS
             servicees.RegisterDialog<ProcessEditView, ProcessEditViewModel>();
             //containerRegistry.RegisterForNavigation<ProcessUpdateView, ProcessUpdateViewModel>();
 
+
             //containerRegistry.Register<IDialogHostService, DialogHostService>();
             servicees.RegisterDialog<EquipmentUsageDetailView, EquipmentUsageDetailViewModel>();
-
+            servicees.RegisterForNavigation<UserInfoView, UserInfoViewModel>();
             servicees.RegisterForNavigation<EquipmentReportView, EquipmentReportViewModel>();
             servicees.RegisterForNavigation<TestModelMaintenanceView, TestModelMaintenanceViewModel>();
             servicees.RegisterForNavigation<EquipemntUsageView, EquipemntUsageViewModel>();
@@ -131,7 +133,18 @@ namespace SicoreQMS
             servicees.RegisterForNavigation<ProdProcessCreateView, ProdProcessCreateViewModel>();
             servicees.RegisterForNavigation<ProdModelMaintainView, ProdModelMaintainViewModel>();
             servicees.RegisterForNavigation<TestRequestView, TestRequestViewModel>();
+            // Register NLog
+            var serviceProvider = new ServiceCollection()
+                .AddLogging(loggingBuilder =>
+                {
+                    loggingBuilder.ClearProviders();
+                    loggingBuilder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                    loggingBuilder.AddNLog();
+                })
+                .BuildServiceProvider();
 
+            servicees.RegisterInstance(serviceProvider.GetService<ILoggerFactory>());
+            servicees.RegisterInstance(serviceProvider.GetService<ILogger<App>>());
         }
 
 

@@ -36,12 +36,15 @@ namespace SicoreQMS.Common.Models.Operation
         public virtual DbSet<TestProcess> TestProcess { get; set; }
         public virtual DbSet<TestModelItem> TestModelItem { get; set; }
         public virtual DbSet<TestProcessItem> TestProcessItem { get; set; }
-        public virtual DbSet<UserInfo> UserInfo { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
         public virtual DbSet<EquipmentStatus> EquipmentStatus { get; set; }
         public virtual DbSet<UsageRecord> UsageRecord { get; set; }
         public virtual DbSet<Menus> Menus { get; set; }
         public virtual DbSet<LotRelation> LotRelation { get; set; }
+        public virtual DbSet<Roles> Roles { get; set; }
+        public virtual DbSet<UserInfo> UserInfo { get; set; }
+        public virtual DbSet<UserRoles> UserRoles { get; set; }
+        public virtual DbSet<RoleMenus> RoleMenus { get; set; }
     
         public virtual ObjectResult<proc_QAExperimentReport_Result> proc_QAExperimentReport(string lotNo)
         {

@@ -102,6 +102,7 @@
                 x:Name="dataGrid"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
+                IsReadOnly="True"
                 ItemsSource="{Binding ReportData, Mode=OneWay}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Equipment}" Header="设备" />

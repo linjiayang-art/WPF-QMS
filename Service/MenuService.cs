@@ -33,6 +33,13 @@ namespace SicoreQMS.Service
                 }
                 
             }
+            var a = new MenuBar()
+            {
+                Icon = "Account",
+                NameSpace = "UserInfoView",
+                Title = "用户管理"
+            };
+            menuBars.Add(a);
             return menuBars;
         }
 

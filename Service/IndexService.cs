@@ -501,45 +501,55 @@ namespace SicoreQMS.Service
         {
             var prodLot = testCountReport.ProdLot;
             var prodType = testCountReport.ProdType;
+            var prodNo = testCountReport.ProdNo;
             using (var context = new SicoreQMSEntities1())
             {
                 //通产品同批次可能多个,后续修复
-                var prodProcess = context.Prod_Process.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType && p.IsDeleted == false).SingleOrDefault();
-                if (prodProcess == null)
+                //var prodProcess = context.Prod_Process.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType && p.IsDeleted == false&&p.ProdNo==prodNo).SingleOrDefault();
+                var prodProcess = context.Prod_Process.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType && p.IsDeleted == false && p.ProdNo == prodNo).ToList();
+                //批次号带.则为子批次
+                if (prodLot.Contains("."))
                 {
-                    return;
+                    //var prodProcessObject = prodProcess.Where(p => p.ProdLot == prodLot && prodNo == p.ProdNo).SingleOrDefault();
+                    //if (prodProcessObject is null)
+                    //{
+                    //    return;
+                    //}
+
+                    //prodProcessObject.IsDeleted = true;
+                    //
+                    prodProcess= prodProcess.Where(p => p.ProdLot == prodLot && prodNo == p.ProdNo).ToList();
 
                 }
-
-                prodProcess.IsDeleted = true;
-
-                var prodProcessItem = context.Prod_ProcessItem.Where(p => p.ProdProcessId == prodProcess.Id && p.IsDeleted == false).ToList();
-                foreach (var item in prodProcessItem)
+                foreach (var ProcessItem in prodProcess)
                 {
-                    item.IsDeleted = true;
+                    ProcessItem.IsDeleted = true;
+
+                    var prodProcessItem = context.Prod_ProcessItem.Where(p => p.ProdProcessId == ProcessItem.Id && p.IsDeleted == false).ToList();
+                    foreach (var item in prodProcessItem)
+                    {
+                        item.IsDeleted = true;
+                    }
+                    //删除试验流程
+                    var testProcess = context.TestProcess.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).SingleOrDefault();
+
+                    if (testProcess == null)
+                    {
+                        return;
+
+                    }
+                    testProcess.Isdeletd = true;
+
+                    var testProcessItem = context.TestProcessItem.Where(p => p.TestProcessId == testProcess.Id).ToList();
+                    foreach (var item in testProcessItem)
+                    {
+                        item.IsDeleted = true;
+                    }
+                    context.SaveChanges();
                 }
-                context.SaveChanges();
 
-                //删除试验流程
-                var testProcess = context.TestProcess.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).SingleOrDefault();
-
-                if (testProcess == null)
-                {
-                    return;
-
-                }
-                testProcess.Isdeletd = true;
-
-                var testProcessItem = context.TestProcessItem.Where(p => p.TestProcessId == testProcess.Id).ToList();
-                foreach (var item in testProcessItem)
-                {
-                    item.IsDeleted = true;
-                }
-                context.SaveChanges();
-
-       
-
-
+            
+               
 
             }
 

@@ -186,6 +186,12 @@ namespace SicoreQMS.ViewModels
                 ProductNameBasic = SelectBasicItem;
                 return;
             }
+            if (getInfoInto==false)
+            {
+                getInfoInto = true;
+                return;
+            }
+            ProcessItem.Clear();
             //转大写会造成逻辑重复调用，明确区分
             //var SearchTetxPar=SearchText.ToUpper();
             var searchList = SelectBasicItem.Where(b => b.Label.Contains(SearchText)).ToList();
@@ -274,11 +280,13 @@ namespace SicoreQMS.ViewModels
         public bool KeepAlive => false;
 
 
+        public bool getInfoInto=true;
+
 
         private void GetInfo(object parameter)
         {
 
-
+            getInfoInto = false;
             if (parameter == null)
             {
                 return;
