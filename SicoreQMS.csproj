@@ -680,7 +680,9 @@
     <None Include="Common\Models\Operation\OperationModel.edmx.diagram">
       <DependentUpon>OperationModel.edmx</DependentUpon>
     </None>
-    <None Include="Nlog.config" />
+    <None Include="Nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\DataSources\SicoreQMS.Common.Models.Operation.Prod_ProcessItem.datasource" />

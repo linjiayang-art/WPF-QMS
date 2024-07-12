@@ -49,6 +49,7 @@ namespace SicoreQMS.ViewModels
 
         private void Execuet(string obj)
         {
+            throw new Exception("Test exception for logging");
             throw new NotImplementedException();
         }
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -58,6 +59,7 @@ namespace SicoreQMS.ViewModels
             logger.Info("This is an information message.");
             logger.Warn("This is a warning message.");
             logger.Error("This is an error message.");
+
         }
     }
 }

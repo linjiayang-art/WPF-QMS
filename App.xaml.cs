@@ -32,6 +32,12 @@ namespace SicoreQMS
     {
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        static App()
+        {
+            // 加载 NLog 配置文件
+           LogManager.LoadConfiguration("NLog.config");
+        }
+
         protected override Window CreateShell()
         {
             //return Container.Resolve<MainView>();
@@ -61,35 +67,57 @@ namespace SicoreQMS
         // base.OnInitialized();
         //}
 
-     
+
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            DispatcherUnhandledException += App_DispatcherUnhandledException;
+        }
+
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            logger.Error(e.Exception, "Unhandled exception caught in App_DispatcherUnhandledException");
+            e.Handled = true; // Prevent application from crashing
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception ex)
+            {
+                logger.Fatal(ex, "Unhandled exception caught in CurrentDomain_UnhandledException");
+            }
+            else
+            {
+                logger.Fatal("Unhandled exception caught in CurrentDomain_UnhandledException: {0}", e.ExceptionObject);
+            }
+        }
 
         protected override void OnInitialized()
         {
-            //var dialog = Container.Resolve<IDialogService>();
-            //dialog.ShowDialog("LoginView", callback =>
-            //{
-            //    if (callback.Result != ButtonResult.OK)
-            //    {
-            //        Application.Current.Shutdown();
-            //        return;
-            //    }
-
-            //    var service = App.Current.MainWindow.DataContext as IConfigureService;
-            //    if (service != null)
-            //        service.Configure();
-            //    // 设置应用程序的全局文化信息为中文
-            //    CultureInfo culture = new CultureInfo("zh-CN");
-            //    Thread.CurrentThread.CurrentCulture = culture;
-            //    Thread.CurrentThread.CurrentUICulture = culture;
-            //    base.OnInitialized();
-            //});
-
-            var service = App.Current.MainWindow.DataContext as IConfigureService;
-            if (service != null)
+            var dialog = Container.Resolve<IDialogService>();
+            dialog.ShowDialog("LoginView", callback =>
             {
-                service.Configure();
-            }
-            base.OnInitialized();
+                if (callback.Result != ButtonResult.OK)
+                {
+                    Application.Current.Shutdown();
+                    return;
+                }
+
+                var service = App.Current.MainWindow.DataContext as IConfigureService;
+                if (service != null)
+                    service.Configure();
+                base.OnInitialized();
+            });
+
+            //var service = App.Current.MainWindow.DataContext as IConfigureService;
+            //if (service != null)
+            //{
+            //    service.Configure();
+            //}
+            //base.OnInitialized();
+            //logger.Info("Application started");
         }
         protected override void RegisterTypes(IContainerRegistry servicees)
         {
