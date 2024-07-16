@@ -256,13 +256,16 @@
                 ItemsSource="{Binding TestItems}">
 
                 <DataGrid.Columns>
-
+                    <DataGridTextColumn
+                        Width="120"
+                        Binding="{Binding ProdType}"
+                        Header="产品型号" />
                     <DataGridTextColumn
                         Width="120"
                         Binding="{Binding ProdNo}"
                         Header="生产流水号" />
                     <DataGridTextColumn
-                        Width="120"
+                        Width="100"
                         Binding="{Binding TestNo}"
                         Header="测试流水号" />
                     <DataGridTextColumn
@@ -270,11 +273,11 @@
                         Binding="{Binding One}"
                         Header="项目：1" />
                     <DataGridTextColumn
-                        Width="120"
+                        Width="100"
                         Binding="{Binding A}"
                         Header="项目：A" />
                     <DataGridTextColumn
-                        Width="120"
+                        Width="100"
                         Binding="{Binding B}"
                         Header="项目：B" />
                     <DataGridTextColumn
@@ -282,7 +285,7 @@
                         Binding="{Binding C}"
                         Header="项目：C" />
                     <DataGridTextColumn
-                        Width="120"
+                        Width="100"
                         Binding="{Binding D}"
                         Header="项目：D" />
                     <DataGridTextColumn
@@ -294,14 +297,13 @@
                     <DataGridTemplateColumn Width="110" Header="状态">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel>
+                                <StackPanel HorizontalAlignment="Center">
                                     <Button
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         materialDesign:ButtonAssist.CornerRadius="8"
                                         Background="{Binding StatusDescColer}"
-                                        Content="{Binding StatusDesc}"
-                                        Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}" />
+                                        Content="{Binding StatusDesc}" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -309,11 +311,10 @@
                     <DataGridTemplateColumn Width="300" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="10" Orientation="Horizontal">
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
 
                                     <Button
                                         Width="75"
-                                        Margin="10"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                                         Command="{Binding DataContext.TestExecuetCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
                                         CommandParameter="{Binding}"
@@ -322,7 +323,6 @@
                                         Style="{StaticResource MaterialDesignOutlinedButton}" />
                                     <Button
                                         Width="75"
-                                        Margin="10"
                                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
                                         Command="{Binding DataContext.TestEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
                                         CommandParameter="{Binding}"

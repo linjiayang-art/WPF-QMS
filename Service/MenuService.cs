@@ -2,6 +2,7 @@
 using Prism.Mvvm;
 using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
+using SicoreQMS.Common.Server;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,13 +34,17 @@ namespace SicoreQMS.Service
                 }
                 
             }
-            var a = new MenuBar()
+            if (AppSession.UserNo== "1000145")
             {
-                Icon = "Account",
-                NameSpace = "UserInfoView",
-                Title = "用户管理"
-            };
-            menuBars.Add(a);
+                var a = new MenuBar()
+                {
+                    Icon = "Account",
+                    NameSpace = "UserInfoView",
+                    Title = "用户管理"
+                };
+                menuBars.Add(a);
+            }
+          
             return menuBars;
         }
 

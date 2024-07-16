@@ -348,6 +348,7 @@ namespace SicoreQMS.Service
                     }
                     foreach (var testItem in testProcessItem)
                     {
+                 
                         reslut.Add(testItem);
 
                     }
@@ -390,7 +391,7 @@ namespace SicoreQMS.Service
                     expando.TestLot = item.TestLot;
                     string testNo = "";
                     string prodNo = "";
-
+                    string _prodType = "";
                     foreach (var i in checklist)
                     {
                         var ExperimentItemNoType = i;
@@ -407,6 +408,7 @@ namespace SicoreQMS.Service
                         var yield = dataTable.Rows[0][0].ToString();
                         testNo = dataTable.Rows[0][2].ToString();
                         prodNo = dataTable.Rows[0][3].ToString();
+                        _prodType= dataTable.Rows[0][4].ToString();
                         calculateDict.Add(testCount, yield);
                         //var blogs = context.proc_QAExperimentReport
                         //        .FromSql($"EXECUTE dbo.GetMostPopularBlogsForUser @filterByUser={user}")
@@ -422,6 +424,7 @@ namespace SicoreQMS.Service
                     expando.ProdNo = prodNo;
                     expando.Id= item.Id;
                     expando.Remark = item.Remark;
+                    expando.ProdType=_prodType;
                     switch (item.StatusDesc)
                     {
                         case 0:
@@ -531,20 +534,26 @@ namespace SicoreQMS.Service
                         item.IsDeleted = true;
                     }
                     //删除试验流程
-                    var testProcess = context.TestProcess.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).SingleOrDefault();
+                    var testProcessList = context.TestProcess.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).ToList();
 
-                    if (testProcess == null)
+                    if (testProcessList.Count == 0)
                     {
                         return;
 
                     }
-                    testProcess.Isdeletd = true;
-
-                    var testProcessItem = context.TestProcessItem.Where(p => p.TestProcessId == testProcess.Id).ToList();
-                    foreach (var item in testProcessItem)
+                    foreach (var testProcess in testProcessList) 
                     {
-                        item.IsDeleted = true;
+                        {
+                        testProcess.Isdeletd = true;
+
+                        var testProcessItem = context.TestProcessItem.Where(p => p.TestProcessId == testProcess.Id).ToList();
+                        foreach (var item in testProcessItem)
+                            {
+                            item.IsDeleted = true;
+                        }
                     }
+                    }
+                   
                     context.SaveChanges();
                 }
 
@@ -587,7 +596,7 @@ namespace SicoreQMS.Service
 
                 return false;
             }
-            return true;
+           
            
         }
 

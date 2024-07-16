@@ -34,8 +34,9 @@ namespace SicoreQMS
         private static Logger logger = LogManager.GetCurrentClassLogger();
         static App()
         {
+            LogManager.Setup().LoadConfigurationFromFile("NLog.config");
             // 加载 NLog 配置文件
-           LogManager.LoadConfiguration("NLog.config");
+           //LogManager.LoadConfiguration("NLog.config");
         }
 
         protected override Window CreateShell()
@@ -127,7 +128,7 @@ namespace SicoreQMS
             servicees.RegisterDialog<TestStatusEditView, TestStatusEditViewModel>();
 
             servicees.RegisterDialog<TestItemAddView, TestItemAddViewModel>();
-
+            servicees.RegisterDialog<TestCardMaintainView, TestCardMaintainViewModel>();
             servicees.RegisterDialog<LoginView, LoginViewModel>();
 
             servicees.RegisterDialog<TestProcessItemUpdateView, TestProcessItemUpdateViewModel>();

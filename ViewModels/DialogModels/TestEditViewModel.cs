@@ -92,8 +92,6 @@ namespace SicoreQMS.ViewModels.DialogModels
                 var testItem = context.TestProcessItem.Find(TestId);
                 testItem.ExperimentSatrtTime= this.StartDate;
                 testItem.ExperimentEndTime = this.EndDate;
-
-
                 context.SaveChanges();
 
             }

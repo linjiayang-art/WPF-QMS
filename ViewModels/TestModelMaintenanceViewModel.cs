@@ -18,6 +18,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using SicoreQMS.Extensions;
+using SicoreQMS.Common.Interface;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.Xml;
+using Prism.Services.Dialogs;
+using SicoreQMS.Service;
 
 namespace SicoreQMS.ViewModels
 {
@@ -32,11 +37,6 @@ namespace SicoreQMS.ViewModels
             get { return modelId; }
             set { modelId = value;RaisePropertyChanged();}
         }
-
-
-      
-
-        private IEventAggregator aggregator;
 
         private ObservableCollection<TestModelItem> testModelItems;
 
@@ -58,21 +58,91 @@ namespace SicoreQMS.ViewModels
 
         #region 事件
         public DelegateCommand<SelectBasic> HandleSelectModel { get; private set;}
-
+        public DelegateCommand HandleAdd { get; set; }
+        public DelegateCommand<TestModelItem> HandleDel { get; set; }
         public DelegateCommand<string> BtnSumbit { get; private set;}
-  
+      
+        public IDialogService Dialog { get; }
+
+        private IEventAggregator aggregator;
 
         #endregion
 
 
-        public TestModelMaintenanceViewModel(IEventAggregator aggregator)
+        public TestModelMaintenanceViewModel(IEventAggregator aggregator, IDialogService dialog)
         {
+            HandleDel = new DelegateCommand<TestModelItem>(DelInfo);
+            HandleAdd = new DelegateCommand(AddInfo);
             HandleSelectModel = new DelegateCommand<SelectBasic>(SelectModel);
             TestModel =Service.TestProcessService.GetTestModel();
             BtnSumbit=new DelegateCommand<string>(OnSubmit);
             this.aggregator=aggregator;
+            Dialog = dialog;
+     
             TestItems = new ObservableCollection<TestModelItem>();
         }
+
+
+     
+
+
+        private void DelInfo(TestModelItem parmater)
+        {
+
+            var a = "safa";
+
+            using (var context = new SicoreQMSEntities1())
+            {
+                var items = context.TestModelItem.Where(b => b.ModelId == ModelId).OrderBy(b => b.ExperimentItemRank).ToList();
+                TestItems.Clear();
+                foreach (var item in items)
+                {
+                    TestItems.Add(item);
+                }
+            }
+
+            return;
+
+        }
+
+        private void AddInfo()
+        {
+            DialogParameters dialogParameters = new DialogParameters
+            {
+                { "ModelId",ModelId},
+            };
+            Dialog.ShowDialog("TestCardMaintainView", dialogParameters,  result =>
+            {
+
+                using (var context = new SicoreQMSEntities1())
+                {
+                    var items = context.TestModelItem.Where(b => b.ModelId == ModelId).OrderBy(b => b.ExperimentItemRank).ToList();
+                    TestItems.Clear();
+                    foreach (var item in items)
+                    {
+                        TestItems.Add(item);
+                    }
+                }
+
+            });
+            //DialogParameters dialogParameters = new DialogParameters
+            //{
+            //    { "ProdId",ProdId},
+            //    {"TestProcessId" ,TestModelItem[0].TestProcessId}
+
+            //};
+            //Dialog.ShowDialog("TestCardMaintainView", dialogParameters, result =>
+            //{
+            //    if (result.Result == ButtonResult.OK)
+            //    {
+            //        aggregator.SendMessage("新增成功!");
+            //        GetInfo(TestProcessId);
+            //    }
+
+
+            //});
+        }
+
 
         private void OnSubmit(string obj)
         {

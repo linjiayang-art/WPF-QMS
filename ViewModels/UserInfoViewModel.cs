@@ -41,7 +41,7 @@ namespace SicoreQMS.ViewModels
         public UserInfoViewModel()
         {
 				UserInfos = Service.UserService.GetUserInfos();
-            SomeMethod();
+            
             ExecuetCommand =new DelegateCommand<string>(Execuet);
 
 
@@ -54,12 +54,6 @@ namespace SicoreQMS.ViewModels
         }
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public void SomeMethod()
-        {
-            logger.Info("This is an information message.");
-            logger.Warn("This is a warning message.");
-            logger.Error("This is an error message.");
-
-        }
+      
     }
 }

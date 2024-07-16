@@ -38,28 +38,29 @@
                 materialDesign:HintAssist.Hint="设备类型"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding EquipmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextWrapping="Wrap">
-                <TextBox.InputBindings>
+                TextWrapping="Wrap" KeyDown="EquipmentType_KeyDown">
+                <!--<TextBox.InputBindings>
                     <KeyBinding
                         Key="Enter"
                         Command="{Binding BtnExecute}"
                         CommandParameter="query" />
-                </TextBox.InputBindings>
+                </TextBox.InputBindings>-->
             </TextBox>
             <TextBox
                 x:Name="EquipmentNo"
                 Grid.Column="1"
                 Margin="5"
                 materialDesign:HintAssist.Hint="设备编号"
+                KeyDown="EquipmentNo_KeyDown"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding EquipmentNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 TextWrapping="Wrap">
-                <TextBox.InputBindings>
+                <!--<TextBox.InputBindings>
                     <KeyBinding
                         Key="Enter"
                         Command="{Binding BtnExecute}"
                         CommandParameter="query" />
-                </TextBox.InputBindings>
+                </TextBox.InputBindings>-->
             </TextBox>
             <DatePicker
                 x:Name="startDate"
@@ -76,21 +77,27 @@
                 SelectedDate="{Binding EndDate}"
                 Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
             <Grid Grid.Column="2" />
-            <Button
+
+            <StackPanel
                 Grid.Column="4"
-                Width="125"
-                Margin="5"
-                Click="Button_Click"
-                CommandParameter="生成数据列"
-                Content="查询" />
-            <Button
-                Grid.Column="4"
-                Width="125"
-                Margin="5"
-                Command="{Binding BtnExecute}"
-                CommandParameter="query"
-                Content="查询"
-                Visibility="Hidden" />
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Grid.Column="4"
+                    Width="125"
+                    Margin="5"
+                    Click="Button_Click"
+                    CommandParameter="生成数据列"
+                    Content="查询" />
+                <Button
+                    Grid.Column="4"
+                    Width="125"
+                    Margin="5"
+                    Command="{Binding BtnExecute}"
+                    CommandParameter="export"
+                    Content="导出" />
+            </StackPanel>
+
 
 
 
@@ -108,6 +115,7 @@
                     <DataGridTextColumn Binding="{Binding Equipment}" Header="设备" />
                     <DataGridTextColumn Binding="{Binding Model}" Header="型号" />
                     <DataGridTextColumn Binding="{Binding EquipmentNo}" Header="产品编号" />
+                    <DataGridTextColumn Binding="{Binding EquipmentYield}" Header="利用率" />
                     <DataGridTemplateColumn Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -130,10 +138,10 @@
                     <Style TargetType="DataGridCell">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ColorData}" Value="LightGreen">
-                                <Setter Property="Background" Value="LightGreen" />
+                                <Setter Property="Background" Value="LightCoral" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding ColorData}" Value="LightCoral">
-                                <Setter Property="Background" Value="LightCoral" />
+                                <Setter Property="Background" Value="Gray" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

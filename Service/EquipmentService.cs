@@ -509,6 +509,10 @@ namespace SicoreQMS.Service
                 var equipmentList = equipmentListQuery.ToList();
                 foreach (var equipmentItem in equipmentList)
                 {
+
+
+             
+
                     var model = new EquipmentDateModel
                     {
                         Equipment = equipmentItem.EquipmentName,
@@ -526,16 +530,20 @@ namespace SicoreQMS.Service
                         model.Status = "Inactive";
                     }
                     var useageList = context.UsageRecord.Where(e => e.EquipmentId == equipmentItem.EquipmentID&&e.StartDate>=startDate).OrderBy(p => p.StartDate).ToList();
+                    //如果没有使用记录则默认为stop
                     if (useageList.Count == 0)
                     {
                         for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
                         {
                                 model.DailyData.Add(date, "stop");
-                            model.ColorData.Add(date, "LightCoral");
+                            model.ColorData.Add(date, "Gray");
                         }
+                        model.EquipmentYield = "0%";
                     }
                     else
                     {
+                        var useCount = 0;
+                        var equipmentTotalDays = (endDate - startDate).Days + 1;
                         foreach (var usageItem in useageList)
                         {
                             
@@ -549,7 +557,8 @@ namespace SicoreQMS.Service
                                     continue;
                                 }
                                 model.DailyData.Add(date, "stop");
-                                model.ColorData.Add(date, "LightCoral");
+                                model.ColorData.Add(date, "Gray");
+                                //model.ColorData.Add(date, "LightCoral");
                             }
                             //先把时间设置为0点0分
                             var usageStartDate = (DateTime)usageItem.StartDate;
@@ -562,20 +571,29 @@ namespace SicoreQMS.Service
                             {
                                 if (model.DailyData.ContainsKey(date))
                                 {
+                                    string value = "";
+                                    if (model.DailyData.TryGetValue(date, out value ))
+                                    {
+                                        if (value=="run")
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                    useCount++;
                                     //更新DailyData
-
                                     model.DailyData[date]= "run";
-                                    model.ColorData[date] = "LightGreen";
+                                    model.ColorData[date] = "LightCoral";
                                    
-
                                     continue;
                                 }
+                                useCount++;
                                 //比较日期在同一天即可,不对比具体时刻
                                 model.DailyData.Add(date, "run");
-                                model.ColorData.Add(date, "LightGreen");
+                                model.ColorData.Add(date, "LightCoral");
                             }
                         }
 
+                        model.EquipmentYield = ((double)useCount / equipmentTotalDays).ToString("P");
                     }
                   
                     results.Add(model);
@@ -664,6 +682,82 @@ namespace SicoreQMS.Service
                 return result;
         }
 
-       
+        public static ObservableCollection<EquipmentUsageDetailModel> GetEquipmentUsageDetails( DateTime startDate, DateTime endDate)
+        {
+            ///设备结束时间可能为空值，需要处理
+            var result = new ObservableCollection<EquipmentUsageDetailModel>();
+            var count = 0;
+            using (var context = new SicoreQMSEntities1())
+            {
+                var usageRecords = from UsageRecord in context.UsageRecord
+                                   join Equipment in context.Equipment on UsageRecord.EquipmentId equals Equipment.EquipmentID
+                                   join Userinfo in context.UserInfo on UsageRecord.UseUser equals Userinfo.Id
+                                   where UsageRecord.StartDate >= startDate && UsageRecord.StartDate <= endDate
+                                   select new EquipmentUsageDetailModel
+                                   {
+                                       StartDate = (DateTime)UsageRecord.StartDate,
+                                       EndDate = UsageRecord.EndDate ?? DateTime.Today,
+                                       UseType = UsageRecord.UseType,
+                                       UseProcess = UsageRecord.UseProcess,
+                                       UseUser = Userinfo.UserName,
+                                       ProcessId = UsageRecord.ProcessId
+                                   };
+                var records = usageRecords.ToList();
+                if (records.Count == 0)
+                {
+                    return result;
+                }
+                foreach (var item in records)
+                {
+                    //if (item.EndDate is null)
+                    //{
+                    //    i
+                    //}
+                    var useType = item.UseType;
+                    if (useType == "试验流程卡")
+                    {
+                        var testItem = from TestProcessItem in context.TestProcessItem
+                                       join TestProcess in context.TestProcess on TestProcessItem.TestProcessId equals TestProcess.Id
+                                       where TestProcessItem.Id == item.ProcessId
+                                       select new
+                                       {
+                                           TestProcessItem.Id,
+                                           TestProcess.ProdType,
+                                           TestProcess.ProdLot,
+                                       };
+
+                        var testInfo = testItem.FirstOrDefault();
+                        if (testInfo is null)
+                        {
+                            continue;
+                        }
+                        item.ProdLot = testInfo.ProdLot;
+                        item.ProdType = testInfo.ProdType;
+
+                    }
+                    if (useType == "生产流程卡")
+                    {
+                        var testItem = context.Prod_ProcessItem.Where(p => p.Id == item.ProcessId).SingleOrDefault();
+
+
+                        if (testItem is null)
+                        {
+                            continue;
+                        }
+                        item.ProdLot = testItem.Lot;
+                        item.ProdType = testItem.ProdType;
+
+                    }
+
+                    TimeSpan timeDifference = (TimeSpan)((DateTime)item.EndDate - item.StartDate);
+
+                    item.Sort = count++;
+                    item.UseCount = timeDifference.Hours;
+                    result.Add(item);
+                }
+            }
+            return result;
+        }
+
     }
 }

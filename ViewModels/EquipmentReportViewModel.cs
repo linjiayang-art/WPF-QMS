@@ -20,6 +20,11 @@ using Prism.Regions;
 using SicoreQMS.Extensions;
 using Prism.Services.Dialogs;
 using Prism.Ioc;
+using System.IO;
+using SicoreQMS.Service;
+using SicoreQMS.Common.Models.Operation;
+using DocumentFormat.OpenXml.EMMA;
+using System.Runtime.InteropServices.ComTypes;
 
 
 namespace SicoreQMS.ViewModels
@@ -142,9 +147,23 @@ namespace SicoreQMS.ViewModels
                 case "query":
                     LoadTestData(this.StartDate,this.EndDate);
                     break;
+                case "export":
+                    ExportRunFile();
+                    break;
                 default:
                     break;
             }
+        }
+
+        private void ExportRunFile()
+        {
+       
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string fullPath = Path.Combine(desktopPath, "机台使用记录.xlsx");
+            var equipmentList = Service.EquipmentService.GetEquipmentUsageDetails(this.StartDate, this.EndDate);
+            ExcelExporter.ExportToExcel(ReportData, equipmentList, fullPath);
+        
+
         }
 
         public void LoadTestData(DateTime startDate, DateTime endDate)

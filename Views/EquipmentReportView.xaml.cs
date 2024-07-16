@@ -46,7 +46,7 @@ namespace SicoreQMS.Views
             this.DataContext = this.viewModel;               // 设置 DataContext
             this.viewModel.LoadTestData( startDate,  endDate);
             dataGrid.ItemsSource = this.viewModel.ReportData; // 绑定 DataGrid 的 ItemsSource
-            var fixedColumns = dataGrid.Columns.Take(4).ToList(); // 假设前4列是固定列
+            var fixedColumns = dataGrid.Columns.Take(5).ToList(); // 假设前4列是固定列
             dataGrid.Columns.Clear();
 
             // 重新添加固定的列
@@ -107,6 +107,28 @@ namespace SicoreQMS.Views
             //this.DataContext = this.viewModel;               // 设置 DataContext
             //dataGrid.ItemsSource = this.viewModel.ReportData; // 绑定 DataGrid 的 ItemsSource
             CreateColumns(startDate, endDate);
+        }
+
+        private void EquipmentNo_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            var startDate = this.startDate.SelectedDate ?? DateTime.Today;
+            var endDate = this.endDate.SelectedDate ?? DateTime.Today;
+
+            if (e.IsDown&&e.KeyStates==Keyboard.GetKeyStates(Key.Enter))
+            {
+                CreateColumns(startDate, endDate);
+            }
+        }
+
+        private void EquipmentType_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            var startDate = this.startDate.SelectedDate ?? DateTime.Today;
+            var endDate = this.endDate.SelectedDate ?? DateTime.Today;
+
+            if (e.IsDown && e.KeyStates == Keyboard.GetKeyStates(Key.Enter))
+            {
+                CreateColumns(startDate, endDate);
+            }
         }
     }
 }

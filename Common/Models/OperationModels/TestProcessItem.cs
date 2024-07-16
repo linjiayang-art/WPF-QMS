@@ -16,6 +16,9 @@ namespace SicoreQMS.Common.Models.Operation
         /// 
         /// </summary>
         /// 
+
+  
+
         public bool IsButtonEnabled
         {
             get
