@@ -71,7 +71,7 @@
                 CanUserAddRows="False"
                 ItemsSource="{Binding TestItems}">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="150" Header="操作">
+                    <DataGridTemplateColumn Width="180" Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
 
@@ -85,7 +85,7 @@
                                     <Button
                                         Command="{Binding DataContext.HandleAdd, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
                                         CommandParameter="{Binding}"
-                                        Content="插入"
+                                        Content="新增测试项"
                                         Style="{StaticResource MaterialDesignFlatButton}" />
                                 </StackPanel>
                             </DataTemplate>
@@ -94,11 +94,21 @@
                     <DataGridTextColumn Binding="{Binding ExperimentItemNo}" Header="序号" />
                     <DataGridTextColumn Binding="{Binding ExperimentItemName}" Header="试验项目" />
                     <DataGridTextColumn Binding="{Binding ExperimentItemStandard}" Header="试验标准/作业指导" />
-                    <DataGridTextColumn Binding="{Binding ExperimentItemConditions}" Header="试验条件" />
+                    <DataGridTextColumn
+                        Width="150"
+                        Binding="{Binding ExperimentItemConditions}"
+                        Header="试验条件">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding ExperimentItemQty}" Header="试验数量" />
                     <DataGridTextColumn Binding="{Binding ExperimentItemNumber}" Header="试验编号" />
 
                     <DataGridTextColumn Binding="{Binding ItemDesc}" Header="其它描述" />
+                    <DataGridTextColumn Binding="{Binding ExperimentItemRank}" Header="排序编号" />
                 </DataGrid.Columns>
 
             </DataGrid>

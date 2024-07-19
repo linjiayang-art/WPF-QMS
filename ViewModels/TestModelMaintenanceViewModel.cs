@@ -26,7 +26,7 @@ using SicoreQMS.Service;
 
 namespace SicoreQMS.ViewModels
 {
-    internal class TestModelMaintenanceViewModel:BindableBase, IRegionMemberLifetime
+    internal class TestModelMaintenanceViewModel : BindableBase, IRegionMemberLifetime
     {
         #region 属性
 
@@ -35,7 +35,7 @@ namespace SicoreQMS.ViewModels
         public string ModelId
         {
             get { return modelId; }
-            set { modelId = value;RaisePropertyChanged();}
+            set { modelId = value; RaisePropertyChanged(); }
         }
 
         private ObservableCollection<TestModelItem> testModelItems;
@@ -49,19 +49,19 @@ namespace SicoreQMS.ViewModels
 
         public ObservableCollection<SelectBasic> TestModel
         {
-            get { return  tsetModel; }
-            set { tsetModel =  value; RaisePropertyChanged();}
+            get { return tsetModel; }
+            set { tsetModel = value; RaisePropertyChanged(); }
         }
 
-        public bool KeepAlive { get; set; } =false;
+        public bool KeepAlive { get; set; } = false;
         #endregion
 
         #region 事件
-        public DelegateCommand<SelectBasic> HandleSelectModel { get; private set;}
+        public DelegateCommand<SelectBasic> HandleSelectModel { get; private set; }
         public DelegateCommand HandleAdd { get; set; }
         public DelegateCommand<TestModelItem> HandleDel { get; set; }
-        public DelegateCommand<string> BtnSumbit { get; private set;}
-      
+        public DelegateCommand<string> BtnSumbit { get; private set; }
+
         public IDialogService Dialog { get; }
 
         private IEventAggregator aggregator;
@@ -74,31 +74,40 @@ namespace SicoreQMS.ViewModels
             HandleDel = new DelegateCommand<TestModelItem>(DelInfo);
             HandleAdd = new DelegateCommand(AddInfo);
             HandleSelectModel = new DelegateCommand<SelectBasic>(SelectModel);
-            TestModel =Service.TestProcessService.GetTestModel();
-            BtnSumbit=new DelegateCommand<string>(OnSubmit);
-            this.aggregator=aggregator;
+            TestModel = Service.TestProcessService.GetTestModel();
+            BtnSumbit = new DelegateCommand<string>(OnSubmit);
+            this.aggregator = aggregator;
             Dialog = dialog;
-     
+
             TestItems = new ObservableCollection<TestModelItem>();
         }
 
 
-     
+
 
 
         private void DelInfo(TestModelItem parmater)
         {
-
-            var a = "safa";
-
+            if (parmater is null)
+            {
+                aggregator.SendMessage("未匹配到数据，请重新选择");
+                return;
+            }
             using (var context = new SicoreQMSEntities1())
             {
-                var items = context.TestModelItem.Where(b => b.ModelId == ModelId).OrderBy(b => b.ExperimentItemRank).ToList();
-                TestItems.Clear();
-                foreach (var item in items)
+                var testItemModel = context.TestModelItem.FirstOrDefault(b => b.Id == parmater.Id);
+                if (testItemModel != null)
                 {
-                    TestItems.Add(item);
+                    context.TestModelItem.Remove(testItemModel);
+                    context.SaveChanges();
+                    aggregator.SendMessage("删除成功");
                 }
+                else
+                {
+                    aggregator.SendMessage("删除失败，请刷新页面后重试");
+                }
+
+                GetInfo();
             }
 
             return;
@@ -111,18 +120,11 @@ namespace SicoreQMS.ViewModels
             {
                 { "ModelId",ModelId},
             };
-            Dialog.ShowDialog("TestCardMaintainView", dialogParameters,  result =>
+            Dialog.ShowDialog("TestCardMaintainView", dialogParameters, result =>
             {
 
-                using (var context = new SicoreQMSEntities1())
-                {
-                    var items = context.TestModelItem.Where(b => b.ModelId == ModelId).OrderBy(b => b.ExperimentItemRank).ToList();
-                    TestItems.Clear();
-                    foreach (var item in items)
-                    {
-                        TestItems.Add(item);
-                    }
-                }
+
+                GetInfo();
 
             });
             //DialogParameters dialogParameters = new DialogParameters
@@ -166,7 +168,7 @@ namespace SicoreQMS.ViewModels
                 aggregator.SendMessage("请导入数据！");
                 return;
             }
-            using (var context =new SicoreQMSEntities1())
+            using (var context = new SicoreQMSEntities1())
             {
                 var items = context.TestModelItem.Where(b => b.ModelId == ModelId).ToList();
                 foreach (var item in items)
@@ -177,7 +179,7 @@ namespace SicoreQMS.ViewModels
                 foreach (var item in TestItems)
                 {
                     context.TestModelItem.Add(item);
-                    
+
                 }
                 context.SaveChanges();
 
@@ -187,17 +189,22 @@ namespace SicoreQMS.ViewModels
 
         private void SelectModel(SelectBasic basic)
         {
-            ModelId= basic.Value;
-            using (var context=new SicoreQMSEntities1())
+            ModelId = basic.Value;
+
+            GetInfo();
+        }
+
+        private void GetInfo()
+        {
+            using (var context = new SicoreQMSEntities1())
             {
-                var items = context.TestModelItem.Where(b => b.ModelId == ModelId).OrderBy(b=>b.ExperimentItemRank) . ToList(); 
+                var items = context.TestModelItem.Where(b => b.ModelId == ModelId).OrderBy(b => b.ExperimentItemRank).ToList();
                 TestItems.Clear();
                 foreach (var item in items)
                 {
                     TestItems.Add(item);
                 }
             }
-            
         }
 
 
@@ -242,7 +249,7 @@ namespace SicoreQMS.ViewModels
                         ExperimentItemStandard = row["ExperimentStandard"].ToString(),
                         ExperimentItemConditions = row["ExperimentConditions"].ToString(),
                         ExperimentItemQty = TryGetIntFromDataRow(row, "ExperimentQty"),
-                        ExperimentItemNumber= row["ExperimentNo"].ToString(),
+                        ExperimentItemNumber = row["ExperimentNo"].ToString(),
                         // ...
                         ItemDesc = row["ItemDesc"].ToString(),
                         // 假设日期和布尔列是可空的，并且使用适当的格式

@@ -163,7 +163,7 @@ namespace SicoreQMS.ViewModels
             var equipmentList = Service.EquipmentService.GetEquipmentUsageDetails(this.StartDate, this.EndDate);
             ExcelExporter.ExportToExcel(ReportData, equipmentList, fullPath);
         
-
+            MessageBox.Show("导出成功！");
         }
 
         public void LoadTestData(DateTime startDate, DateTime endDate)

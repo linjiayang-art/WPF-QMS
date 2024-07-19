@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SicoreQMS.ViewModels.DialogModels
 {
@@ -98,6 +99,13 @@ namespace SicoreQMS.ViewModels.DialogModels
                 case "Add":
                     AddModelItem();
                     break;
+                case "cancel":
+                    ButtonResult btnResult = ButtonResult.Cancel;
+                    var messsage = new DialogParameters { { "key", "取消" } };
+                    var dialogResult = new Prism.Services.Dialogs.DialogResult(btnResult, messsage);
+
+                    RaiseRequestClose(dialogResult);
+                    break;
                 default:
                     break;
             }
@@ -105,6 +113,12 @@ namespace SicoreQMS.ViewModels.DialogModels
 
         private void AddModelItem()
         {
+            if (string.IsNullOrEmpty(ExperimentNo))
+            {
+                MessageBox.Show("试验序号为必填项！");
+                return;
+            }
+
             using (var context=new SicoreQMSEntities1())
             {
                 var testItem = new TestModelItem
@@ -120,6 +134,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                     ModelId= ModelId,
                     ExperimentItemRank= 0,
                     IsDeleted= false,
+
                 };
                 context.TestModelItem.Add(testItem);
                 context.SaveChanges();

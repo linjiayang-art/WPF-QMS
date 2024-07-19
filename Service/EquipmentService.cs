@@ -700,7 +700,10 @@ namespace SicoreQMS.Service
                                        UseType = UsageRecord.UseType,
                                        UseProcess = UsageRecord.UseProcess,
                                        UseUser = Userinfo.UserName,
-                                       ProcessId = UsageRecord.ProcessId
+                                       ProcessId = UsageRecord.ProcessId,
+                                        EquipmentName=Equipment.EquipmentName,
+                                        EquipmentType=Equipment.EquipmentType,
+                                        EquipmentNo=Equipment.EquipmentNo
                                    };
                 var records = usageRecords.ToList();
                 if (records.Count == 0)

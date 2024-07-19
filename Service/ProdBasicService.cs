@@ -172,6 +172,10 @@ namespace SicoreQMS.Service
 
             foreach (var testTypeitem in testTypeItems)
             {
+                if (testTypeitem=="筛选")
+                {
+                    continue;
+                }
                 using (var context = new SicoreQMSEntities1())
                 {
                     TestProcess testProcess = new TestProcess()
@@ -212,7 +216,7 @@ namespace SicoreQMS.Service
                             ExperimentConditions = item.ExperimentItemConditions,
                             ExperimentNo = item.ExperimentItemNumber,
                             ExperimentQty = item.ExperimentItemQty,
-                            ExperimentItemRank = item.ExperimentItemRank
+                            ExperimentItemRank = (int?)item.ExperimentItemRank
                         };
                         context.TestProcessItem.Add(testProcessitem);
                     }

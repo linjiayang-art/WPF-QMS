@@ -287,7 +287,7 @@ namespace SicoreQMS.ViewModels
                         .Where(tp => context.TestProcessItem
                                            .Select(tpi => tpi.TestProcessId)
                                            .Distinct()
-                                           .Contains(tp.Id)&& tp.Isdeletd == false && tp.CompleteStatus == false)
+                                           .Contains(tp.Id)&& tp.Isdeletd == false && tp.CompleteStatus == false&&tp.TestType!="筛选")
                         .ToList();
            
                 foreach (var item in result)

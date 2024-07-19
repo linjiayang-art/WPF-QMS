@@ -25,11 +25,11 @@ namespace SicoreQMS.Common.Models.Operation
         public Nullable<int> ExperimentItemQty { get; set; }
         public string ExperimentItemNumber { get; set; }
         public Nullable<int> ExperimentItemRank { get; set; }
+        public string ItemDesc { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public string CreateUserNo { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string ModifyUserNo { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
-        public string ItemDesc { get; set; }
     }
 }

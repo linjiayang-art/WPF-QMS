@@ -37,14 +37,6 @@
           <Property Name="LastStatusChange" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6013: 表/视图“SicoreQMS.dbo.InspectionResultsCache”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
-        <EntityType Name="InspectionResultsCache">
-          <Property Name="DefectType" Type="nvarchar" MaxLength="255" />
-          <Property Name="DefectCount" Type="nvarchar" MaxLength="255" />
-          <Property Name="Notes" Type="nvarchar" MaxLength="255" />
-          <Property Name="deleted" Type="bit" />
-        </EntityType>-->
         <EntityType Name="LotRelation">
           <Key>
             <PropertyRef Name="Id" />
@@ -377,7 +369,6 @@
           <EntitySet Name="Prod_ProcessItem" EntityType="SicoreQMSModel.Prod_ProcessItem" />
           <EntitySet Name="TestModelBasic" EntityType="SicoreQMSModel.TestModelBasic" />
           <EntitySet Name="TestProcess" EntityType="SicoreQMSModel.TestProcess" />
-          <EntitySet Name="TestModelItem" EntityType="SicoreQMSModel.TestModelItem" />
           <EntitySet Name="TestProcessItem" EntityType="SicoreQMSModel.TestProcessItem" />
           <FunctionImport Name="proc_QAExperimentReport" ReturnType="Collection(SicoreQMSModel.proc_QAExperimentReport_Result)">
           <Parameter Name="lotNo" Mode="In" Type="String" />
@@ -395,6 +386,7 @@
           <EntitySet Name="UserInfo" EntityType="SicoreQMSModel.UserInfo" />
           <EntitySet Name="UserRoles" EntityType="SicoreQMSModel.UserRoles" />
           <EntitySet Name="RoleMenus" EntityType="SicoreQMSModel.RoleMenus" />
+          <EntitySet Name="TestModelItem" EntityType="SicoreQMSModel.TestModelItem" />
         </EntityContainer>
         <EntityType Name="Prod_ProcessModel">
           <Key>
@@ -538,28 +530,6 @@
           <Property Name="AuditStatus" Type="Boolean" />
           <Property Name="StatusDesc" Type="Int32" />
           <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TestModelItem">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModelId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ExperimentItemNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ExperimentItemName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ExperimentItemStandard" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ExperimentItemConditions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ExperimentItemWI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ExperimentItemQty" Type="Int32" />
-          <Property Name="ExperimentItemNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ExperimentItemRank" Type="Int32" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifyUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="ItemDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TestProcessItem">
           <Key>
@@ -733,6 +703,28 @@
           <Property Name="MenuId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RoleId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="TestModelItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemStandard" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemConditions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemWI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemQty" Type="Int32" />
+          <Property Name="ExperimentItemNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExperimentItemRank" Type="Int32" />
+          <Property Name="ItemDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifyUserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -885,29 +877,6 @@
                 <ScalarProperty Name="ProdType" ColumnName="ProdType" />
                 <ScalarProperty Name="ProdName" ColumnName="ProdName" />
                 <ScalarProperty Name="ModelTypeId" ColumnName="ModelTypeId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TestModelItem">
-            <EntityTypeMapping TypeName="SicoreQMSModel.TestModelItem">
-              <MappingFragment StoreEntitySet="TestModelItem">
-                <ScalarProperty Name="ItemDesc" ColumnName="ItemDesc" />
-                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
-                <ScalarProperty Name="ModifyUserNo" ColumnName="ModifyUserNo" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateUserNo" ColumnName="CreateUserNo" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="ExperimentItemRank" ColumnName="ExperimentItemRank" />
-                <ScalarProperty Name="ExperimentItemNumber" ColumnName="ExperimentItemNumber" />
-                <ScalarProperty Name="ExperimentItemQty" ColumnName="ExperimentItemQty" />
-                <ScalarProperty Name="ExperimentItemWI" ColumnName="ExperimentItemWI" />
-                <ScalarProperty Name="ExperimentItemConditions" ColumnName="ExperimentItemConditions" />
-                <ScalarProperty Name="ExperimentItemStandard" ColumnName="ExperimentItemStandard" />
-                <ScalarProperty Name="ExperimentItemName" ColumnName="ExperimentItemName" />
-                <ScalarProperty Name="ExperimentItemNo" ColumnName="ExperimentItemNo" />
-                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
-                <ScalarProperty Name="ModelId" ColumnName="ModelId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1080,6 +1049,29 @@
               <MappingFragment StoreEntitySet="RoleMenus">
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestModelItem">
+            <EntityTypeMapping TypeName="SicoreQMSModel.TestModelItem">
+              <MappingFragment StoreEntitySet="TestModelItem">
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyUserNo" ColumnName="ModifyUserNo" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUserNo" ColumnName="CreateUserNo" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ItemDesc" ColumnName="ItemDesc" />
+                <ScalarProperty Name="ExperimentItemRank" ColumnName="ExperimentItemRank" />
+                <ScalarProperty Name="ExperimentItemNumber" ColumnName="ExperimentItemNumber" />
+                <ScalarProperty Name="ExperimentItemQty" ColumnName="ExperimentItemQty" />
+                <ScalarProperty Name="ExperimentItemWI" ColumnName="ExperimentItemWI" />
+                <ScalarProperty Name="ExperimentItemConditions" ColumnName="ExperimentItemConditions" />
+                <ScalarProperty Name="ExperimentItemStandard" ColumnName="ExperimentItemStandard" />
+                <ScalarProperty Name="ExperimentItemName" ColumnName="ExperimentItemName" />
+                <ScalarProperty Name="ExperimentItemNo" ColumnName="ExperimentItemNo" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="ModelId" ColumnName="ModelId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

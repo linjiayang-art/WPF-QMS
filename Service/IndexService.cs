@@ -193,9 +193,10 @@ namespace SicoreQMS.Service
                              join prod in context.ProdInfo on pP.ProdId equals prod.Id
                              where cardList.Any(card => pPI.ProdProcessCard == card)
                && (!String.IsNullOrEmpty(pP.ProdType) && pP.ProdType.Contains(prodType))
-                   && (!String.IsNullOrEmpty(prod.ProdNo) && prod.ProdNo.Contains(prodNo))
+                   //&& (!String.IsNullOrEmpty(prod.ProdNo) && prod.ProdNo.Contains(prodNo))
                && (!String.IsNullOrEmpty(pP.ProdLot) && pP.ProdLot.Contains(lot)
-               && prod.TestType.Contains("筛选")
+
+               //&& prod.TestType.Contains("筛选")
                && pP.IsDeleted == false)
                              orderby prod.ProdNo, pPI.ModelSort, pPI.Lot
                              select new

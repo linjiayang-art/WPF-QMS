@@ -34,7 +34,6 @@ namespace SicoreQMS.Common.Models.Operation
         public virtual DbSet<Prod_ProcessItem> Prod_ProcessItem { get; set; }
         public virtual DbSet<TestModelBasic> TestModelBasic { get; set; }
         public virtual DbSet<TestProcess> TestProcess { get; set; }
-        public virtual DbSet<TestModelItem> TestModelItem { get; set; }
         public virtual DbSet<TestProcessItem> TestProcessItem { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
         public virtual DbSet<EquipmentStatus> EquipmentStatus { get; set; }
@@ -45,6 +44,7 @@ namespace SicoreQMS.Common.Models.Operation
         public virtual DbSet<UserInfo> UserInfo { get; set; }
         public virtual DbSet<UserRoles> UserRoles { get; set; }
         public virtual DbSet<RoleMenus> RoleMenus { get; set; }
+        public virtual DbSet<TestModelItem> TestModelItem { get; set; }
     
         public virtual ObjectResult<proc_QAExperimentReport_Result> proc_QAExperimentReport(string lotNo)
         {

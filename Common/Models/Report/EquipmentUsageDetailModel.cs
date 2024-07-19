@@ -9,6 +9,8 @@ namespace SicoreQMS.Common.Models.Report
     public class EquipmentUsageDetailModel
     {
         public int Sort { get; set; }
+  
+
         public string UseType { get; set; }
         public string UseProcess { get; set; }
         public  string UseUser { get; set; }
@@ -19,6 +21,10 @@ namespace SicoreQMS.Common.Models.Report
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string ProcessId { get; set; }
+
+        public string EquipmentName { get; set; }
+        public string EquipmentType { get; set; }
+        public string EquipmentNo { get; set; }
 
     }
 }

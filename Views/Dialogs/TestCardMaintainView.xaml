@@ -84,7 +84,11 @@
                     Command="{Binding BtnCommand}"
                     CommandParameter="Add"
                     Content="确认" />
-                <Button Margin="10" Content="取消" />
+                <Button
+                    Margin="10"
+                    Command="{Binding BtnCommand}"
+                    CommandParameter="cancel"
+                    Content="取消" />
             </StackPanel>
         </Grid>
     </Grid>

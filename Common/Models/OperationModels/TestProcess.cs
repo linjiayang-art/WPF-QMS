@@ -25,7 +25,7 @@ namespace SicoreQMS.Common.Models.Operation
         {
             return new SelectBasic()
             {
-                Label = $" {ProdType} {ProdLot}{TestType}",
+                Label = $" {ProdType} :{ProdLot} :{TestType}",
                 //Label = $" 产品型号: {ProdType} 批次号: {ProdLot} 试验类别:{TestType}",
                 Value = Id,
                 DisplayValue = ProdType
@@ -46,7 +46,7 @@ namespace SicoreQMS.Common.Models.Operation
         {
            return new SelectBasic()
            {
-               Label=$"{ProdName}|{ProdType}|{ProdLot}|{Prodstandard}|{TestType} ",
+               Label=$"{ProdType} :{ProdLot} :{Prodstandard} :{TestType} ",
                Value=Id,
                DisplayValue = ProdType
            };
