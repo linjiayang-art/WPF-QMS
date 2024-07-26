@@ -181,6 +181,7 @@
                                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
                                     <DataGridTextColumn Binding="{Binding ScrapQty}" Header="不合格品数量" />
                                     <DataGridTextColumn Binding="{Binding ProcessStatus}" Header="当前状态" />
+
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Expander>
@@ -221,17 +222,28 @@
                     <DataGridTextColumn Binding="{Binding ScrapQty}" Header="不合格品数量" />
                     <DataGridTextColumn Binding="{Binding ProcessStatus}" Header="当前状态" />
 
-                    <DataGridTemplateColumn Width="110" Header="操作">
+                    <DataGridTemplateColumn Header="操作">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button
-                                    Width="75"
-                                    materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
-                                    Command="{Binding DataContext.BtnCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
-                                    CommandParameter="{Binding}"
-                                    Content="删除"
-                                    FontSize="13"
-                                    Style="{StaticResource MaterialDesignOutlinedButton}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                        Width="75"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Command="{Binding DataContext.BtnCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding}"
+                                        Content="删除"
+                                        FontSize="13"
+                                        Style="{StaticResource MaterialDesignOutlinedButton}" />
+                                    <Button
+                                        Width="85"
+                                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0"
+                                        Command="{Binding DataContext.ProdProcessEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding}"
+                                        Content="修改状态"
+                                        FontSize="13"
+                                        Style="{StaticResource MaterialDesignOutlinedButton}" />
+                                </StackPanel>
+
                                 <!--<StackPanel Orientation="Horizontal">
                                  IsEnabled="{Binding IsButtonEnabled, Mode=OneWay}"
                                  <Border Width="10" Height="10" Background="Aqua"/>

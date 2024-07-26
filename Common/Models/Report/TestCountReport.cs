@@ -15,6 +15,7 @@ namespace SicoreQMS.Common.Models.Report
             ChildItems = new List<TestCountReport>();
         }
 
+        public string Id { get; set; }  
         public int Qty { get; set; }
         public string ProdName { get; set; }
         public string ProdType { get; set; }

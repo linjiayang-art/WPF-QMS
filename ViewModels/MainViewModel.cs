@@ -93,7 +93,7 @@ namespace SicoreQMS.ViewModels
         public void Configure()
         {
             CreateMenuBar();
-            regionManager.Regions[PrismManger.MainViewRegionName].RequestNavigate("ProdProcessUpdateView");
+            regionManager.Regions[PrismManger.MainViewRegionName].RequestNavigate("IndexView");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -27,8 +28,22 @@ namespace SicoreQMS.ViewModels
         public DelegateCommand<TestCountReport>  BtnCommand { get; private set; }
         public DelegateCommand<TestCount> TestExecuetCommand { get; private set; }
         public DelegateCommand<TestCount> TestEditCommand { get; private set; }
+        public DelegateCommand<TestCountReport> ProdProcessEditCommand { get; private set; }
         public DelegateCommand<string> ExecuetCommand { get; private set; }
-     
+
+        //private bool _isEnabled;
+
+        //public bool IsEnabled
+        //{
+        //    get => _isEnabled;
+        //    set => SetProperty(ref _isEnabled, value);
+
+        //}
+
+        //private bool CanExecute()
+        //{
+        //    return IsEnabled;
+        //}
 
         public ObservableCollection<TestCountReport> _testReportList { get; set; }
 
@@ -88,7 +103,9 @@ namespace SicoreQMS.ViewModels
 
         public IndexViewModel(IDialogService dialog,IEventAggregator aggregator)
         {
+            
             ProdType = "";
+            
             ProdNo = "";
             Lot = "";
             TestReportList = Service.IndexService.GetTestCountReport();
@@ -96,8 +113,43 @@ namespace SicoreQMS.ViewModels
             BtnCommand= new DelegateCommand<TestCountReport>(BtnExecute);
             TestExecuetCommand=new DelegateCommand<TestCount>(TestExecute);
             TestEditCommand=new DelegateCommand<TestCount>(TestEdit);
+            ProdProcessEditCommand = new DelegateCommand<TestCountReport>(ProdProcessEdit);
             Dialog = dialog;
             Aggregator = aggregator;
+        }
+
+        private void ProdProcessEdit(TestCountReport testCountReport)
+        {
+            if (testCountReport.ProcessStatus== "拆分批次无法进行")
+            {
+                Aggregator.SendMessage("拆分批次无法进行状态修改！");
+                return;
+
+            }
+            if (testCountReport == null)
+            {
+                Aggregator.SendMessage("请选择一条记录");
+                return;
+            }
+            if (testCountReport.Id==null)
+            {
+                Aggregator.SendMessage("未获取到关键ID，请重新选择或联系IT");
+                return;
+                
+            }
+            DialogParameters dialogParameters = new DialogParameters
+            {
+                { "Id",testCountReport.Id}
+
+            };
+
+            Dialog.ShowDialog("ProdProcessEditView", dialogParameters, result =>
+            {
+                GetList();
+                //var newid = result.Parameters.GetValue<string>("NewId");
+                //Console.WriteLine(newid);
+
+            });
         }
 
         private void TestEdit(TestCount count)
@@ -120,9 +172,13 @@ namespace SicoreQMS.ViewModels
 
         private void BtnExecute(TestCountReport report)
         {
+          
             Service.IndexService.DelProd(report);
-            TestReportList = Service.IndexService.GetTestCountReport();
+            GetList();
+            Aggregator.SendMessage("删除成功!");
             return;
+            //TestReportList = Service.IndexService.GetTestCountReport();
+            //return;
         
         }
         private void TestExecute(TestCount report)

@@ -26,18 +26,7 @@ namespace SicoreQMS.Service
     public class IndexService : BindableBase
     {
 
-
-
-        public static List<TestCountReport> GetTestReportData(List<object> list)
-        {
-
-         
-
-
-            var result = new List<TestCountReport>();
-            return result;
-        }
-
+        
         public static ObservableCollection<TestCountReport> GetTestCountReport()
         {
             var results = new ObservableCollection<TestCountReport>();
@@ -84,6 +73,7 @@ namespace SicoreQMS.Service
                     var testCountReport = new TestCountReport();
                     //获取该产品的所有工序
                     var singerResult = resultList.Where(p => p.Id == singerItem.Id).ToList();
+                    testCountReport.Id= singerItem.Id;
                     testCountReport.ProdName = singerItem.ProdName;
                     testCountReport.ProdType = singerItem.ProdType;
                     testCountReport.ProdLot = singerItem.ProdLot;
@@ -186,18 +176,31 @@ namespace SicoreQMS.Service
             var results = new ObservableCollection<TestCountReport>();
             var cardList = new List<string> { "老炼", "超声扫描", "X光检测", "入库（筛选品）", "老炼后常温电测", "电性能测试" };
 
+
             using (var context = new SicoreQMSEntities1())
             {
-                var query = (from pP in context.Prod_Process
+
+                var Prodlist= context.Prod_Process.Where(p => p.ProdType.Contains(prodType) && p.ProdLot.Contains(lot)&&p.ProdNo.Contains(prodNo)&&p.IsDeleted==false).ToList();
+                if (Prodlist.Count==0)
+                {
+                    return results;
+                }
+                List<string> IdList = new List<string>();
+                foreach (var item in Prodlist)
+                {
+                    IdList.Add(item.Id);
+                }
+              var query = (from pP in context.Prod_Process
                              join pPI in context.Prod_ProcessItem on pP.Id equals pPI.ProdProcessId
                              join prod in context.ProdInfo on pP.ProdId equals prod.Id
-                             where cardList.Any(card => pPI.ProdProcessCard == card)
-               && (!String.IsNullOrEmpty(pP.ProdType) && pP.ProdType.Contains(prodType))
-                   //&& (!String.IsNullOrEmpty(prod.ProdNo) && prod.ProdNo.Contains(prodNo))
-               && (!String.IsNullOrEmpty(pP.ProdLot) && pP.ProdLot.Contains(lot)
-
-               //&& prod.TestType.Contains("筛选")
-               && pP.IsDeleted == false)
+                             where cardList.Any(card => pPI.ProdProcessCard == card)&&IdList.Contains(pP.Id)
+               //              where cardList.Any(card => pPI.ProdProcessCard == card)
+               //  && pPI.IsDeleted == false && pP.IsDeleted == false
+               //&& (!String.IsNullOrEmpty(pP.ProdType) && pP.ProdType.Contains(prodType))
+               // //&& (!String.IsNullOrEmpty(pP.ProdNo) && pP.ProdNo.Contains(prodNo))
+               //&& (!String.IsNullOrEmpty(pP.ProdLot) && pP.ProdLot.Contains(lot))
+                
+                             //&& prod.TestType.Contains("筛选")
                              orderby prod.ProdNo, pPI.ModelSort, pPI.Lot
                              select new
                              {
@@ -215,16 +218,22 @@ namespace SicoreQMS.Service
                                  pPI.IsComplete,
                                  prod.ProdNo,
                                  pP.ProdStatus,
-                                 pPI.ModelSort
+                                 pPI.ModelSort,
+                                 pPI.IsDeleted
                              }).Take(100);
                 var resultList = query.ToList();
                 var singerList = resultList.Where(p => p.ProdProcessCard == "老炼").OrderBy(p => p.ProdLot).ToList();
                 
                 foreach (var singerItem in singerList)
                 {
+                    if (singerItem.IsDeleted==true)
+                    {
+                        continue;
+                    }
                     var testCountReport = new TestCountReport();
                     //获取该产品的所有工序
                     var singerResult = resultList.Where(p => p.Id == singerItem.Id).ToList();
+                    testCountReport.Id = singerItem.Id;
                     testCountReport.ProdName = singerItem.ProdName;
                     testCountReport.ProdType = singerItem.ProdType;
                     testCountReport.ProdLot = singerItem.ProdLot;

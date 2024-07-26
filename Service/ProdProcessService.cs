@@ -80,8 +80,9 @@ namespace SicoreQMS.Service
         }
 
 
-
-
+        /// <summary>
+        /// itemStatus 0未开始 1开始 2完成 3跳过 4暂定 5拆分批次无法进行
+        /// </summary>
         public static ResultInfo EndProcess(string id, int qty, string remark = "", DateTime? endTime = null)
         {
             if (endTime == null)
@@ -112,10 +113,11 @@ namespace SicoreQMS.Service
 
                 var prodprocess = context.Prod_Process.Find(prodProcessItem.ProdProcessId);
 
-                if (qty == 0)
+                if (qty < 0)
                 {
                     resultInfo.ResultStatus = false;
-                    resultInfo.ResultMessage = $"产出数量为0!";
+                    resultInfo.ResultMessage = $"产出数量小于0!";
+                    prodprocess.ProdStatus = 2;//状态变更为完成
                     return resultInfo;
                 }
 
@@ -134,7 +136,7 @@ namespace SicoreQMS.Service
                 //更新流程卡进程
                 prodProcessItem.EndRemark = remark;
                 prodProcessItem.OutQty = qty;
-                prodProcessItem.ItemStatus = 2;//状态变更为正在进行
+                prodProcessItem.ItemStatus = 2;//状态变更为完成
                 prodProcessItem.EndDate = endTime;
                 prodProcessItem.IsComplete = true;
                 context.SaveChanges();

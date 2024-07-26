@@ -97,7 +97,9 @@ namespace SicoreQMS
 
         protected override void OnInitialized()
         {
+            //从容器中获取对话框服务
             var dialog = Container.Resolve<IDialogService>();
+            //显示登录对话框
             dialog.ShowDialog("LoginView", callback =>
             {
                 if (callback.Result != ButtonResult.OK)
@@ -125,12 +127,13 @@ namespace SicoreQMS
             servicees.RegisterForNavigation<NewMainView, NewMainViewModel>();
             servicees.RegisterSingleton<INavigationMenuService, NavigationMenuService>();
 
+            servicees.RegisterDialog<ProdProcessEditView, ProdProcessEditViewModel>();
             servicees.RegisterDialog<TestStatusEditView, TestStatusEditViewModel>();
 
             servicees.RegisterDialog<TestItemAddView, TestItemAddViewModel>();
             servicees.RegisterDialog<TestCardMaintainView, TestCardMaintainViewModel>();
             servicees.RegisterDialog<LoginView, LoginViewModel>();
-
+            servicees.RegisterDialog<UserMaintainView, UserMaintainViewModel>();
             servicees.RegisterDialog<TestProcessItemUpdateView, TestProcessItemUpdateViewModel>();
             servicees.RegisterDialog<EquipmentManagementView, EquipmentManagementViewModel>();
 

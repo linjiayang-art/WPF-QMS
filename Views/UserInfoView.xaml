@@ -67,7 +67,11 @@
                 HorizontalAlignment="Center"
                 Orientation="Horizontal">
                 <Button Margin="5" Content="查询" />
-                <Button Margin="5" Content="新增" />
+                <Button
+                    Margin="5"
+                    Command="{Binding ExecuetCommand}"
+                    CommandParameter="add"
+                    Content="新增" />
             </StackPanel>
 
         </Grid>
@@ -89,7 +93,7 @@
                         Header="工号" />
                     <DataGridTextColumn
                         Width="120"
-                        Binding="{Binding IsDeleted}"
+                        Binding="{Binding UserStatus}"
                         Header="是否生效" />
                     <DataGridTemplateColumn Header="操作">
                         <DataGridTemplateColumn.CellTemplate>

@@ -30,5 +30,6 @@ namespace SicoreQMS.Common.Models.Operation
         public Nullable<int> OriginQty { get; set; }
         public string TestNo { get; set; }
         public string ProdNo { get; set; }
+        public string Remark { get; set; }
     }
 }

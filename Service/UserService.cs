@@ -17,7 +17,6 @@ namespace SicoreQMS.Service
         {
             public string UserName { get; set; }
             public string UserNo { get; set; }
-
             public bool UserStatus { get; set; }
         }
 

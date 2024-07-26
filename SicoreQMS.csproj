@@ -29,7 +29,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>\\172.16.2.2\共享文件\IT部\软件\QMS\</InstallUrl>
-    <ApplicationRevision>15</ApplicationRevision>
+    <ApplicationRevision>19</ApplicationRevision>
     <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -457,11 +457,13 @@
     <Compile Include="ViewModels\DialogModels\LotSplitViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessEditViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />
+    <Compile Include="ViewModels\DialogModels\ProdProcessEditViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestCardMaintainViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestEditViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestProcessItemUpdateViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestStatusEditViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TsetItemAddViewModel.cs" />
+    <Compile Include="ViewModels\DialogModels\UserMaintainViewModel.cs" />
     <Compile Include="ViewModels\EquipemntUsageViewModel.cs" />
     <Compile Include="ViewModels\EquipmentReportViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\EquipmentUsageDetailViewModel.cs" />
@@ -489,6 +491,9 @@
     <Compile Include="Views\Dialogs\ProcessUpdateView.xaml.cs">
       <DependentUpon>ProcessUpdateView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dialogs\ProdProcessEditView.xaml.cs">
+      <DependentUpon>ProdProcessEditView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\TestCardMaintainView.xaml.cs">
       <DependentUpon>TestCardMaintainView.xaml</DependentUpon>
     </Compile>
@@ -503,6 +508,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\TestStatusEditView.xaml.cs">
       <DependentUpon>TestStatusEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\UserMaintainView.xaml.cs">
+      <DependentUpon>UserMaintainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EquipemntUsageView.xaml.cs">
       <DependentUpon>EquipemntUsageView.xaml</DependentUpon>
@@ -572,6 +580,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Dialogs\ProdProcessEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Dialogs\TestCardMaintainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -589,6 +601,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\TestStatusEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\UserMaintainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

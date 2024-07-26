@@ -27,7 +27,9 @@ namespace SicoreQMS.Service
                     Id = Guid.NewGuid().ToString(),
                     UserNo = userno,
                     UserName= userName,
-                    PassWord = password
+                    PassWord = password,
+                    IsDeleted=false,
+                    CreateDate=DateTime.Now,
                 };
                 context.UserInfo.Add(userInfo);
                 context.SaveChanges();
