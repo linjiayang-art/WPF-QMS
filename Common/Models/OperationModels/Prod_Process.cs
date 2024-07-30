@@ -19,6 +19,7 @@ namespace SicoreQMS.Common.Models.Operation
             IsDeleted = false;
             CreateDate = DateTime.Now;
 
+
         }
 
 

@@ -190,7 +190,7 @@ namespace SicoreQMS.Service
         }
 
 
-        public static ResultInfo RecordEquipmentLog(string equipmentId, string useType, string useProcess, string processId = null)
+        public static ResultInfo RecordEquipmentLog(string equipmentId, string useType, string useProcess, int qty=0,string processId = null)
         {
             using (var context = new SicoreQMSEntities1())
             {
@@ -214,7 +214,8 @@ namespace SicoreQMS.Service
                         StartDate = DateTime.Now,
                         UseType = useType,
                         UseProcess = useProcess,
-                        UseUser = AppSession.UserID
+                        UseUser = AppSession.UserID,
+                        Qty= qty
                     };
                     context.UsageRecord.Add(usageRecord);
                     equipmentStatus.EquipmentStatus1 = 1;
@@ -619,7 +620,7 @@ namespace SicoreQMS.Service
                                    select new EquipmentUsageDetailModel
                                    {
                                        StartDate = (DateTime)UsageRecord.StartDate,
-                                       EndDate = UsageRecord.EndDate ??DateTime.Today,
+                                       EndDate = UsageRecord.EndDate ??DateTime.Today, //加一天
                                        UseType = UsageRecord.UseType,
                                        UseProcess = UsageRecord.UseProcess,
                                        UseUser = Userinfo.UserName,
@@ -632,6 +633,13 @@ namespace SicoreQMS.Service
                 }
                 foreach (var item in records)
                 {
+
+                    //当天则+1
+                    if (item.EndDate==DateTime.Today)
+                    {
+                        item.EndDate = DateTime.Today.AddDays(1);
+
+                    }
                     //if (item.EndDate is null)
                     //{
                     //    i
@@ -712,6 +720,13 @@ namespace SicoreQMS.Service
                 }
                 foreach (var item in records)
                 {
+
+                    //当天则+1
+                    if (item.EndDate == DateTime.Today)
+                    {
+                        item.EndDate = DateTime.Today.AddDays(1);
+
+                    }
                     //if (item.EndDate is null)
                     //{
                     //    i

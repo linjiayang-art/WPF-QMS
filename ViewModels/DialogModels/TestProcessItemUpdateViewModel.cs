@@ -157,7 +157,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                 foreach (var item in eqList)
                 {
                     var eqId = EquipemtList.SingleOrDefault(x => x.Label == item).Value;
-                    var a = EquipmentService.RecordEquipmentLog(eqId, "试验流程卡", TestItem.ExperimentName, Id);
+                    var a = EquipmentService.RecordEquipmentLog(eqId, "试验流程卡", TestItem.ExperimentName,qty: PassQty, Id);
                 }
                 
 

@@ -214,7 +214,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                     ProdNo=parentProd.ProdNo,
                     TestNo=parentProd.TestNo,
                     TestType=parentProd.TestType,
-                   
+                    CreateUser=parentProd.CreateUser,
 
                 };
 
@@ -260,6 +260,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                     ModelName = "军工",
                     ProdNo=newProdInfo.ProdNo,
                     TestNo=newProdInfo.TestNo,
+                    CreateUser=newProdInfo.CreateUser,
                 };
 
                 // 将新的 ProdInfo 对象添加到数据库
@@ -283,6 +284,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                         Lot = childNumber,
                         QualityLevel = newProdInfo.QualityLevel,
                         ModelName = "军工",
+                        CreateUser=newProdInfo.CreateUser,
                     };
                     if (isCompleteCount>0)
                     {

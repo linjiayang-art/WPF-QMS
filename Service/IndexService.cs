@@ -193,15 +193,15 @@ namespace SicoreQMS.Service
               var query = (from pP in context.Prod_Process
                              join pPI in context.Prod_ProcessItem on pP.Id equals pPI.ProdProcessId
                              join prod in context.ProdInfo on pP.ProdId equals prod.Id
-                             where cardList.Any(card => pPI.ProdProcessCard == card)&&IdList.Contains(pP.Id)
-               //              where cardList.Any(card => pPI.ProdProcessCard == card)
-               //  && pPI.IsDeleted == false && pP.IsDeleted == false
-               //&& (!String.IsNullOrEmpty(pP.ProdType) && pP.ProdType.Contains(prodType))
-               // //&& (!String.IsNullOrEmpty(pP.ProdNo) && pP.ProdNo.Contains(prodNo))
-               //&& (!String.IsNullOrEmpty(pP.ProdLot) && pP.ProdLot.Contains(lot))
-                
-                             //&& prod.TestType.Contains("筛选")
-                             orderby prod.ProdNo, pPI.ModelSort, pPI.Lot
+                             where cardList.Any(card => pPI.ProdProcessCard == card)&&IdList.Contains(pP.Id) && prod.TestType.Contains("筛选")
+                           //              where cardList.Any(card => pPI.ProdProcessCard == card)
+                           //  && pPI.IsDeleted == false && pP.IsDeleted == false
+                           //&& (!String.IsNullOrEmpty(pP.ProdType) && pP.ProdType.Contains(prodType))
+                           // //&& (!String.IsNullOrEmpty(pP.ProdNo) && pP.ProdNo.Contains(prodNo))
+                           //&& (!String.IsNullOrEmpty(pP.ProdLot) && pP.ProdLot.Contains(lot))
+
+                           //&& prod.TestType.Contains("筛选")
+                           orderby prod.ProdNo, pPI.ModelSort, pPI.Lot
                              select new
                              {
                                  pP.Id,
@@ -223,6 +223,7 @@ namespace SicoreQMS.Service
                              }).Take(100);
                 var resultList = query.ToList();
                 var singerList = resultList.Where(p => p.ProdProcessCard == "老炼").OrderBy(p => p.ProdLot).ToList();
+                
                 
                 foreach (var singerItem in singerList)
                 {
@@ -372,7 +373,7 @@ namespace SicoreQMS.Service
         public static ObservableCollection<TestCount> GetTestCounts(string prodType, string lot)
         {
 
-            var checklist = new List<string> { "1", "A", "B", "C", "D", "2" };
+            var checklist = new List<string> { "1", "A", "B", "C", "D", "2","Lot" };
             var reslut = new ObservableCollection<TestCount>();
             using (var context = new SicoreQMSEntities1())
             {
@@ -402,6 +403,7 @@ namespace SicoreQMS.Service
                     string testNo = "";
                     string prodNo = "";
                     string _prodType = "";
+                    string _lot = "";
                     foreach (var i in checklist)
                     {
                         var ExperimentItemNoType = i;
@@ -419,6 +421,7 @@ namespace SicoreQMS.Service
                         testNo = dataTable.Rows[0][2].ToString();
                         prodNo = dataTable.Rows[0][3].ToString();
                         _prodType= dataTable.Rows[0][4].ToString();
+                        _lot = dataTable.Rows[0][5].ToString();
                         calculateDict.Add(testCount, yield);
                         //var blogs = context.proc_QAExperimentReport
                         //        .FromSql($"EXECUTE dbo.GetMostPopularBlogsForUser @filterByUser={user}")
@@ -435,6 +438,7 @@ namespace SicoreQMS.Service
                     expando.Id= item.Id;
                     expando.Remark = item.Remark;
                     expando.ProdType=_prodType;
+                    expando.Lot=_lot;
                     switch (item.StatusDesc)
                     {
                         case 0:
@@ -543,12 +547,13 @@ namespace SicoreQMS.Service
                     {
                         item.IsDeleted = true;
                     }
+                    context.SaveChanges();
                     //删除试验流程
                     var testProcessList = context.TestProcess.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).ToList();
 
                     if (testProcessList.Count == 0)
                     {
-                        return;
+                        continue;
 
                     }
                     foreach (var testProcess in testProcessList) 

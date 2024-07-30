@@ -17,7 +17,7 @@ namespace SicoreQMS.Common.Models.Report
         }
         public string ProdType { get; set; }
         public string Id { get; set; }
-
+        public string Lot { get; set; }
         public string ProdNo { get; set; }
         public string TestNo { get; set; }
 

@@ -103,7 +103,7 @@ namespace SicoreQMS.ViewModels
             this.StartDate = DateTime.Today.AddDays(-30); ;
             RowClickCommand = new DelegateCommand<EquipmentDateModel>(ExecuteCommand);
             //往前30天
-            this.EndDate=DateTime.Today;
+            this.EndDate=DateTime.Today.AddDays(1);
             this.EquipmentNo = "";
             this.EquipmentType = "";
             //this.aggregator = aggregator;

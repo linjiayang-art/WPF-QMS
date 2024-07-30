@@ -176,8 +176,8 @@
                                     <DataGridTextColumn Binding="{Binding BeforAgingTemperatureCount}" Header="老炼后电测" />
 
                                     <DataGridTextColumn Binding="{Binding XlineCount}" Header="待X光数量" />
-                                    <DataGridTextColumn Binding="{Binding AfterAgingTemperatureCount}" Header="声扫后电测后" />
                                     <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="待超声检测数量" />
+                                    <DataGridTextColumn Binding="{Binding AfterAgingTemperatureCount}" Header="声扫后电测后" />
                                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
                                     <DataGridTextColumn Binding="{Binding ScrapQty}" Header="不合格品数量" />
                                     <DataGridTextColumn Binding="{Binding ProcessStatus}" Header="当前状态" />
@@ -216,8 +216,9 @@
                     <DataGridTextColumn Binding="{Binding AgingCount}" Header="老炼中数量" />
                     <DataGridTextColumn Binding="{Binding BeforAgingTemperatureCount}" Header="老炼后电测" />
                     <DataGridTextColumn Binding="{Binding XlineCount}" Header="待X光数量" />
-                    <DataGridTextColumn Binding="{Binding AfterAgingTemperatureCount}" Header="声扫后电测" />
+
                     <DataGridTextColumn Binding="{Binding UltrasonicTesting}" Header="待超声检测数量" />
+                    <DataGridTextColumn Binding="{Binding AfterAgingTemperatureCount}" Header="声扫后电测" />
                     <DataGridTextColumn Binding="{Binding StockIn}" Header="入库数量" />
                     <DataGridTextColumn Binding="{Binding ScrapQty}" Header="不合格品数量" />
                     <DataGridTextColumn Binding="{Binding ProcessStatus}" Header="当前状态" />
@@ -282,28 +283,25 @@
                         Header="测试流水号" />
                     <DataGridTextColumn
                         Width="120"
-                        Binding="{Binding One}"
-                        Header="项目：1" />
+                        Binding="{Binding Lot}"
+                        Header="批次号" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding A}"
-                        Header="项目：A" />
+                        Header="A组" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding B}"
-                        Header="项目：B" />
+                        Header="B组" />
                     <DataGridTextColumn
                         Width="120"
                         Binding="{Binding C}"
-                        Header="项目：C" />
+                        Header="C组" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding D}"
-                        Header="项目：D" />
-                    <DataGridTextColumn
-                        Width="120"
-                        Binding="{Binding Two}"
-                        Header="项目：2" />
+                        Header="D组" />
+
                     <DataGridTextColumn Binding="{Binding Remark}" Header="备注" />
 
                     <DataGridTemplateColumn Width="110" Header="状态">
