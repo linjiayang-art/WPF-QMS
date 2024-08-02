@@ -36,9 +36,10 @@
                 Grid.Column="0"
                 Margin="5"
                 materialDesign:HintAssist.Hint="设备类型"
+                KeyDown="EquipmentType_KeyDown"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding EquipmentType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextWrapping="Wrap" KeyDown="EquipmentType_KeyDown">
+                TextWrapping="Wrap">
                 <!--<TextBox.InputBindings>
                     <KeyBinding
                         Key="Enter"

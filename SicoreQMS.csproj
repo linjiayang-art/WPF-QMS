@@ -29,7 +29,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>\\172.16.2.2\共享文件\IT部\软件\QMS\</InstallUrl>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -417,6 +417,7 @@
       <DependentUpon>OperationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Common\Models\Report\EquipemntUsageReport.cs" />
+    <Compile Include="Common\Models\Report\EquipmentChart.cs" />
     <Compile Include="Common\Models\Report\EquipmentDateModel.cs" />
     <Compile Include="Common\Models\Report\EquipmentUsageDetailModel.cs" />
     <Compile Include="Common\Models\Report\TestCount.cs" />
@@ -465,6 +466,7 @@
     <Compile Include="ViewModels\DialogModels\TsetItemAddViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\UserMaintainViewModel.cs" />
     <Compile Include="ViewModels\EquipemntUsageViewModel.cs" />
+    <Compile Include="ViewModels\EquipmentChartViewModel.cs" />
     <Compile Include="ViewModels\EquipmentReportViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\EquipmentUsageDetailViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
@@ -514,6 +516,9 @@
     </Compile>
     <Compile Include="Views\EquipemntUsageView.xaml.cs">
       <DependentUpon>EquipemntUsageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EquipmentChartView.xaml.cs">
+      <DependentUpon>EquipmentChartView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EquipmentReportView.xaml.cs">
       <DependentUpon>EquipmentReportView.xaml</DependentUpon>
@@ -609,6 +614,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EquipemntUsageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EquipmentChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

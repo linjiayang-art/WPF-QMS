@@ -1,4 +1,5 @@
-﻿using SicoreQMS.Common.Models.Basic;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using SicoreQMS.Common.Models.Basic;
 using SicoreQMS.Common.Models.Operation;
 using SicoreQMS.Common.Server;
 using Syncfusion.Windows.Shared.Resources;
@@ -116,6 +117,32 @@ namespace SicoreQMS.Service
 
         }
 
+
+        public static bool CheckNo(string prodNo,string TestNo)
+        {
+            if (string.IsNullOrEmpty( prodNo)&& string.IsNullOrEmpty(TestNo))
+            {
+                return true;
+            }
+            if (prodNo=="/")
+            {
+                return true;
+            }
+
+            if (prodNo == @"\")
+            {
+                return true;
+            }
+            using (var context=new SicoreQMSEntities1())
+            {
+                var prodInfo = context.ProdInfo.Where(p => p.ProdNo == prodNo || p.TestNo == TestNo).FirstOrDefault();
+                if (prodInfo!=null)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
 
         public static void CreateProdProcess(ProdInfo prodInfo)
         {

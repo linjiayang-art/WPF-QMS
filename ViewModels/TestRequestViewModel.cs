@@ -127,6 +127,14 @@ namespace SicoreQMS.ViewModels
                 CreateUser = AppSession.UserID,
             };
 
+            if (!ProdBasicService.CheckNo(ProdNo, TestNo))
+            {
+                Aggregator.SendMessage("生产流水号重复!");
+                // MessageBox.Show("新增成功!");
+                return;
+            }
+
+
             bool result = ProdBasicService.CreateProdBasic(prodinfo, ModelId);
 
             if (result)

@@ -25,140 +25,144 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
-    <materialDesign:DialogHost
-        x:Name="Root"
-        DialogTheme="Inherit"
-        Identifier="Root">
-        <materialDesign:DrawerHost x:Name="drawerHost" IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
-            <materialDesign:DrawerHost.LeftDrawerContent>
-                <DockPanel MinWidth="220">
-                    <StackPanel Margin="0,20" DockPanel.Dock="Top">
-                        <Image
-                            Width="50"
-                            Height="50"
-                            Source="/Images/User.jpg">
-                            <Image.Clip>
-                                <EllipseGeometry
-                                    Center="25,25"
-                                    RadiusX="25"
-                                    RadiusY="25" />
-                            </Image.Clip>
-                        </Image>
+    <Grid>
 
 
-                        <TextBlock
-                            Margin="10,0"
-                            HorizontalAlignment="Center"
-                            Text="Test" />
-                    </StackPanel>
-                    <ListBox
-                        x:Name="menuBar"
-                        ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
-                        ItemsSource="{Binding MenuBars, Mode=TwoWay}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Background="Transparent" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Margin="15,0" Kind="{Binding Icon}" />
-                                    <TextBlock Margin="10,0" Text="{Binding Title}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-
-                </DockPanel>
-            </materialDesign:DrawerHost.LeftDrawerContent>
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <materialDesign:Snackbar
-                    x:Name="Snackbar"
-                    Panel.ZIndex="1"
-                    MessageQueue="{materialDesign:MessageQueue}" />
-
-                <materialDesign:ColorZone
-                    x:Name="colorZone"
-                    Padding="16"
-                    materialDesign:ElevationAssist.Elevation="Dp4"
-                    DockPanel.Dock="Top"
-                    Mode="PrimaryMid">
-                    <DockPanel LastChildFill="True">
-                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+        <materialDesign:DialogHost
+            x:Name="Root"
+            DialogTheme="Inherit"
+            Identifier="Root">
+            <materialDesign:DrawerHost x:Name="drawerHost" IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+                <materialDesign:DrawerHost.LeftDrawerContent>
+                    <DockPanel MinWidth="220">
+                        <StackPanel Margin="0,20" DockPanel.Dock="Top">
                             <Image
-                                Width="25"
-                                Height="25"
+                                Width="50"
+                                Height="50"
                                 Source="/Images/User.jpg">
                                 <Image.Clip>
                                     <EllipseGeometry
-                                        Center="12.5,12.5"
-                                        RadiusX="12.5"
-                                        RadiusY="12.5" />
+                                        Center="25,25"
+                                        RadiusX="25"
+                                        RadiusY="25" />
                                 </Image.Clip>
                             </Image>
-                            <Button
-                                x:Name="btnMin"
-                                Content="—"
-                                Style="{StaticResource MaterialDesignFlatLightButton}" />
-                            <Button
-                                x:Name="btnMax"
-                                Content="▢"
-                                Style="{StaticResource MaterialDesignFlatLightButton}" />
-                            <Button
-                                x:Name="btnClose"
-                                Content="✖"
-                                Style="{StaticResource MaterialDesignFlatLightButton}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <ToggleButton
-                                x:Name="MenuToggleButton"
-                                AutomationProperties.Name="HamburgerToggleButton"
-                                IsChecked="False"
-                                Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
 
-                            <Button
-                                Margin="24,0,0,0"
-                                materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
-                                Command="{Binding GoBackCommand}"
-                                Content="{materialDesign:PackIcon Kind=ArrowLeft,
-                                                                  Size=24}"
-                                Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                                Style="{StaticResource MaterialDesignToolButton}"
-                                ToolTip="Previous Item" />
-
-                            <Button
-                                Margin="16,0,0,0"
-                                materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
-                                Command="{Binding GoForwardCommand}"
-                                Content="{materialDesign:PackIcon Kind=ArrowRight,
-                                                                  Size=24}"
-                                Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                                Style="{StaticResource MaterialDesignToolButton}"
-                                ToolTip="Next Item" />
 
                             <TextBlock
-                                Margin="16,0"
+                                Margin="10,0"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                AutomationProperties.Name="Material Design In XAML Toolkit"
-                                FontSize="22"
-                                Text="Sicore" />
+                                Text="Test" />
                         </StackPanel>
-                    </DockPanel>
-                </materialDesign:ColorZone>
-                <ContentControl
-                    Grid.Row="1"
-                    prism:RegionManager.RegionName="{x:Static ext:PrismManger.MainViewRegionName}"
-                    AllowDrop="False" />
-            </Grid>
+                        <ListBox
+                            x:Name="menuBar"
+                            ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
+                            ItemsSource="{Binding MenuBars, Mode=TwoWay}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Background="Transparent" Orientation="Horizontal">
+                                        <materialDesign:PackIcon Margin="15,0" Kind="{Binding Icon}" />
+                                        <TextBlock Margin="10,0" Text="{Binding Title}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
 
-        </materialDesign:DrawerHost>
-    </materialDesign:DialogHost>
+                    </DockPanel>
+                </materialDesign:DrawerHost.LeftDrawerContent>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <materialDesign:Snackbar
+                        x:Name="Snackbar"
+                        Panel.ZIndex="1"
+                        MessageQueue="{materialDesign:MessageQueue}" />
+
+                    <materialDesign:ColorZone
+                        x:Name="colorZone"
+                        Padding="16"
+                        materialDesign:ElevationAssist.Elevation="Dp4"
+                        DockPanel.Dock="Top"
+                        Mode="PrimaryMid">
+                        <DockPanel LastChildFill="True">
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                <Image
+                                    Width="25"
+                                    Height="25"
+                                    Source="/Images/User.jpg">
+                                    <Image.Clip>
+                                        <EllipseGeometry
+                                            Center="12.5,12.5"
+                                            RadiusX="12.5"
+                                            RadiusY="12.5" />
+                                    </Image.Clip>
+                                </Image>
+                                <Button
+                                    x:Name="btnMin"
+                                    Content="—"
+                                    Style="{StaticResource MaterialDesignFlatLightButton}" />
+                                <Button
+                                    x:Name="btnMax"
+                                    Content="▢"
+                                    Style="{StaticResource MaterialDesignFlatLightButton}" />
+                                <Button
+                                    x:Name="btnClose"
+                                    Content="✖"
+                                    Style="{StaticResource MaterialDesignFlatLightButton}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleButton
+                                    x:Name="MenuToggleButton"
+                                    AutomationProperties.Name="HamburgerToggleButton"
+                                    IsChecked="False"
+                                    Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+
+                                <Button
+                                    Margin="24,0,0,0"
+                                    materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                    Command="{Binding GoBackCommand}"
+                                    Content="{materialDesign:PackIcon Kind=ArrowLeft,
+                                                                      Size=24}"
+                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    ToolTip="Previous Item" />
+
+                                <Button
+                                    Margin="16,0,0,0"
+                                    materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                    Command="{Binding GoForwardCommand}"
+                                    Content="{materialDesign:PackIcon Kind=ArrowRight,
+                                                                      Size=24}"
+                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    ToolTip="Next Item" />
+
+                                <TextBlock
+                                    Margin="16,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    AutomationProperties.Name="Material Design In XAML Toolkit"
+                                    FontSize="22"
+                                    Text="Sicore" />
+                            </StackPanel>
+                        </DockPanel>
+                    </materialDesign:ColorZone>
+                    <ContentControl
+                        Grid.Row="1"
+                        prism:RegionManager.RegionName="{x:Static ext:PrismManger.MainViewRegionName}"
+                        AllowDrop="False" />
+                </Grid>
+
+            </materialDesign:DrawerHost>
+        </materialDesign:DialogHost>
+    </Grid>
 </Window>

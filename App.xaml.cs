@@ -97,30 +97,30 @@ namespace SicoreQMS
 
         protected override void OnInitialized()
         {
-            //从容器中获取对话框服务
-            var dialog = Container.Resolve<IDialogService>();
-            //显示登录对话框
-            dialog.ShowDialog("LoginView", callback =>
-            {
-                if (callback.Result != ButtonResult.OK)
-                {
-                    Application.Current.Shutdown();
-                    return;
-                }
-
-                var service = App.Current.MainWindow.DataContext as IConfigureService;
-                if (service != null)
-                    service.Configure();
-                base.OnInitialized();
-            });
-
-            //var service = App.Current.MainWindow.DataContext as IConfigureService;
-            //if (service != null)
+            ////从容器中获取对话框服务
+            //var dialog = Container.Resolve<IDialogService>();
+            ////显示登录对话框
+            //dialog.ShowDialog("LoginView", callback =>
             //{
-            //    service.Configure();
-            //}
-            //base.OnInitialized();
-            //logger.Info("Application started");
+            //    if (callback.Result != ButtonResult.OK)
+            //    {
+            //        Application.Current.Shutdown();
+            //        return;
+            //    }
+
+            //    var service = App.Current.MainWindow.DataContext as IConfigureService;
+            //    if (service != null)
+            //        service.Configure();
+            //    base.OnInitialized();
+            //});
+
+            var service = App.Current.MainWindow.DataContext as IConfigureService;
+            if (service != null)
+            {
+                service.Configure();
+            }
+            base.OnInitialized();
+            logger.Info("Application started");
         }
         protected override void RegisterTypes(IContainerRegistry servicees)
         {
@@ -152,6 +152,7 @@ namespace SicoreQMS
             servicees.RegisterForNavigation<TestModelMaintenanceView, TestModelMaintenanceViewModel>();
             servicees.RegisterForNavigation<EquipemntUsageView, EquipemntUsageViewModel>();
 
+            servicees.RegisterForNavigation< EquipmentChartView, EquipmentChartViewModel>();
             servicees.RegisterForNavigation<ProdProcessPrintView, ProdProcessPrintViewModel>();
             //containerRegistry.RegisterForNavigation<TestProcessUpdateView, TestProcessUpdateViewModel>();
 

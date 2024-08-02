@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Office2019.Excel.RichData2;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Irony;
 using SicoreQMS.Common.Models.Basic;
@@ -777,5 +778,48 @@ namespace SicoreQMS.Service
             return result;
         }
 
+
+        public static ObservableCollection<EquipmentChart> GetEquipmentCharts(DateTime startDate, DateTime endDate)
+        {
+            var result = new ObservableCollection<EquipmentChart>();
+            using(var context = new SicoreQMSEntities1())
+            {
+                var usageRecords = (from UsageRecord in context.UsageRecord
+                                   join Equipment in context.Equipment on UsageRecord.EquipmentId equals Equipment.EquipmentID
+                                   where Equipment.EquipmentName.Contains("高温试验箱") 
+                                   //where UsageRecord.StartDate >= startDate && UsageRecord.StartDate <= endDate
+                                   select new
+                                   {
+                                       Equipment.EquipmentName,
+                                       Equipment.EquipmentNo,
+                                       UsageRecord.StartDate,
+                                       UsageRecord.EndDate 
+
+                                   });
+                var records = usageRecords.ToList();
+                if (records.Count == 0)
+                {
+                    return result;
+                }
+
+                foreach (var item in records)
+                {
+                    var ActulyEndDate= item.EndDate ?? DateTime.Today;
+
+                    TimeSpan allDay= (TimeSpan)((DateTime)endDate - startDate);
+                    TimeSpan timeDifference = (TimeSpan)((DateTime)ActulyEndDate - item.StartDate);
+                    var equipmentChart=new EquipmentChart()
+                   {
+                       EquipementName=item.EquipmentName,
+                       UsageCount= timeDifference.Days,
+                       Yield= (timeDifference.Days / allDay.Days)*100 + "%"
+                   };
+                    result.Add(equipmentChart);
+                }
+                
+            }
+
+            return result;
+        }
     }
 }
