@@ -370,12 +370,44 @@ namespace SicoreQMS.ViewModels
                 return;
             }
             TestModelItem.Clear();
-            using (var contxt = new SicoreQMSEntities1())
+            
+            using (var context = new SicoreQMSEntities1())
             {
-                var items = contxt.TestProcessItem.Where(p => p.ProdId == ProdId && p.IsDeleted == false && p.TestProcessId == obj).OrderBy(p => p.ExperimentItemRank).ToList();
+                var items = context.TestProcessItem.Where(p => p.ProdId == ProdId && p.IsDeleted == false && p.TestProcessId == obj).OrderBy(p => p.ExperimentItemRank).ToList();
+
 
                 if (items.Count == 0)
                 {
+                    //丢失的数据看下能不能补
+                    var testProcess = context.TestProcess.SingleOrDefault(p => p.Id == obj);
+                    if (testProcess == null)
+                    {
+                        return;
+                    }
+                    var modelList = context.TestModelItem.Where(p => p.ModelId == testProcess.ModelTypeId).OrderBy(p => p.ExperimentItemRank).ToList();
+                    if (modelList.Count==0)
+                    {
+                        return;
+                    }
+                    foreach (var item in modelList )
+                    {
+                        TestProcessItem testProcessitem = new TestProcessItem()
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            ProdId = testProcess.ProdId,
+                            TestProcessId = testProcess.Id,
+                            ModelId = item.Id,
+                            ExperimentItemNo = item.ExperimentItemNo,
+                            ExperimentName = item.ExperimentItemName,
+                            ExperimentStandard = item.ExperimentItemStandard,
+                            ExperimentConditions = item.ExperimentItemConditions,
+                            ExperimentNo = item.ExperimentItemNumber,
+                            ExperimentQty = item.ExperimentItemQty,
+                            ExperimentItemRank = (int?)item.ExperimentItemRank
+                        };
+                        context.TestProcessItem.Add(testProcessitem);
+                    }
+                    context.SaveChanges();
                     return;
                 }
 

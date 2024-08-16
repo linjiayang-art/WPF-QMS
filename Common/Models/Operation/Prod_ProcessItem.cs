@@ -43,5 +43,16 @@ namespace SicoreQMS.Common.Models.Operation
         public string OperatorName { get; set; }
         public string EquipmentId { get; set; }
         public string EquipmentList { get; set; }
+        public string UDF001 { get; set; }
+        public string UDF002 { get; set; }
+        public string UDF003 { get; set; }
+        public string UDF004 { get; set; }
+        public string UDF005 { get; set; }
+        public string UDF006 { get; set; }
+        public string File001 { get; set; }
+        public string File002 { get; set; }
+        public byte[] Image1 { get; set; }
+        public byte[] Image2 { get; set; }
+        public byte[] Image3 { get; set; }
     }
 }

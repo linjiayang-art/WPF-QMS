@@ -24,6 +24,26 @@ namespace SicoreQMS.Common.Models.Report
 
         private string _equipmentYield;
 
+        private string _capacity;
+
+        public string Capacity
+        {
+            get => _capacity;
+            set => SetProperty(ref _capacity, value);
+
+        }
+
+
+        private string _availableCapacity;
+
+        public string AvailableCapacity
+        {
+            get => _availableCapacity;
+            set => SetProperty(ref _availableCapacity, value);
+
+        }
+
+
         public string EquipmentYield
         {
             get => _equipmentYield;

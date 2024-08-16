@@ -127,6 +127,17 @@
           <Property Name="IsComplete" Type="bit" />
           <Property Name="BeginRemark" Type="nvarchar(max)" />
           <Property Name="EndRemark" Type="nvarchar(max)" />
+          <Property Name="UDF001" Type="nvarchar" MaxLength="255" />
+          <Property Name="UDF002" Type="nvarchar" MaxLength="255" />
+          <Property Name="UDF003" Type="nvarchar" MaxLength="255" />
+          <Property Name="UDF004" Type="nvarchar" MaxLength="255" />
+          <Property Name="UDF005" Type="nvarchar" MaxLength="255" />
+          <Property Name="UDF006" Type="nvarchar" MaxLength="255" />
+          <Property Name="File001" Type="nvarchar" MaxLength="255" />
+          <Property Name="File002" Type="nvarchar" MaxLength="255" />
+          <Property Name="Image1" Type="varbinary(max)" />
+          <Property Name="Image2" Type="varbinary(max)" />
+          <Property Name="Image3" Type="varbinary(max)" />
           <Property Name="Version" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
@@ -499,6 +510,17 @@
           <Property Name="OperatorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EquipmentId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="EquipmentList" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UDF001" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UDF002" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UDF003" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UDF004" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UDF005" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UDF006" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="File001" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="File002" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Image1" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Image2" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Image3" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="TestModelBasic">
           <Key>
@@ -817,6 +839,17 @@
           <EntitySetMapping Name="Prod_ProcessItem">
             <EntityTypeMapping TypeName="SicoreQMSModel.Prod_ProcessItem">
               <MappingFragment StoreEntitySet="Prod_ProcessItem">
+                <ScalarProperty Name="Image3" ColumnName="Image3" />
+                <ScalarProperty Name="Image2" ColumnName="Image2" />
+                <ScalarProperty Name="Image1" ColumnName="Image1" />
+                <ScalarProperty Name="File002" ColumnName="File002" />
+                <ScalarProperty Name="File001" ColumnName="File001" />
+                <ScalarProperty Name="UDF006" ColumnName="UDF006" />
+                <ScalarProperty Name="UDF005" ColumnName="UDF005" />
+                <ScalarProperty Name="UDF004" ColumnName="UDF004" />
+                <ScalarProperty Name="UDF003" ColumnName="UDF003" />
+                <ScalarProperty Name="UDF002" ColumnName="UDF002" />
+                <ScalarProperty Name="UDF001" ColumnName="UDF001" />
                 <ScalarProperty Name="EquipmentList" ColumnName="EquipmentList" />
                 <ScalarProperty Name="EquipmentId" ColumnName="EquipmentId" />
                 <ScalarProperty Name="OperatorName" ColumnName="OperatorName" />

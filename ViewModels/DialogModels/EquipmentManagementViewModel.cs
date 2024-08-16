@@ -229,6 +229,12 @@ namespace SicoreQMS.ViewModels.DialogModels
                 this.eventAggregator.SendMessage("设备型号不允许为空");
                 return;
             }
+            if (string.IsNullOrEmpty(ChoseEquipment))
+            {
+                this.eventAggregator.SendMessage("设备类型不允许为空");
+                return;
+            }
+
 
             using (var context = new SicoreQMSEntities1())
             {

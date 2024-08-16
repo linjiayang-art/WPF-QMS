@@ -20,7 +20,7 @@ namespace SicoreQMS.Service
             var menuBars = new ObservableCollection<MenuBar>();
             using (var context = new SicoreQMSEntities1())
             {
-                var menu = context.Menus.OrderBy(p=>p.sort) . ToList();
+                var menu = context.Menus.Where(p=>p.IsDeleted==false).OrderBy(p=>p.sort) . ToList();
 
                 foreach (var item in menu)
                 {

@@ -112,11 +112,14 @@ namespace SicoreQMS.Service
 
             return true;
 
+           
 
 
 
         }
+      
 
+        public StringBuilder MyProperty { get; set; }
 
         public static bool CheckNo(string prodNo,string TestNo)
         {
@@ -135,7 +138,7 @@ namespace SicoreQMS.Service
             }
             using (var context=new SicoreQMSEntities1())
             {
-                var prodInfo = context.ProdInfo.Where(p => p.ProdNo == prodNo || p.TestNo == TestNo).FirstOrDefault();
+                var prodInfo = context.ProdInfo.Where(p => (( !string.IsNullOrEmpty(prodNo)&& p.ProdNo == prodNo) || (!string.IsNullOrEmpty(TestNo)))&& p.TestNo == TestNo&&p.IsDeleted==false ).FirstOrDefault();
                 if (prodInfo!=null)
                 {
                     return false;

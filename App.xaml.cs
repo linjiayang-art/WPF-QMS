@@ -23,6 +23,8 @@ using NLog;
 using Microsoft.Extensions.DependencyInjection;
 using NLog.Extensions.Logging;
 using Microsoft.Extensions.Logging;
+using SicoreQMS.Views.Dialogs.ProdProcess;
+using SicoreQMS.ViewModels.DialogModels.ProdProcessModels;
 namespace SicoreQMS
 {
     /// <summary>
@@ -97,33 +99,39 @@ namespace SicoreQMS
 
         protected override void OnInitialized()
         {
-            ////从容器中获取对话框服务
-            //var dialog = Container.Resolve<IDialogService>();
-            ////显示登录对话框
-            //dialog.ShowDialog("LoginView", callback =>
-            //{
-            //    if (callback.Result != ButtonResult.OK)
-            //    {
-            //        Application.Current.Shutdown();
-            //        return;
-            //    }
-
-            //    var service = App.Current.MainWindow.DataContext as IConfigureService;
-            //    if (service != null)
-            //        service.Configure();
-            //    base.OnInitialized();
-            //});
-
-            var service = App.Current.MainWindow.DataContext as IConfigureService;
-            if (service != null)
+            //从容器中获取对话框服务
+            var dialog = Container.Resolve<IDialogService>();
+            //显示登录对话框
+            dialog.ShowDialog("LoginView", callback =>
             {
-                service.Configure();
-            }
-            base.OnInitialized();
-            logger.Info("Application started");
+                if (callback.Result != ButtonResult.OK)
+                {
+                    Application.Current.Shutdown();
+                    return;
+                }
+
+                var service = App.Current.MainWindow.DataContext as IConfigureService;
+                if (service != null)
+                    service.Configure();
+                base.OnInitialized();
+            });
+
+            //var service = App.Current.MainWindow.DataContext as IConfigureService;
+            //if (service != null)
+            //{
+            //    service.Configure();
+            //}
+            //base.OnInitialized();
+            //logger.Info("Application started");
         }
         protected override void RegisterTypes(IContainerRegistry servicees)
         {
+            //生产流程视图
+            servicees.RegisterForNavigation<MaterialRequisitionView, MaterialRequisitionViewModel>();
+            //
+
+
+
             servicees.RegisterForNavigation<NewMainView, NewMainViewModel>();
             servicees.RegisterSingleton<INavigationMenuService, NavigationMenuService>();
 
@@ -146,11 +154,14 @@ namespace SicoreQMS
 
 
             //containerRegistry.Register<IDialogHostService, DialogHostService>();
+
             servicees.RegisterDialog<EquipmentUsageDetailView, EquipmentUsageDetailViewModel>();
             servicees.RegisterForNavigation<UserInfoView, UserInfoViewModel>();
             servicees.RegisterForNavigation<EquipmentReportView, EquipmentReportViewModel>();
             servicees.RegisterForNavigation<TestModelMaintenanceView, TestModelMaintenanceViewModel>();
             servicees.RegisterForNavigation<EquipemntUsageView, EquipemntUsageViewModel>();
+
+            servicees.RegisterForNavigation<BurnInEquipmentView, BurnInEquipmentViewModel>();
 
             servicees.RegisterForNavigation< EquipmentChartView, EquipmentChartViewModel>();
             servicees.RegisterForNavigation<ProdProcessPrintView, ProdProcessPrintViewModel>();

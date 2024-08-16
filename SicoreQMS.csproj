@@ -29,7 +29,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>\\172.16.2.2\共享文件\IT部\软件\QMS\</InstallUrl>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -453,12 +453,14 @@
       <DependentUpon>SicoreQMSDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModels\BurnInEquipmentViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\EquipmentManagementViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\LotSplitViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessEditViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\ProdProcessEditViewModel.cs" />
+    <Compile Include="ViewModels\DialogModels\ProdProcessModels\MaterialRequisitionViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestCardMaintainViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestEditViewModel.cs" />
     <Compile Include="ViewModels\DialogModels\TestProcessItemUpdateViewModel.cs" />
@@ -481,6 +483,9 @@
     <Compile Include="ViewModels\TestProcessUpdateViewModel.cs" />
     <Compile Include="ViewModels\TestRequestViewModel.cs" />
     <Compile Include="ViewModels\UserInfoViewModel.cs" />
+    <Compile Include="Views\BurnInEquipmentView.xaml.cs">
+      <DependentUpon>BurnInEquipmentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\EquipmentManagementView.xaml.cs">
       <DependentUpon>EquipmentManagementView.xaml</DependentUpon>
     </Compile>
@@ -495,6 +500,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\ProdProcessEditView.xaml.cs">
       <DependentUpon>ProdProcessEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\ProdProcess\MaterialRequisitionView.xaml.cs">
+      <DependentUpon>MaterialRequisitionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\TestCardMaintainView.xaml.cs">
       <DependentUpon>TestCardMaintainView.xaml</DependentUpon>
@@ -569,6 +577,10 @@
     <Compile Include="Views\UserInfoView.xaml.cs">
       <DependentUpon>UserInfoView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\BurnInEquipmentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Dialogs\EquipmentManagementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -586,6 +598,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\ProdProcessEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialogs\ProdProcess\MaterialRequisitionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

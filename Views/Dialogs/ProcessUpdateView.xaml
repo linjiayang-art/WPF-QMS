@@ -133,13 +133,13 @@
             </Grid>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="294*" />
+                    <ColumnDefinition Width="137*" />
+                    <ColumnDefinition Width="157*"/>
                 </Grid.ColumnDefinitions>
                 <TextBox
-                    Grid.Row="2"
                     Grid.Column="0"
-                    Margin="10"
+                    Margin="10,0,10,0"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="选中设备"
                     AcceptsReturn="True"
@@ -151,9 +151,8 @@
                     Visibility="{Binding IsStartEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                 <TextBox
-                    Grid.Row="2"
                     Grid.Column="1"
-                    Margin="10"
+                    Margin="10,0,10,0"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="使用设备"
                     AcceptsReturn="True"
@@ -162,7 +161,7 @@
                     Text="{Binding EquipmentNo}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto"
-                    Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    Visibility="{Binding IsEndEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.ColumnSpan="2" />
             </Grid>
 
 

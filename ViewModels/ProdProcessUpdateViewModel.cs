@@ -110,7 +110,7 @@ namespace SicoreQMS.ViewModels
 
         #endregion
 
-        public ProdProcessUpdateViewModel(IDialogService dialog, IEventAggregator aggregator)
+        public ProdProcessUpdateViewModel(IDialogService dialog, IEventAggregator aggregator, IRegionManager regionManager)
         {
             ProductNameBasic = new ObservableCollection<SelectBasic>();
 
@@ -129,6 +129,7 @@ namespace SicoreQMS.ViewModels
             this.dialog = dialog;
             //var a = Service.EquipmentService.GetEquipmentBasic();
             Aggregator = aggregator;
+            RegionManager = regionManager;
         }
 
         private void ExportFile(SelectBasic basic)
@@ -252,11 +253,23 @@ namespace SicoreQMS.ViewModels
                 { "Id",obj.Id},
 
             };
-            dialog.ShowDialog("ProcessUpdateView", dialogParameters, result =>
-            {
-                GetProcessList();
+            NavigationParameters keys = new NavigationParameters();
 
-            });
+            //添加参数，键值对格式
+            keys.Add("Id", obj.Id);
+            //regionManager.Regions[PrismManger.MainViewRegionName].RequestNavigate("IndexView");
+            this.RegionManager.Regions[PrismManger.MainViewRegionName].RequestNavigate("MaterialRequisitionView", keys);
+            //dialog.ShowDialog("MaterialRequisitionView", dialogParameters, result =>
+            //{
+            //    GetProcessList();
+
+            //});
+
+            //dialog.ShowDialog("ProcessUpdateView", dialogParameters, result =>
+            //{
+            //    GetProcessList();
+
+            //});
 
         }
 
@@ -277,7 +290,7 @@ namespace SicoreQMS.ViewModels
 
         }
 
-        public bool KeepAlive => false;
+        public bool KeepAlive =>true;
 
 
         public bool getInfoInto=true;
@@ -390,5 +403,6 @@ namespace SicoreQMS.ViewModels
             private set;
         }
         public IEventAggregator Aggregator { get; }
+        public IRegionManager RegionManager { get; }
     }
 }

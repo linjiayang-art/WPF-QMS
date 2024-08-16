@@ -93,6 +93,14 @@ namespace SicoreQMS.ViewModels
                 Aggregator.SendMessage("请勾选实验类型");
                 return;
             }
+            if (string.IsNullOrEmpty(ModelId))
+            {
+                Aggregator.SendMessage("请选择模板ID");
+                return;
+            }
+
+
+
             //去除TestTypeStr最后一个分号
             TestTypeStr = TestTypeStr.Substring(0, TestTypeStr.Length - 1);
 

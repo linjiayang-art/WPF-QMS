@@ -542,11 +542,20 @@ namespace SicoreQMS.Service
                 {
                     ProcessItem.IsDeleted = true;
 
+                    var prodinfo= context.ProdInfo.Where(p => p.Id==ProcessItem.ProdId).SingleOrDefault();
+                    if (prodinfo is null)
+                    {
+                        return;
+                    }
+                    prodinfo.IsDeleted = true;
+
                     var prodProcessItem = context.Prod_ProcessItem.Where(p => p.ProdProcessId == ProcessItem.Id && p.IsDeleted == false).ToList();
                     foreach (var item in prodProcessItem)
                     {
                         item.IsDeleted = true;
                     }
+
+
                     context.SaveChanges();
                     //删除试验流程
                     var testProcessList = context.TestProcess.Where(p => p.ProdLot.Contains(prodLot) && p.ProdType == prodType).ToList();

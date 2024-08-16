@@ -191,7 +191,7 @@ namespace SicoreQMS.Service
         }
 
 
-        public static ResultInfo RecordEquipmentLog(string equipmentId, string useType, string useProcess, int qty=0,string processId = null)
+        public static ResultInfo RecordEquipmentLog(string equipmentId, string useType, string useProcess, DateTime time,int qty=0,string processId = null)
         {
             using (var context = new SicoreQMSEntities1())
             {
@@ -212,7 +212,7 @@ namespace SicoreQMS.Service
                         Id = Guid.NewGuid().ToString(),
                         ProcessId = processId,
                         EquipmentId = equipmentId,
-                        StartDate = DateTime.Now,
+                        StartDate = time,
                         UseType = useType,
                         UseProcess = useProcess,
                         UseUser = AppSession.UserID,
@@ -233,7 +233,7 @@ namespace SicoreQMS.Service
                     {
                         return new ResultInfo { ResultStatus = false, ResultMessage = "设备使用记录不存在" };
                     }
-                    usageRecord.EndDate = DateTime.Now;
+                    usageRecord.EndDate = time;
                     equipmentStatus.EquipmentStatus1 = 0;
                     equipmentStatus.StatusDesc = "待机";
                     context.SaveChanges();
@@ -293,7 +293,7 @@ namespace SicoreQMS.Service
         //     { ResultStatus = true, ResultMessage = "设备状态更新成功" };
         //}
 
-        public static ResultInfo RecordSPEquipmentLog(string equipmentId, string useType, string useProcess, int qty=0,string processId = null)
+        public static ResultInfo RecordSPEquipmentLog(string equipmentId, string useType, string useProcess, DateTime time,int qty=0,string processId = null)
         {
             using (var context = new SicoreQMSEntities1())
             {
@@ -312,7 +312,7 @@ namespace SicoreQMS.Service
                         Id = Guid.NewGuid().ToString(),
                         ProcessId = processId,
                         EquipmentId = equipmentId,
-                        StartDate = DateTime.Now,
+                        StartDate = time,
                         Qty = qty,
                         UseType = useType,
                         UseProcess = useProcess,
@@ -350,14 +350,14 @@ namespace SicoreQMS.Service
             { ResultStatus = true, ResultMessage = "设备状态更新成功" };
         }
 
-        public static void EndSPEquipment(string processid)
+        public static void EndSPEquipment(string processid, DateTime time)
         {
             using (var context=new SicoreQMSEntities1())
             {
                 var usageRecord = context.UsageRecord.Where(u => u.ProcessId == processid).ToList();
                 foreach (var u in usageRecord)
                 {
-                    u.EndDate = DateTime.Now;
+                    u.EndDate = time;
                     var equipmentStatus = context.EquipmentStatus.SingleOrDefault(e => e.EquipmentID == u.EquipmentId);
                     var equipment = context.Equipment.SingleOrDefault(e => e.EquipmentID == u.EquipmentId);
                     equipment.AvailableCapacity += u.Qty;
@@ -487,7 +487,7 @@ namespace SicoreQMS.Service
         }
 
 
-        public static ObservableCollection<EquipmentDateModel> GetEquipmentReport(DateTime startDate, DateTime endDate,string equipmentName="",string equipmentNo="")
+        public static ObservableCollection<EquipmentDateModel> GetEquipmentReport(DateTime startDate, DateTime endDate,string equipmentName="",string equipmentNo="",string equipmentType="2")
         {
 
             
@@ -499,27 +499,29 @@ namespace SicoreQMS.Service
                                          join EquipmentStatus in context.EquipmentStatus on Equipment.EquipmentID equals EquipmentStatus.EquipmentID
                                          where   (!String.IsNullOrEmpty(Equipment.EquipmentName) && Equipment.EquipmentName.Contains(equipmentName))
                                          && (!String.IsNullOrEmpty(Equipment.EquipmentNo) && Equipment.EquipmentNo.Contains(equipmentNo))
+                                         && Equipment.EquipmentType== equipmentType
                                          select new
                                          {
                                              Equipment.EquipmentID,
                                              Equipment.EquipmentName,
                                              Equipment.EquipmentNo,
                                              Equipment.EquipmentModel,
-                                             EquipmentStatus.EquipmentStatus1
+                                             EquipmentStatus.EquipmentStatus1,
+                                             Equipment.Capacity,
+                                             Equipment.AvailableCapacity
 
                                          };
                 var equipmentList = equipmentListQuery.ToList();
                 foreach (var equipmentItem in equipmentList)
                 {
 
-
-             
-
                     var model = new EquipmentDateModel
                     {
                         Equipment = equipmentItem.EquipmentName,
                         Model = equipmentItem.EquipmentModel,
                         EquipmentNo = equipmentItem.EquipmentNo,
+                        Capacity = equipmentItem.Capacity.ToString(),
+                        AvailableCapacity = equipmentItem.AvailableCapacity.ToString(),
 
                     };
                     if (equipmentItem.EquipmentStatus1 == 0)
@@ -594,14 +596,11 @@ namespace SicoreQMS.Service
                                 model.ColorData.Add(date, "LightCoral");
                             }
                         }
-
                         model.EquipmentYield = ((double)useCount / equipmentTotalDays).ToString("P");
                     }
                   
                     results.Add(model);
-              
                 }
-
                 return results;
             }
         }
@@ -682,9 +681,9 @@ namespace SicoreQMS.Service
                     }
                    
                     TimeSpan timeDifference = (TimeSpan)((DateTime)item.EndDate - item.StartDate);
-
+                   
                     item.Sort=count++;
-                    item.UseCount= timeDifference.Hours;
+                    item.UseCount= timeDifference.Days>0? timeDifference.Days:1;
                     result.Add(item);
                 }
             }
@@ -771,7 +770,7 @@ namespace SicoreQMS.Service
                     TimeSpan timeDifference = (TimeSpan)((DateTime)item.EndDate - item.StartDate);
 
                     item.Sort = count++;
-                    item.UseCount = timeDifference.Hours;
+                    item.UseCount = timeDifference.Days>0 ? timeDifference.Days:1;
                     result.Add(item);
                 }
             }

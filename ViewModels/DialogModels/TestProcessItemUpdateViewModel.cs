@@ -104,7 +104,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                         var equipment = context.Equipment.SingleOrDefault(e => e.EquipmentID == item);
 
                         var eqId = equipment.EquipmentID;
-                        var a = EquipmentService.RecordEquipmentLog(eqId, "试验流程卡", testItem.ExperimentName);
+                        var a = EquipmentService.RecordEquipmentLog(equipmentId: eqId,useType: "试验流程卡", useProcess: testItem.ExperimentName, time: StartTime,processId:Id);
                     }
 
                 }
@@ -157,7 +157,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                 foreach (var item in eqList)
                 {
                     var eqId = EquipemtList.SingleOrDefault(x => x.Label == item).Value;
-                    var a = EquipmentService.RecordEquipmentLog(eqId, "试验流程卡", TestItem.ExperimentName,qty: PassQty, Id);
+                    var a = EquipmentService.RecordEquipmentLog(equipmentId: eqId, useType:"试验流程卡", useProcess:TestItem.ExperimentName,qty: PassQty,processId: Id, time: StartTime);
                 }
                 
 

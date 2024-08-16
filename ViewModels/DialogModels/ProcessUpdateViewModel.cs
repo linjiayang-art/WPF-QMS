@@ -353,8 +353,6 @@ namespace SicoreQMS.ViewModels.DialogModels
         private void PerformFiltering()
         {
 
-
-
             if (string.IsNullOrWhiteSpace(SearchText))
             {
                 FilterEquipmentList = EquipemtList;
@@ -374,7 +372,6 @@ namespace SicoreQMS.ViewModels.DialogModels
                     }
 
                 }
-
 
             }
             FilterEquipmentList.OrderBy(x => x.IsCheck);
@@ -413,7 +410,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                         var equipment = context.Equipment.SingleOrDefault(e => e.EquipmentID == item);
 
                         var eqId = equipment.EquipmentID;
-                        var a = EquipmentService.RecordEquipmentLog(eqId, "生产流程卡", ProcessType);
+                        var a = EquipmentService.RecordEquipmentLog( equipmentId :eqId,useType: "生产流程卡", useProcess:ProcessType,processId:Id,time:EndTime);
                     }
 
                 }
@@ -421,7 +418,7 @@ namespace SicoreQMS.ViewModels.DialogModels
             }
 
             //更新老炼板记录
-           Service.EquipmentService.EndSPEquipment(Id);
+           Service.EquipmentService.EndSPEquipment(Id,EndTime);
 
             ButtonResult btnResult = ButtonResult.None;
 
@@ -465,7 +462,7 @@ namespace SicoreQMS.ViewModels.DialogModels
   
                 foreach (var item in ChoseSpEquipment)
                 {
-                    item.AddSpUsage("生产流程卡", ProcessType,Id);
+                    item.AddSpUsage("生产流程卡", ProcessType,Id,StartTime);
                 }
             }
 
@@ -498,7 +495,7 @@ namespace SicoreQMS.ViewModels.DialogModels
                 foreach (var item in eqList)
                 {
                     var eqId = EquipemtList.SingleOrDefault(x => x.Label == item).Value;
-                    var a = EquipmentService.RecordEquipmentLog(eqId, "生产流程卡", ProcessType,qty:InputQty, Id);
+                    var a = EquipmentService.RecordEquipmentLog(equipmentId: eqId, useType: "生产流程卡", useProcess: ProcessType,qty:InputQty,processId: Id,time:StartTime);
                 }
 
             }

@@ -39,9 +39,9 @@ namespace SicoreQMS.Common.Models.Basic
         }
 
 
-        public void AddSpUsage(string useType,string process,string processid)
+        public void AddSpUsage(string useType,string process,string processid,DateTime time)
         {
-            Service.EquipmentService.RecordSPEquipmentLog(equipmentId: EquipmentID, useType: useType, qty: UseQty,useProcess:process ,processId: processid);
+            Service.EquipmentService.RecordSPEquipmentLog(equipmentId: EquipmentID, useType: useType, qty: UseQty,useProcess:process ,processId: processid,time: time);
 
         }
 
